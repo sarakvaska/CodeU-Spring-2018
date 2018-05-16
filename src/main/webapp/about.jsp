@@ -30,6 +30,7 @@
       <a href="/login">Login</a>
     <% } %>
     <a href="/about.jsp">About</a>
+    <a href="/activityfeed">Activity Feed</a>
   </nav>
 
   <div id="container">
@@ -37,6 +38,42 @@
       style="width:75%; margin-left:auto; margin-right:auto; margin-top: 50px;">
 
       <h1>About the CodeU Chat App</h1>
+
+      <h2>Meet The Salvatorians</h2>
+      <h3>Sara Kvaska</h3>
+      <p>
+        Hi! My name is Sara Kvaska. I'm currently a freshman at Harvard planning
+        to concentrate in Computer Science with a secondary in Astrophysics.
+        I'm from Miami, and that's where I'll be working this summer. :)
+      </p>
+
+      <h3>Cindy Lee</h3>
+      <p>
+        Hi, I'm Cindy. I'm from NYC and a rising junior from NYU. I am a
+        Computer Science major and a Game Engineering minor. I love Marvel
+        (have yet to watch Infinity Wars though due to finals). I am also an
+        avid anime fan and would love to hear recommendations! Though I don't
+        watch TV often, I would totally recommend the show Once Upon A Time!
+      </p>
+
+      <h3>Esmeralda Nava</h3>
+      <p>
+        Hello! I am Esmeralda Nava, a freshman at Stanford. I am studying
+        Computer Science and Architecture Design (hoping to one day merge
+        the two of them), and I enjoy swimming and traveling.
+      </p>
+
+      <h3>Aljon Pineda</h3>
+      <p>
+        Hello! My name is Aljon Pineda. I just finished my freshman year
+        at Georgia Tech. I'm majoring in Computer Science and I'm considering
+        having a minor in Linguistics. I was born in Staten Island, NY, then
+        moved to GA when I was turning 10. I enjoy playing the piano,
+        reading murder mystery novels, watching anime (currently obsessed
+        with Detective Conan), and playing video games.
+      </p>
+
+      <h2>Features</h2>
       <p>
         This is an example chat application designed to be a starting point
         for your CodeU project team work. Here's some stuff to think about:
