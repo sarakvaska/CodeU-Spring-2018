@@ -37,7 +37,7 @@
       style="width:75%; margin-left:auto; margin-right:auto; margin-top: 50px;">
 
       <h1>The Salvatorians' Chat App</h1>
-      <h2>Welcome!</h2>
+      <h2>Welcome to the Salvatorian Realm!</h2>
 
       <ul>
         <li><a href="/login">Login</a> to get started.</li>
