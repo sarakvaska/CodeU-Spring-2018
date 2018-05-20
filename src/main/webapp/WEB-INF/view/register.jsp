@@ -29,7 +29,11 @@
     <% } else { %>
       <a href="/login">Login</a>
     <% } %>
-    <a href="/about.jsp">About</a>
+    <% if(request.getSession().getAttribute("user") != null){ %>
+      <a href="/profile">Profile</a>
+    <% } else{ %>
+      <a href="/about.jsp">About</a>
+    <% } %>
     <a href="/activityfeed">Activity Feed</a>
   </nav>
 
