@@ -143,6 +143,14 @@ public class ChatServlet extends HttpServlet {
     // this removes any HTML from the message content
     String cleanedMessageContent = Jsoup.clean(messageContent, Whitelist.none());
 
+    // replaces BBcode with HTML tags
+    cleanedMessageContent = cleanedMessageContent.replace ("[b]", "<b>");
+    cleanedMessageContent = cleanedMessageContent.replace ("[/b]", "</b>");
+    cleanedMessageContent = cleanedMessageContent.replace ("[i]", "<i>");
+    cleanedMessageContent = cleanedMessageContent.replace ("[/i]", "</i>");
+    cleanedMessageContent = cleanedMessageContent.replace ("[u]", "<u>");
+    cleanedMessageContent = cleanedMessageContent.replace ("[/u]", "</u>");
+
     Message message =
         new Message(
             UUID.randomUUID(),
