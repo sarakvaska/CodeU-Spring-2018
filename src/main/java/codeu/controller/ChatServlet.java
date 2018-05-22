@@ -144,20 +144,43 @@ public class ChatServlet extends HttpServlet {
     String cleanedMessageContent = Jsoup.clean(messageContent, Whitelist.none());
 
     // replaces BBcode with HTML tags
+
+    // bolded text
     cleanedMessageContent = cleanedMessageContent.replace ("[b]", "<b>");
     cleanedMessageContent = cleanedMessageContent.replace ("[/b]", "</b>");
+
+    // italic text
     cleanedMessageContent = cleanedMessageContent.replace ("[i]", "<i>");
     cleanedMessageContent = cleanedMessageContent.replace ("[/i]", "</i>");
+
+    // underlined text
     cleanedMessageContent = cleanedMessageContent.replace ("[u]", "<u>");
     cleanedMessageContent = cleanedMessageContent.replace ("[/u]", "</u>");
+
+    // strikethrough text
     cleanedMessageContent = cleanedMessageContent.replace ("[s]", "<s>");
     cleanedMessageContent = cleanedMessageContent.replace ("[/s]", "</s>");
+
+    // creating a table with rows and data
     cleanedMessageContent = cleanedMessageContent.replace ("[table]", "<table>");
     cleanedMessageContent = cleanedMessageContent.replace ("[/table]", "</table>");
     cleanedMessageContent = cleanedMessageContent.replace ("[tr]", "<tr>");
     cleanedMessageContent = cleanedMessageContent.replace ("[/tr]", "</tr>");
     cleanedMessageContent = cleanedMessageContent.replace ("[td]", "<td>");
     cleanedMessageContent = cleanedMessageContent.replace ("[/td]", "</td>");
+
+    // images 
+    while (cleanedMessageContent.contains ("[url]")) {
+      int startTag = cleanedMessageContent.indexOf ("[url]");
+      int endTag = cleanedMessageContent.indexOf ("[/url]");
+      String newString = cleanedMessageContent.substring (0, startTag) + "<a href='" ; 
+      newString += cleanedMessageContent.substring (startTag + 5, endTag);
+      newString += "'>";
+      newString += cleanedMessageContent.substring (startTag + 5, endTag);
+      newString += "</a>";
+      newString += cleanedMessageContent.substring (endTag + 6);
+      cleanedMessageContent = newString;
+    }
 
 
 
