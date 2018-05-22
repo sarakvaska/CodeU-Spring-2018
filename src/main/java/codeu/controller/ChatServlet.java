@@ -250,9 +250,13 @@ public class ChatServlet extends HttpServlet {
       else if (cleanedMessageContent.substring (startTag + 6, closingTag).contains ("color")){
         String colorName = cleanedMessageContent.substring (equalSign + 1, closingTag);
         newString += "'color:";
+
+        // Hex form
         if (colorName.contains ("#")) {
           newString += colorName;
         }
+
+        // Word form
         else {
           colorName = colorName.trim ();
           colorName = colorName.substring (1, colorName.length () - 1);
