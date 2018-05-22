@@ -161,6 +161,9 @@ public class ChatServlet extends HttpServlet {
     cleanedMessageContent = cleanedMessageContent.replace ("[s]", "<s>");
     cleanedMessageContent = cleanedMessageContent.replace ("[/s]", "</s>");
 
+    // line break
+    cleanedMessageContent = cleanedMessageContent.replace ("[br]", "<br>");
+
     // creating a table with rows and data
     cleanedMessageContent = cleanedMessageContent.replace ("[table]", "<table>");
     cleanedMessageContent = cleanedMessageContent.replace ("[/table]", "</table>");
@@ -187,9 +190,9 @@ public class ChatServlet extends HttpServlet {
       int startTag = cleanedMessageContent.indexOf ("[url=");
       int closingTag = cleanedMessageContent.indexOf ("]", startTag);
       int endTag = cleanedMessageContent.indexOf ("[/url]");
-      String newString = cleanedMessageContent.substring (0, startTag) + "<a href=" ; 
+      String newString = cleanedMessageContent.substring (0, startTag) + "<a href='" ; 
       newString += cleanedMessageContent.substring (startTag + 5, closingTag);
-      newString += ">";
+      newString += "'>";
       newString += cleanedMessageContent.substring (closingTag + 1, endTag);
       newString += "</a>";
       newString += cleanedMessageContent.substring (endTag + 6);
@@ -217,6 +220,20 @@ public class ChatServlet extends HttpServlet {
       newString += cleanedMessageContent.substring (endTag + 8);
       cleanedMessageContent = newString;
     }
+
+    // monospaced text
+    cleanedMessageContent = cleanedMessageContent.replace ("[code]", "<pre>");
+    cleanedMessageContent = cleanedMessageContent.replace ("[/code]", "</pre>");
+
+    // lists 
+    cleanedMessageContent = cleanedMessageContent.replace ("[ul]", "<ul>");
+    cleanedMessageContent = cleanedMessageContent.replace ("[/ul]", "</ul>");
+    cleanedMessageContent = cleanedMessageContent.replace ("[ol]", "<ol>");
+    cleanedMessageContent = cleanedMessageContent.replace ("[/ol]", "</ol>");
+    cleanedMessageContent = cleanedMessageContent.replace ("[li]", "<li>");
+    cleanedMessageContent = cleanedMessageContent.replace ("[/li]", "</li>");
+
+
 
     Message message =
         new Message(
