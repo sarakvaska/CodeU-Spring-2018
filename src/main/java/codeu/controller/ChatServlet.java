@@ -150,6 +150,16 @@ public class ChatServlet extends HttpServlet {
     cleanedMessageContent = cleanedMessageContent.replace ("[/i]", "</i>");
     cleanedMessageContent = cleanedMessageContent.replace ("[u]", "<u>");
     cleanedMessageContent = cleanedMessageContent.replace ("[/u]", "</u>");
+    cleanedMessageContent = cleanedMessageContent.replace ("[s]", "<s>");
+    cleanedMessageContent = cleanedMessageContent.replace ("[/s]", "</s>");
+    cleanedMessageContent = cleanedMessageContent.replace ("[table]", "<table>");
+    cleanedMessageContent = cleanedMessageContent.replace ("[/table]", "</table>");
+    cleanedMessageContent = cleanedMessageContent.replace ("[tr]", "<tr>");
+    cleanedMessageContent = cleanedMessageContent.replace ("[/tr]", "</tr>");
+    cleanedMessageContent = cleanedMessageContent.replace ("[td]", "<td>");
+    cleanedMessageContent = cleanedMessageContent.replace ("[/td]", "</td>");
+
+
 
     Message message =
         new Message(
