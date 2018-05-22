@@ -200,6 +200,24 @@ public class ChatServlet extends HttpServlet {
     cleanedMessageContent = cleanedMessageContent.replace ("[img]", "<img src='");
     cleanedMessageContent = cleanedMessageContent.replace ("[/img]", "' alt=''>");
 
+    // quotes
+    while (cleanedMessageContent.contains ("[quote")) {
+      int startTag = cleanedMessageContent.indexOf ("[quote");
+      int closingTag = cleanedMessageContent.indexOf ("]", startTag);
+      int endTag = cleanedMessageContent.indexOf ("[/quote]");
+      String newString = cleanedMessageContent.substring (0, startTag) + "<blockquote";
+
+      // if this is [quote = "author"]
+      if (closingTag != startTag + 6) {
+        newString += " cite" + cleanedMessageContent.substring (startTag + 6, closingTag);
+      }
+
+      newString += "><p>";
+      newString += cleanedMessageContent.substring (closingTag + 1, endTag) + "</p></blockquote>";
+      newString += cleanedMessageContent.substring (endTag + 8);
+      cleanedMessageContent = newString;
+    }
+
     Message message =
         new Message(
             UUID.randomUUID(),
