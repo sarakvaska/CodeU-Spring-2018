@@ -233,7 +233,39 @@ public class ChatServlet extends HttpServlet {
     cleanedMessageContent = cleanedMessageContent.replace ("[li]", "<li>");
     cleanedMessageContent = cleanedMessageContent.replace ("[/li]", "</li>");
 
+    // styling font 
+    while (cleanedMessageContent.contains ("[style")) {
+      int startTag = cleanedMessageContent.indexOf ("[style");
+      int closingTag = cleanedMessageContent.indexOf ("]", startTag);
+      int endTag = cleanedMessageContent.indexOf ("[/style]");
+      String newString = cleanedMessageContent.substring (0, startTag) + "<span style=";
+      int equalSign = cleanedMessageContent.indexOf ("=", startTag);
+      if (cleanedMessageContent.substring (startTag + 6, closingTag).contains ("size")) {
+        String fontSize = cleanedMessageContent.substring (equalSign + 1, closingTag);
+        fontSize = fontSize.trim ();
+        fontSize = fontSize.substring (1, fontSize.length () - 1);
+        newString += "'font-size:" + fontSize;
+      }
 
+      else if (cleanedMessageContent.substring (startTag + 6, closingTag).contains ("color")){
+        String colorName = cleanedMessageContent.substring (equalSign + 1, closingTag);
+        newString += "'color:";
+        if (colorName.contains ("#")) {
+          newString += colorName;
+        }
+        else {
+          colorName = colorName.trim ();
+          colorName = colorName.substring (1, colorName.length () - 1);
+          newString += colorName;
+        }
+      }
+
+      newString += ";'>" + cleanedMessageContent.substring (closingTag + 1, endTag) + "</span>";
+      newString += cleanedMessageContent.substring (endTag + 8);
+      cleanedMessageContent = newString;
+    }
+
+    // styling size
 
     Message message =
         new Message(
