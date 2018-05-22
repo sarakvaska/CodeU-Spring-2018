@@ -169,7 +169,7 @@ public class ChatServlet extends HttpServlet {
     cleanedMessageContent = cleanedMessageContent.replace ("[td]", "<td>");
     cleanedMessageContent = cleanedMessageContent.replace ("[/td]", "</td>");
 
-    // images 
+    // hyperlinks for just [url] 
     while (cleanedMessageContent.contains ("[url]")) {
       int startTag = cleanedMessageContent.indexOf ("[url]");
       int endTag = cleanedMessageContent.indexOf ("[/url]");
@@ -182,7 +182,23 @@ public class ChatServlet extends HttpServlet {
       cleanedMessageContent = newString;
     }
 
+    // hyperlinks for [url = website] 
+    while (cleanedMessageContent.contains ("[url=")) {
+      int startTag = cleanedMessageContent.indexOf ("[url=");
+      int closingTag = cleanedMessageContent.indexOf ("]", startTag);
+      int endTag = cleanedMessageContent.indexOf ("[/url]");
+      String newString = cleanedMessageContent.substring (0, startTag) + "<a href=" ; 
+      newString += cleanedMessageContent.substring (startTag + 5, closingTag);
+      newString += ">";
+      newString += cleanedMessageContent.substring (closingTag + 1, endTag);
+      newString += "</a>";
+      newString += cleanedMessageContent.substring (endTag + 6);
+      cleanedMessageContent = newString;
+    }
 
+    // images
+    cleanedMessageContent = cleanedMessageContent.replace ("[img]", "<img src='");
+    cleanedMessageContent = cleanedMessageContent.replace ("[/img]", "' alt=''>");
 
     Message message =
         new Message(
