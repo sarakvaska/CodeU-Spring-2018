@@ -356,7 +356,7 @@ public class ChatServletTest {
 
     ArgumentCaptor<Message> messageArgumentCaptor = ArgumentCaptor.forClass(Message.class);
     Mockito.verify(mockMessageStore).addMessage(messageArgumentCaptor.capture());
-    Assert.assertEquals("Contains <table><tr><td>table 1</td><td>table 2</td></tr><tr><td>table 3</td><td>table 4</td></tr></table]>.", messageArgumentCaptor.getValue().getContent());
+    Assert.assertEquals("Contains <table><tr><td>table 1</td><td>table 2</td></tr><tr><td>table 3</td><td>table 4</td></tr></table>.", messageArgumentCaptor.getValue().getContent());
 
     Mockito.verify(mockResponse).sendRedirect("/chat/test_conversation");
 
