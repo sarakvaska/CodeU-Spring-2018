@@ -301,4 +301,529 @@ public class ChatServletTest {
     Mockito.verify(mockResponse).sendRedirect("/chat/test_conversation");
 
   }
+
+  @Test
+  public void testDoPost_ConvertingStrikethroughBBCode() throws IOException, ServletException {
+    Mockito.when(mockRequest.getRequestURI()).thenReturn("/chat/test_conversation");
+    Mockito.when(mockSession.getAttribute("user")).thenReturn("test_username");
+
+    User fakeUser =
+        new User(
+            UUID.randomUUID(),
+            "test_username",
+            "$2a$10$eDhncK/4cNH2KE.Y51AWpeL8/14nXBQMwANlyKpSYNODR/SJQ/Fg7",
+            Instant.now());
+    Mockito.when(mockUserStore.getUser("test_username")).thenReturn(fakeUser);
+
+    Conversation fakeConversation =
+        new Conversation(UUID.randomUUID(), UUID.randomUUID(), "test_conversation", Instant.now());
+    Mockito.when(mockConversationStore.getConversationWithTitle("test_conversation"))
+        .thenReturn(fakeConversation);
+
+    Mockito.when(mockRequest.getParameter("message")).thenReturn("Contains [s]BBCode[/s].");
+
+    chatServlet.doPost(mockRequest, mockResponse);
+
+    ArgumentCaptor<Message> messageArgumentCaptor = ArgumentCaptor.forClass(Message.class);
+    Mockito.verify(mockMessageStore).addMessage(messageArgumentCaptor.capture());
+    Assert.assertEquals("Contains <s>BBCode</s>.", messageArgumentCaptor.getValue().getContent());
+
+    Mockito.verify(mockResponse).sendRedirect("/chat/test_conversation");
+
+  }
+
+
+  @Test
+  public void testDoPost_ConvertingLineBreakthroughBBCode() throws IOException, ServletException {
+    Mockito.when(mockRequest.getRequestURI()).thenReturn("/chat/test_conversation");
+    Mockito.when(mockSession.getAttribute("user")).thenReturn("test_username");
+
+    User fakeUser =
+        new User(
+            UUID.randomUUID(),
+            "test_username",
+            "$2a$10$eDhncK/4cNH2KE.Z321WpeL8/14nXBQMwANlyKpSYNODR/SJQ/Fg7",
+            Instant.now());
+    Mockito.when(mockUserStore.getUser("test_username")).thenReturn(fakeUser);
+
+    Conversation fakeConversation =
+        new Conversation(UUID.randomUUID(), UUID.randomUUID(), "test_conversation", Instant.now());
+    Mockito.when(mockConversationStore.getConversationWithTitle("test_conversation"))
+        .thenReturn(fakeConversation);
+
+    Mockito.when(mockRequest.getParameter("message")).thenReturn("Contains [br] a line break.");
+
+    chatServlet.doPost(mockRequest, mockResponse);
+
+    ArgumentCaptor<Message> messageArgumentCaptor = ArgumentCaptor.forClass(Message.class);
+    Mockito.verify(mockMessageStore).addMessage(messageArgumentCaptor.capture());
+    Assert.assertEquals("Contains <br> a line break.", messageArgumentCaptor.getValue().getContent());
+
+    Mockito.verify(mockResponse).sendRedirect("/chat/test_conversation");
+
+  }
+
+  @Test
+  public void testDoPost_ConvertingTablethroughBBCode() throws IOException, ServletException {
+    Mockito.when(mockRequest.getRequestURI()).thenReturn("/chat/test_conversation");
+    Mockito.when(mockSession.getAttribute("user")).thenReturn("test_username");
+
+    User fakeUser =
+        new User(
+            UUID.randomUUID(),
+            "test_username",
+            "$2a$10$eDhncK/4cNH2KE.Y51AWpeL8/15znXQLwANlyKpSYNODR/SJQ/Fg7",
+            Instant.now());
+    Mockito.when(mockUserStore.getUser("test_username")).thenReturn(fakeUser);
+
+    Conversation fakeConversation =
+        new Conversation(UUID.randomUUID(), UUID.randomUUID(), "test_conversation", Instant.now());
+    Mockito.when(mockConversationStore.getConversationWithTitle("test_conversation"))
+        .thenReturn(fakeConversation);
+
+    Mockito.when(mockRequest.getParameter("message")).thenReturn("Contains [table][tr][td]table 1[/td][td]table 2[/td][/tr][tr][td]table 3[/td][td]table 4[/td][/tr][/table].");
+
+    chatServlet.doPost(mockRequest, mockResponse);
+
+    ArgumentCaptor<Message> messageArgumentCaptor = ArgumentCaptor.forClass(Message.class);
+    Mockito.verify(mockMessageStore).addMessage(messageArgumentCaptor.capture());
+    Assert.assertEquals("Contains <table><tr><td>table 1</td><td>table 2</td></tr><tr><td>table 3</td><td>table 4</td></tr></table>.", messageArgumentCaptor.getValue().getContent());
+
+    Mockito.verify(mockResponse).sendRedirect("/chat/test_conversation");
+  }
+
+  @Test
+  public void testDoPost_ConvertingSiteLinkthroughBBCode() throws IOException, ServletException {
+    Mockito.when(mockRequest.getRequestURI()).thenReturn("/chat/test_conversation");
+    Mockito.when(mockSession.getAttribute("user")).thenReturn("test_username");
+
+    User fakeUser =
+        new User(
+            UUID.randomUUID(),
+            "test_username",
+            "$2a$10$eDhncK/2cMZ2KE.SD51ApeL8/15znXQLwANlyKpSYNODR/SJQ/Fg7",
+            Instant.now());
+    Mockito.when(mockUserStore.getUser("test_username")).thenReturn(fakeUser);
+
+    Conversation fakeConversation =
+        new Conversation(UUID.randomUUID(), UUID.randomUUID(), "test_conversation", Instant.now());
+    Mockito.when(mockConversationStore.getConversationWithTitle("test_conversation"))
+        .thenReturn(fakeConversation);
+
+    Mockito.when(mockRequest.getParameter("message")).thenReturn("Contains [url]https://www.google.com/[/url].");
+
+    chatServlet.doPost(mockRequest, mockResponse);
+
+    ArgumentCaptor<Message> messageArgumentCaptor = ArgumentCaptor.forClass(Message.class);
+    Mockito.verify(mockMessageStore).addMessage(messageArgumentCaptor.capture());
+    Assert.assertEquals("Contains <a href='https://www.google.com/'>https://www.google.com/</a>.", messageArgumentCaptor.getValue().getContent());
+
+    Mockito.verify(mockResponse).sendRedirect("/chat/test_conversation");
+  }
+
+  @Test
+  public void testDoPost_ConvertingSiteLinkEqualthroughBBCode() throws IOException, ServletException {
+    Mockito.when(mockRequest.getRequestURI()).thenReturn("/chat/test_conversation");
+    Mockito.when(mockSession.getAttribute("user")).thenReturn("test_username");
+
+    User fakeUser =
+        new User(
+            UUID.randomUUID(),
+            "test_username",
+            "$2a$10$eDhncK/2cMZ2KE.T51AWpeL/15znXQLwANlyKpSYNODR/SJQ/Fg7",
+            Instant.now());
+    Mockito.when(mockUserStore.getUser("test_username")).thenReturn(fakeUser);
+
+    Conversation fakeConversation =
+        new Conversation(UUID.randomUUID(), UUID.randomUUID(), "test_conversation", Instant.now());
+    Mockito.when(mockConversationStore.getConversationWithTitle("test_conversation"))
+        .thenReturn(fakeConversation);
+
+    Mockito.when(mockRequest.getParameter("message")).thenReturn("Contains [url=https://www.google.com/]Google[/url].");
+
+    chatServlet.doPost(mockRequest, mockResponse);
+
+    ArgumentCaptor<Message> messageArgumentCaptor = ArgumentCaptor.forClass(Message.class);
+    Mockito.verify(mockMessageStore).addMessage(messageArgumentCaptor.capture());
+    Assert.assertEquals("Contains <a href='https://www.google.com/'>Google</a>.", messageArgumentCaptor.getValue().getContent());
+
+    Mockito.verify(mockResponse).sendRedirect("/chat/test_conversation");
+  }
+
+  @Test
+  public void testDoPost_ConvertingImagesthroughBBCode() throws IOException, ServletException {
+    Mockito.when(mockRequest.getRequestURI()).thenReturn("/chat/test_conversation");
+    Mockito.when(mockSession.getAttribute("user")).thenReturn("test_username");
+
+    User fakeUser =
+        new User(
+            UUID.randomUUID(),
+            "test_username",
+            "$2a$10$eDhncK/2cMZ2KE.GH1AWpeL8/15znXQLwANlypSYNODR/SJQ/Fg7",
+            Instant.now());
+    Mockito.when(mockUserStore.getUser("test_username")).thenReturn(fakeUser);
+
+    Conversation fakeConversation =
+        new Conversation(UUID.randomUUID(), UUID.randomUUID(), "test_conversation", Instant.now());
+    Mockito.when(mockConversationStore.getConversationWithTitle("test_conversation"))
+        .thenReturn(fakeConversation);
+
+    Mockito.when(mockRequest.getParameter("message")).thenReturn("Contains [img]https://upload.wikimedia.org/wikipedia/commons/thumb/4/47/Go-home-2.svg/100px-Go-home-2.svg.png[/img].");
+
+    chatServlet.doPost(mockRequest, mockResponse);
+
+    ArgumentCaptor<Message> messageArgumentCaptor = ArgumentCaptor.forClass(Message.class);
+    Mockito.verify(mockMessageStore).addMessage(messageArgumentCaptor.capture());
+    Assert.assertEquals("Contains <img src='https://upload.wikimedia.org/wikipedia/commons/thumb/4/47/Go-home-2.svg/100px-Go-home-2.svg.png' alt=''>.", messageArgumentCaptor.getValue().getContent());
+
+    Mockito.verify(mockResponse).sendRedirect("/chat/test_conversation");
+  }
+
+  @Test
+  public void testDoPost_ConvertingQuotesthroughBBCode() throws IOException, ServletException {
+    Mockito.when(mockRequest.getRequestURI()).thenReturn("/chat/test_conversation");
+    Mockito.when(mockSession.getAttribute("user")).thenReturn("test_username");
+
+    User fakeUser =
+        new User(
+            UUID.randomUUID(),
+            "test_username",
+            "$2a$10$eDhncK/2cMZ2KE.GH1AWpeL8/15znXQLwANlybnYNODR/SJQ/GH2",
+            Instant.now());
+    Mockito.when(mockUserStore.getUser("test_username")).thenReturn(fakeUser);
+
+    Conversation fakeConversation =
+        new Conversation(UUID.randomUUID(), UUID.randomUUID(), "test_conversation", Instant.now());
+    Mockito.when(mockConversationStore.getConversationWithTitle("test_conversation"))
+        .thenReturn(fakeConversation);
+
+    Mockito.when(mockRequest.getParameter("message")).thenReturn("Contains [quote]Quoted Text[/quote].");
+
+    chatServlet.doPost(mockRequest, mockResponse);
+
+    ArgumentCaptor<Message> messageArgumentCaptor = ArgumentCaptor.forClass(Message.class);
+    Mockito.verify(mockMessageStore).addMessage(messageArgumentCaptor.capture());
+    Assert.assertEquals("Contains <blockquote><p>Quoted Text</p></blockquote>.", messageArgumentCaptor.getValue().getContent());
+
+    Mockito.verify(mockResponse).sendRedirect("/chat/test_conversation");
+  }
+
+  @Test
+  public void testDoPost_ConvertingQuotesEqualsthroughBBCode() throws IOException, ServletException {
+    Mockito.when(mockRequest.getRequestURI()).thenReturn("/chat/test_conversation");
+    Mockito.when(mockSession.getAttribute("user")).thenReturn("test_username");
+
+    User fakeUser =
+        new User(
+            UUID.randomUUID(),
+            "test_username",
+            "$2a$10$eDhncK/2cMZ45E.GH1AWpeL8/15znXQLwANlybnYNODR/SJQ/GH2",
+            Instant.now());
+    Mockito.when(mockUserStore.getUser("test_username")).thenReturn(fakeUser);
+
+    Conversation fakeConversation =
+        new Conversation(UUID.randomUUID(), UUID.randomUUID(), "test_conversation", Instant.now());
+    Mockito.when(mockConversationStore.getConversationWithTitle("test_conversation"))
+        .thenReturn(fakeConversation);
+
+    Mockito.when(mockRequest.getParameter("message")).thenReturn("Contains [quote='https://en.wikipedia.org/wiki/BBCode']Quoted Text[/quote].");
+
+    chatServlet.doPost(mockRequest, mockResponse);
+
+    ArgumentCaptor<Message> messageArgumentCaptor = ArgumentCaptor.forClass(Message.class);
+    Mockito.verify(mockMessageStore).addMessage(messageArgumentCaptor.capture());
+    Assert.assertEquals("Contains <blockquote cite='https://en.wikipedia.org/wiki/BBCode'><p>Quoted Text</p></blockquote>.", messageArgumentCaptor.getValue().getContent());
+
+    Mockito.verify(mockResponse).sendRedirect("/chat/test_conversation");
+  }
+
+  @Test
+  public void testDoPost_ConvertingMonospacethroughBBCode() throws IOException, ServletException {
+    Mockito.when(mockRequest.getRequestURI()).thenReturn("/chat/test_conversation");
+    Mockito.when(mockSession.getAttribute("user")).thenReturn("test_username");
+
+    User fakeUser =
+        new User(
+            UUID.randomUUID(),
+            "test_username",
+            "$2a$10$eDhncK/2cMZ45E.GH1AWpeL8/15znXQLwANlycmYNODR/SJQ/GH2",
+            Instant.now());
+    Mockito.when(mockUserStore.getUser("test_username")).thenReturn(fakeUser);
+
+    Conversation fakeConversation =
+        new Conversation(UUID.randomUUID(), UUID.randomUUID(), "test_conversation", Instant.now());
+    Mockito.when(mockConversationStore.getConversationWithTitle("test_conversation"))
+        .thenReturn(fakeConversation);
+
+    Mockito.when(mockRequest.getParameter("message")).thenReturn("Contains [code] Monospaced Text [/code].");
+
+    chatServlet.doPost(mockRequest, mockResponse);
+
+    ArgumentCaptor<Message> messageArgumentCaptor = ArgumentCaptor.forClass(Message.class);
+    Mockito.verify(mockMessageStore).addMessage(messageArgumentCaptor.capture());
+    Assert.assertEquals("Contains <pre> Monospaced Text </pre>.", messageArgumentCaptor.getValue().getContent());
+
+    Mockito.verify(mockResponse).sendRedirect("/chat/test_conversation");
+  }
+
+  @Test
+  public void testDoPost_ConvertingOrderedListthroughBBCode() throws IOException, ServletException {
+    Mockito.when(mockRequest.getRequestURI()).thenReturn("/chat/test_conversation");
+    Mockito.when(mockSession.getAttribute("user")).thenReturn("test_username");
+
+    User fakeUser =
+        new User(
+            UUID.randomUUID(),
+            "test_username",
+            "$2a$10$eDhncK/2cMZ45E.GH1AXDeL8/15znXQLwAMlycmYNODR/SJQ/GH2",
+            Instant.now());
+    Mockito.when(mockUserStore.getUser("test_username")).thenReturn(fakeUser);
+
+    Conversation fakeConversation =
+        new Conversation(UUID.randomUUID(), UUID.randomUUID(), "test_conversation", Instant.now());
+    Mockito.when(mockConversationStore.getConversationWithTitle("test_conversation"))
+        .thenReturn(fakeConversation);
+
+    Mockito.when(mockRequest.getParameter("message")).thenReturn("Contains [ol][li]Homework[/li][li]Chores[/li][/ol].");
+
+    chatServlet.doPost(mockRequest, mockResponse);
+
+    ArgumentCaptor<Message> messageArgumentCaptor = ArgumentCaptor.forClass(Message.class);
+    Mockito.verify(mockMessageStore).addMessage(messageArgumentCaptor.capture());
+    Assert.assertEquals("Contains <ol><li>Homework</li><li>Chores</li></ol>.", messageArgumentCaptor.getValue().getContent());
+
+    Mockito.verify(mockResponse).sendRedirect("/chat/test_conversation");
+  }
+
+@Test
+  public void testDoPost_ConvertingNonOrderedListthroughBBCode() throws IOException, ServletException {
+    Mockito.when(mockRequest.getRequestURI()).thenReturn("/chat/test_conversation");
+    Mockito.when(mockSession.getAttribute("user")).thenReturn("test_username");
+
+    User fakeUser =
+        new User(
+            UUID.randomUUID(),
+            "test_username",
+            "$2a$10$eDhncK/2cMZ45E.GH1AWpeL8/15znXQLwANmzbmYNODR/SJQ/GH2",
+            Instant.now());
+    Mockito.when(mockUserStore.getUser("test_username")).thenReturn(fakeUser);
+
+    Conversation fakeConversation =
+        new Conversation(UUID.randomUUID(), UUID.randomUUID(), "test_conversation", Instant.now());
+    Mockito.when(mockConversationStore.getConversationWithTitle("test_conversation"))
+        .thenReturn(fakeConversation);
+
+    Mockito.when(mockRequest.getParameter("message")).thenReturn("Contains [ul][li]Homework[/li][li]Chores[/li][/ul].");
+
+    chatServlet.doPost(mockRequest, mockResponse);
+
+    ArgumentCaptor<Message> messageArgumentCaptor = ArgumentCaptor.forClass(Message.class);
+    Mockito.verify(mockMessageStore).addMessage(messageArgumentCaptor.capture());
+    Assert.assertEquals("Contains <ul><li>Homework</li><li>Chores</li></ul>.", messageArgumentCaptor.getValue().getContent());
+
+    Mockito.verify(mockResponse).sendRedirect("/chat/test_conversation");
+  }
+
+  @Test
+  public void testDoPost_ConvertingFontSizethroughBBCode() throws IOException, ServletException {
+    Mockito.when(mockRequest.getRequestURI()).thenReturn("/chat/test_conversation");
+    Mockito.when(mockSession.getAttribute("user")).thenReturn("test_username");
+
+    User fakeUser =
+        new User(
+            UUID.randomUUID(),
+            "test_username",
+            "$2a$10$eDhncK/2cMZ45E.GH1AWpeL8/28znXQLwANmzbmYNODR/SJQ/GH2",
+            Instant.now());
+    Mockito.when(mockUserStore.getUser("test_username")).thenReturn(fakeUser);
+
+    Conversation fakeConversation =
+        new Conversation(UUID.randomUUID(), UUID.randomUUID(), "test_conversation", Instant.now());
+    Mockito.when(mockConversationStore.getConversationWithTitle("test_conversation"))
+        .thenReturn(fakeConversation);
+
+    Mockito.when(mockRequest.getParameter("message")).thenReturn("Changing [style size='15px'] Size [/style].");
+
+    chatServlet.doPost(mockRequest, mockResponse);
+
+    ArgumentCaptor<Message> messageArgumentCaptor = ArgumentCaptor.forClass(Message.class);
+    Mockito.verify(mockMessageStore).addMessage(messageArgumentCaptor.capture());
+    Assert.assertEquals("Changing <span style='font-size:15px;'> Size </span>.", messageArgumentCaptor.getValue().getContent());
+
+    Mockito.verify(mockResponse).sendRedirect("/chat/test_conversation");
+  }
+
+  @Test
+  public void testDoPost_ConvertingFontColorWordthroughBBCode() throws IOException, ServletException {
+    Mockito.when(mockRequest.getRequestURI()).thenReturn("/chat/test_conversation");
+    Mockito.when(mockSession.getAttribute("user")).thenReturn("test_username");
+
+    User fakeUser =
+        new User(
+            UUID.randomUUID(),
+            "test_username",
+            "$2a$10$eDhncK/2cMZ45E.GH1AWpeL8/28znXQLwANmzbmYNODR/TKL/GH2",
+            Instant.now());
+    Mockito.when(mockUserStore.getUser("test_username")).thenReturn(fakeUser);
+
+    Conversation fakeConversation =
+        new Conversation(UUID.randomUUID(), UUID.randomUUID(), "test_conversation", Instant.now());
+    Mockito.when(mockConversationStore.getConversationWithTitle("test_conversation"))
+        .thenReturn(fakeConversation);
+
+    Mockito.when(mockRequest.getParameter("message")).thenReturn("Changing [style color='red'] Color [/style].");
+
+    chatServlet.doPost(mockRequest, mockResponse);
+
+    ArgumentCaptor<Message> messageArgumentCaptor = ArgumentCaptor.forClass(Message.class);
+    Mockito.verify(mockMessageStore).addMessage(messageArgumentCaptor.capture());
+    Assert.assertEquals("Changing <span style='color:red;'> Color </span>.", messageArgumentCaptor.getValue().getContent());
+
+    Mockito.verify(mockResponse).sendRedirect("/chat/test_conversation");
+  }
+
+  @Test
+  public void testDoPost_ConvertingFontColorHexthroughBBCode() throws IOException, ServletException {
+    Mockito.when(mockRequest.getRequestURI()).thenReturn("/chat/test_conversation");
+    Mockito.when(mockSession.getAttribute("user")).thenReturn("test_username");
+
+    User fakeUser =
+        new User(
+            UUID.randomUUID(),
+            "test_username",
+            "$2a$10$eDhncK/2cMZ45E.GH1AWpeL8/28znXQLwANmzcmkNODR/TKL/GH2",
+            Instant.now());
+    Mockito.when(mockUserStore.getUser("test_username")).thenReturn(fakeUser);
+
+    Conversation fakeConversation =
+        new Conversation(UUID.randomUUID(), UUID.randomUUID(), "test_conversation", Instant.now());
+    Mockito.when(mockConversationStore.getConversationWithTitle("test_conversation"))
+        .thenReturn(fakeConversation);
+
+    Mockito.when(mockRequest.getParameter("message")).thenReturn("Changing [style color=#FF0000] Color [/style].");
+
+    chatServlet.doPost(mockRequest, mockResponse);
+
+    ArgumentCaptor<Message> messageArgumentCaptor = ArgumentCaptor.forClass(Message.class);
+    Mockito.verify(mockMessageStore).addMessage(messageArgumentCaptor.capture());
+    Assert.assertEquals("Changing <span style='color:#FF0000;'> Color </span>.", messageArgumentCaptor.getValue().getContent());
+
+    Mockito.verify(mockResponse).sendRedirect("/chat/test_conversation");
+  }
+
+  @Test
+  public void testDoPost_ConvertingStylingChangingSizeFirstHexthroughBBCode() throws IOException, ServletException {
+    Mockito.when(mockRequest.getRequestURI()).thenReturn("/chat/test_conversation");
+    Mockito.when(mockSession.getAttribute("user")).thenReturn("test_username");
+
+    User fakeUser =
+        new User(
+            UUID.randomUUID(),
+            "test_username",
+            "$2a$10$eDhncK/2cMZ45E.GH1AWpeL8/28znXQLwANmzBBkNODR/TKL/ZH2",
+            Instant.now());
+    Mockito.when(mockUserStore.getUser("test_username")).thenReturn(fakeUser);
+
+    Conversation fakeConversation =
+        new Conversation(UUID.randomUUID(), UUID.randomUUID(), "test_conversation", Instant.now());
+    Mockito.when(mockConversationStore.getConversationWithTitle("test_conversation"))
+        .thenReturn(fakeConversation);
+
+    Mockito.when(mockRequest.getParameter("message")).thenReturn("Changing [style size='15px'; color=#FF0000] Chaining [/style].");
+
+    chatServlet.doPost(mockRequest, mockResponse);
+
+    ArgumentCaptor<Message> messageArgumentCaptor = ArgumentCaptor.forClass(Message.class);
+    Mockito.verify(mockMessageStore).addMessage(messageArgumentCaptor.capture());
+    Assert.assertEquals("Changing <span style='font-size:15px;color:#FF0000;'> Chaining </span>.", messageArgumentCaptor.getValue().getContent());
+
+    Mockito.verify(mockResponse).sendRedirect("/chat/test_conversation");
+  }
+
+  @Test
+  public void testDoPost_ConvertingStylingChangingSizeFirstColorWordthroughBBCode() throws IOException, ServletException {
+    Mockito.when(mockRequest.getRequestURI()).thenReturn("/chat/test_conversation");
+    Mockito.when(mockSession.getAttribute("user")).thenReturn("test_username");
+
+    User fakeUser =
+        new User(
+            UUID.randomUUID(),
+            "test_username",
+            "$2a$10$eDhncK/2cMZ45E.GH1AWpeL8/28znXQLwANmzBBkWORD/TKL/ZH2",
+            Instant.now());
+    Mockito.when(mockUserStore.getUser("test_username")).thenReturn(fakeUser);
+
+    Conversation fakeConversation =
+        new Conversation(UUID.randomUUID(), UUID.randomUUID(), "test_conversation", Instant.now());
+    Mockito.when(mockConversationStore.getConversationWithTitle("test_conversation"))
+        .thenReturn(fakeConversation);
+
+    Mockito.when(mockRequest.getParameter("message")).thenReturn("Changing [style size='15px'; color= 'red'] Chaining [/style].");
+
+    chatServlet.doPost(mockRequest, mockResponse);
+
+    ArgumentCaptor<Message> messageArgumentCaptor = ArgumentCaptor.forClass(Message.class);
+    Mockito.verify(mockMessageStore).addMessage(messageArgumentCaptor.capture());
+    Assert.assertEquals("Changing <span style='font-size:15px;color:red;'> Chaining </span>.", messageArgumentCaptor.getValue().getContent());
+
+    Mockito.verify(mockResponse).sendRedirect("/chat/test_conversation");
+  }
+
+  @Test
+  public void testDoPost_ConvertingStylingChangingColorFirstHexthroughBBCode() throws IOException, ServletException {
+    Mockito.when(mockRequest.getRequestURI()).thenReturn("/chat/test_conversation");
+    Mockito.when(mockSession.getAttribute("user")).thenReturn("test_username");
+
+    User fakeUser =
+        new User(
+            UUID.randomUUID(),
+            "test_username",
+            "$2a$10$eDhncK/2cMZ45E.GH1AWpeL8/28znXBHwANmzBBkWORD/TKL/ZH2",
+            Instant.now());
+    Mockito.when(mockUserStore.getUser("test_username")).thenReturn(fakeUser);
+
+    Conversation fakeConversation =
+        new Conversation(UUID.randomUUID(), UUID.randomUUID(), "test_conversation", Instant.now());
+    Mockito.when(mockConversationStore.getConversationWithTitle("test_conversation"))
+        .thenReturn(fakeConversation);
+
+    Mockito.when(mockRequest.getParameter("message")).thenReturn("Changing [style color= 'red'; size = '15px'] Chaining [/style].");
+
+    chatServlet.doPost(mockRequest, mockResponse);
+
+    ArgumentCaptor<Message> messageArgumentCaptor = ArgumentCaptor.forClass(Message.class);
+    Mockito.verify(mockMessageStore).addMessage(messageArgumentCaptor.capture());
+    Assert.assertEquals("Changing <span style='font-size:15px;color:red;'> Chaining </span>.", messageArgumentCaptor.getValue().getContent());
+
+    Mockito.verify(mockResponse).sendRedirect("/chat/test_conversation");
+  }
+
+  @Test
+  public void testDoPost_ConvertingStylingChangingColorFirstWordthroughBBCode() throws IOException, ServletException {
+    Mockito.when(mockRequest.getRequestURI()).thenReturn("/chat/test_conversation");
+    Mockito.when(mockSession.getAttribute("user")).thenReturn("test_username");
+
+    User fakeUser =
+        new User(
+            UUID.randomUUID(),
+            "test_username",
+            "$2a$10$eDhncK/2cMZ45E.GH1AWpeL8/28znXBHwANmzBBkWORD/TKL/ZH2",
+            Instant.now());
+    Mockito.when(mockUserStore.getUser("test_username")).thenReturn(fakeUser);
+
+    Conversation fakeConversation =
+        new Conversation(UUID.randomUUID(), UUID.randomUUID(), "test_conversation", Instant.now());
+    Mockito.when(mockConversationStore.getConversationWithTitle("test_conversation"))
+        .thenReturn(fakeConversation);
+
+    Mockito.when(mockRequest.getParameter("message")).thenReturn("Changing [style color= #FF0000; size = '15px'] Chaining [/style].");
+
+    chatServlet.doPost(mockRequest, mockResponse);
+
+    ArgumentCaptor<Message> messageArgumentCaptor = ArgumentCaptor.forClass(Message.class);
+    Mockito.verify(mockMessageStore).addMessage(messageArgumentCaptor.capture());
+    Assert.assertEquals("Changing <span style='font-size:15px;color:#FF0000;'> Chaining </span>.", messageArgumentCaptor.getValue().getContent());
+
+    Mockito.verify(mockResponse).sendRedirect("/chat/test_conversation");
+  }
 }
