@@ -238,18 +238,30 @@ public class ChatServlet extends HttpServlet {
       int startTag = cleanedMessageContent.indexOf ("[style");
       int closingTag = cleanedMessageContent.indexOf ("]", startTag);
       int endTag = cleanedMessageContent.indexOf ("[/style]");
-      String newString = cleanedMessageContent.substring (0, startTag) + "<span style=";
-      int equalSign = cleanedMessageContent.indexOf ("=", startTag);
+      int dividerColon = cleanedMessageContent.indexOf (";", startTag);
+      String newString = cleanedMessageContent.substring (0, startTag) + "<span style='";
+
       if (cleanedMessageContent.substring (startTag + 6, closingTag).contains ("size")) {
+        int sizeLocation = cleanedMessageContent.indexOf ("size", startTag);
+        int equalSign = cleanedMessageContent.indexOf ("=", sizeLocation);
         String fontSize = cleanedMessageContent.substring (equalSign + 1, closingTag);
+        if (dividerColon != -1 && dividerColon < closingTag && sizeLocation < dividerColon) {
+          fontSize = cleanedMessageContent.substring (equalSign + 1, dividerColon);
+        }
         fontSize = fontSize.trim ();
         fontSize = fontSize.substring (1, fontSize.length () - 1);
-        newString += "'font-size:" + fontSize;
+        newString += "font-size:" + fontSize + ";";
       }
 
-      else if (cleanedMessageContent.substring (startTag + 6, closingTag).contains ("color")){
+      if (cleanedMessageContent.substring (startTag + 6, closingTag).contains ("color")){
+        int colorLocation = cleanedMessageContent.indexOf ("color", startTag);
+        int equalSign = cleanedMessageContent.indexOf ("=", colorLocation);
         String colorName = cleanedMessageContent.substring (equalSign + 1, closingTag);
-        newString += "'color:";
+        if (dividerColon != -1 && dividerColon < closingTag && colorLocation < dividerColon) {
+          colorName = cleanedMessageContent.substring (equalSign + 1, dividerColon);
+        }
+        newString += "color:";
+        colorName = colorName.trim ();
 
         // Hex form
         if (colorName.contains ("#")) {
@@ -258,13 +270,13 @@ public class ChatServlet extends HttpServlet {
 
         // Word form
         else {
-          colorName = colorName.trim ();
           colorName = colorName.substring (1, colorName.length () - 1);
           newString += colorName;
         }
+        newString += ";";
       }
 
-      newString += ";'>" + cleanedMessageContent.substring (closingTag + 1, endTag) + "</span>";
+      newString += "'>" + cleanedMessageContent.substring (closingTag + 1, endTag) + "</span>";
       newString += cleanedMessageContent.substring (endTag + 8);
       cleanedMessageContent = newString;
     }
