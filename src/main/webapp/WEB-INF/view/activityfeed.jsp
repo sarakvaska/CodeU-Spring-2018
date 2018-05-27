@@ -1,3 +1,9 @@
+<%@ page import="java.util.List" %>
+<%@ page import="codeu.model.data.Activity" %>
+<%@ page import="codeu.model.data.Activity.ActivityType" %>
+<%@ page import="codeu.model.data.User" %>
+<%@ page import="codeu.model.store.basic.UserStore" %>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -22,6 +28,32 @@
   <div id="container">
     <h1>Activity Feed</h1>
     <p>This is the activity feed.</p>
+
+    <div id="feed">
+      <ul>
+        <%
+        List<Activity> activities =
+          (List<Activity>) request.getAttribute("activities");
+
+        if (activities == null || activities.isEmpty()) {
+        %>
+          <li>No activity yet.</li>
+        <%
+        } else {
+          for (Activity activity : activities) {
+            if (activity.getType() == ActivityType.NEW_USER) {
+              UserStore userStore = UserStore.getInstance();
+              User user = userStore.getUser(activity.getId());
+        %>
+          <li><%= activity.getCreationTime().toString() %>
+            <%= user.getName() %> joined.</li>
+        <%
+            }
+          }
+        }
+        %>
+      </ul>
+    </div>
   </div>
 </body>
 </html>

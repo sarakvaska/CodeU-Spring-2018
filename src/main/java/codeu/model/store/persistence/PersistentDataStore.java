@@ -163,7 +163,7 @@ public class PersistentDataStore {
     List<Activity> activities = new ArrayList<>();
 
     // Retrieve all activities from the datastore.
-    Query query = new Query("chat-activities").addSort("creation-time", SortDirection.ASCENDING);
+    Query query = new Query("chat-activities").addSort("creation-time", SortDirection.DESCENDING);
     PreparedQuery results = datastore.prepare(query);
 
     for (Entity entity : results.asIterable()) {

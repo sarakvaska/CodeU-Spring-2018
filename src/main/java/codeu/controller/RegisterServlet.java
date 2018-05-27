@@ -82,7 +82,7 @@ public class RegisterServlet extends HttpServlet {
     User user = new User(UUID.randomUUID(), username, hashedPassword, Instant.now());
     userStore.addUser(user);
 
-    Activity activity = new Activity(ActivityType.NEW_USER, UUID.randomUUID(), Instant.now());
+    Activity activity = new Activity(ActivityType.NEW_USER, user.getId(), Instant.now());
     activityStore.addActivity(activity);
 
     response.sendRedirect("/login");
