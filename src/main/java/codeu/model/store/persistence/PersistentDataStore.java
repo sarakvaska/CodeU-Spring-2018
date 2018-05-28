@@ -140,6 +140,8 @@ public class PersistentDataStore {
         String content = (String) entity.getProperty("content");
         Message message = new Message(uuid, conversationUuid, authorUuid, content, creationTime);
         messages.add(message);
+        System.out.print(message);
+        System.out.println(" " + uuid);
       } catch (Exception e) {
         // In a production environment, errors should be very rare. Errors which may
         // occur include network errors, Datastore service errors, authorization errors,
@@ -153,7 +155,7 @@ public class PersistentDataStore {
 
   /**
    * Loads all Activity objects from the Datastore service and returns them in a List, sorted in
-   * ascending order by creation time.
+   * descending order by creation time.
    *
    * @throws PersistentDataStoreException if an error was detected during the load from the
    *     Datastore service
@@ -163,13 +165,16 @@ public class PersistentDataStore {
     List<Activity> activities = new ArrayList<>();
 
     // Retrieve all activities from the datastore.
-    Query query = new Query("chat-activities").addSort("creation-time", SortDirection.DESCENDING);
+    Query query = new Query("chat-activities").addSort("creation_time", SortDirection.DESCENDING);
     PreparedQuery results = datastore.prepare(query);
 
     for (Entity entity : results.asIterable()) {
       try {
         // Since the index of the activity type is stored, I use it to access the type.
-        ActivityType type = ActivityType.values()[(int) entity.getProperty("activity_type")];
+        Long indexLong = (Long) entity.getProperty("activity_type");
+        int index = indexLong.intValue();
+        ActivityType type = ActivityType.values()[index];
+        
         UUID uuid = UUID.fromString((String) entity.getProperty("uuid"));
         Instant creationTime = Instant.parse((String) entity.getProperty("creation_time"));
         Activity activity = new Activity(type, uuid, creationTime);
