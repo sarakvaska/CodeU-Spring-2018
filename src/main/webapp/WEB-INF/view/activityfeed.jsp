@@ -1,7 +1,9 @@
 <%@ page import="java.util.List" %>
 <%@ page import="codeu.model.data.Activity" %>
 <%@ page import="codeu.model.data.Activity.ActivityType" %>
+<%@ page import="codeu.model.data.Conversation" %>
 <%@ page import="codeu.model.data.User" %>
+<%@ page import="codeu.model.store.basic.ConversationStore" %>
 <%@ page import="codeu.model.store.basic.UserStore" %>
 
 <!DOCTYPE html>
@@ -40,14 +42,29 @@
           <li>No activity yet.</li>
         <%
         } else {
+          UserStore userStore = UserStore.getInstance();
+          ConversationStore conversationStore = ConversationStore.getInstance();
           for (Activity activity : activities) {
             if (activity.getType() == ActivityType.NEW_USER) {
-              UserStore userStore = UserStore.getInstance();
               User user = userStore.getUser(activity.getId());
         %>
           <li><%= activity.getCreationTime().toString() %>
             <%= user.getName() %> joined.</li>
         <%
+            } else if (activity.getType() == ActivityType.NEW_CONVERSATION) {
+              Conversation conversation =
+                  conversationStore.getConversationById(activity.getId());
+              if (conversation == null) {
+                System.out.println("Conversation doesn't exist!!");
+              } else {
+                User user = userStore.getUser(conversation.getOwnerId());
+        %>
+          <li><%= activity.getCreationTime().toString() %>
+            <%= user.getName() %> created a new conversation:
+            <a href="/chat/<%= conversation.getTitle() %>"><%= conversation.getTitle() %></a>
+          </li>
+        <%
+              }
             }
           }
         }
