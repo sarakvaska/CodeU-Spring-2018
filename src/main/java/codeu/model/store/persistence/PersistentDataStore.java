@@ -28,6 +28,7 @@ import com.google.appengine.api.datastore.Query;
 import com.google.appengine.api.datastore.Query.SortDirection;
 import java.time.Instant;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.UUID;
 
@@ -140,8 +141,6 @@ public class PersistentDataStore {
         String content = (String) entity.getProperty("content");
         Message message = new Message(uuid, conversationUuid, authorUuid, content, creationTime);
         messages.add(message);
-        System.out.print(message);
-        System.out.println(" " + uuid);
       } catch (Exception e) {
         // In a production environment, errors should be very rare. Errors which may
         // occur include network errors, Datastore service errors, authorization errors,
@@ -162,7 +161,7 @@ public class PersistentDataStore {
    */
   public List<Activity> loadActivities() throws PersistentDataStoreException {
 
-    List<Activity> activities = new ArrayList<>();
+    List<Activity> activities = new LinkedList<>();
 
     // Retrieve all activities from the datastore.
     Query query = new Query("chat-activities").addSort("creation_time", SortDirection.DESCENDING);
@@ -174,7 +173,7 @@ public class PersistentDataStore {
         Long indexLong = (Long) entity.getProperty("activity_type");
         int index = indexLong.intValue();
         ActivityType type = ActivityType.values()[index];
-        
+
         UUID uuid = UUID.fromString((String) entity.getProperty("uuid"));
         Instant creationTime = Instant.parse((String) entity.getProperty("creation_time"));
         Activity activity = new Activity(type, uuid, creationTime);
