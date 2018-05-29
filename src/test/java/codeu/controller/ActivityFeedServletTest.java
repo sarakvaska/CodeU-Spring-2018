@@ -2,7 +2,7 @@ package codeu.controller;
 
 import java.io.IOException;
 import java.time.Instant;
-import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.UUID;
 
@@ -42,7 +42,7 @@ public class ActivityFeedServletTest {
 
   @Test
   public void testDoGet() throws IOException, ServletException {
-    List<Activity> fakeActivityList = new ArrayList<>();
+    List<Activity> fakeActivityList = new LinkedList<>();
     fakeActivityList.add(
       new Activity(ActivityType.NEW_USER, UUID.randomUUID(), Instant.now())
     );
