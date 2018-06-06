@@ -144,12 +144,144 @@ public class ChatServlet extends HttpServlet {
     String cleanedMessageContent = Jsoup.clean(messageContent, Whitelist.none());
 
     // replaces BBcode with HTML tags
+
+    // bolded text
     cleanedMessageContent = cleanedMessageContent.replace ("[b]", "<b>");
     cleanedMessageContent = cleanedMessageContent.replace ("[/b]", "</b>");
+
+    // italic text
     cleanedMessageContent = cleanedMessageContent.replace ("[i]", "<i>");
     cleanedMessageContent = cleanedMessageContent.replace ("[/i]", "</i>");
+
+    // underlined text
     cleanedMessageContent = cleanedMessageContent.replace ("[u]", "<u>");
     cleanedMessageContent = cleanedMessageContent.replace ("[/u]", "</u>");
+
+    // strikethrough text
+    cleanedMessageContent = cleanedMessageContent.replace ("[s]", "<s>");
+    cleanedMessageContent = cleanedMessageContent.replace ("[/s]", "</s>");
+
+    // line break
+    cleanedMessageContent = cleanedMessageContent.replace ("[br]", "<br>");
+
+    // creating a table with rows and data
+    cleanedMessageContent = cleanedMessageContent.replace ("[table]", "<table>");
+    cleanedMessageContent = cleanedMessageContent.replace ("[/table]", "</table>");
+    cleanedMessageContent = cleanedMessageContent.replace ("[tr]", "<tr>");
+    cleanedMessageContent = cleanedMessageContent.replace ("[/tr]", "</tr>");
+    cleanedMessageContent = cleanedMessageContent.replace ("[td]", "<td>");
+    cleanedMessageContent = cleanedMessageContent.replace ("[/td]", "</td>");
+
+    // hyperlinks for just [url] 
+    while (cleanedMessageContent.contains ("[url]")) {
+      int startTag = cleanedMessageContent.indexOf ("[url]");
+      int endTag = cleanedMessageContent.indexOf ("[/url]");
+      String newString = cleanedMessageContent.substring (0, startTag) + "<a href='" ; 
+      newString += cleanedMessageContent.substring (startTag + 5, endTag);
+      newString += "'>";
+      newString += cleanedMessageContent.substring (startTag + 5, endTag);
+      newString += "</a>";
+      newString += cleanedMessageContent.substring (endTag + 6);
+      cleanedMessageContent = newString;
+    }
+
+    // hyperlinks for [url = website] 
+    while (cleanedMessageContent.contains ("[url=")) {
+      int startTag = cleanedMessageContent.indexOf ("[url=");
+      int closingTag = cleanedMessageContent.indexOf ("]", startTag);
+      int endTag = cleanedMessageContent.indexOf ("[/url]");
+      String newString = cleanedMessageContent.substring (0, startTag) + "<a href='" ; 
+      newString += cleanedMessageContent.substring (startTag + 5, closingTag);
+      newString += "'>";
+      newString += cleanedMessageContent.substring (closingTag + 1, endTag);
+      newString += "</a>";
+      newString += cleanedMessageContent.substring (endTag + 6);
+      cleanedMessageContent = newString;
+    }
+
+    // images
+    cleanedMessageContent = cleanedMessageContent.replace ("[img]", "<img src='");
+    cleanedMessageContent = cleanedMessageContent.replace ("[/img]", "' alt=''>");
+
+    // quotes
+    while (cleanedMessageContent.contains ("[quote")) {
+      int startTag = cleanedMessageContent.indexOf ("[quote");
+      int closingTag = cleanedMessageContent.indexOf ("]", startTag);
+      int endTag = cleanedMessageContent.indexOf ("[/quote]");
+      String newString = cleanedMessageContent.substring (0, startTag) + "<blockquote";
+
+      // if this is [quote = "author"]
+      if (closingTag != startTag + 6) {
+        newString += " cite" + cleanedMessageContent.substring (startTag + 6, closingTag);
+      }
+
+      newString += "><p>";
+      newString += cleanedMessageContent.substring (closingTag + 1, endTag) + "</p></blockquote>";
+      newString += cleanedMessageContent.substring (endTag + 8);
+      cleanedMessageContent = newString;
+    }
+
+    // monospaced text
+    cleanedMessageContent = cleanedMessageContent.replace ("[code]", "<pre>");
+    cleanedMessageContent = cleanedMessageContent.replace ("[/code]", "</pre>");
+
+    // lists 
+    cleanedMessageContent = cleanedMessageContent.replace ("[ul]", "<ul>");
+    cleanedMessageContent = cleanedMessageContent.replace ("[/ul]", "</ul>");
+    cleanedMessageContent = cleanedMessageContent.replace ("[ol]", "<ol>");
+    cleanedMessageContent = cleanedMessageContent.replace ("[/ol]", "</ol>");
+    cleanedMessageContent = cleanedMessageContent.replace ("[li]", "<li>");
+    cleanedMessageContent = cleanedMessageContent.replace ("[/li]", "</li>");
+
+    // styling font 
+    while (cleanedMessageContent.contains ("[style")) {
+      int startTag = cleanedMessageContent.indexOf ("[style");
+      int closingTag = cleanedMessageContent.indexOf ("]", startTag);
+      int endTag = cleanedMessageContent.indexOf ("[/style]");
+      int dividerColon = cleanedMessageContent.indexOf (";", startTag);
+      String newString = cleanedMessageContent.substring (0, startTag) + "<span style='";
+
+      if (cleanedMessageContent.substring (startTag + 6, closingTag).contains ("size")) {
+        int sizeLocation = cleanedMessageContent.indexOf ("size", startTag);
+        int equalSign = cleanedMessageContent.indexOf ("=", sizeLocation);
+        String fontSize = cleanedMessageContent.substring (equalSign + 1, closingTag);
+        if (dividerColon != -1 && dividerColon < closingTag && sizeLocation < dividerColon) {
+          fontSize = cleanedMessageContent.substring (equalSign + 1, dividerColon);
+        }
+        fontSize = fontSize.trim ();
+        fontSize = fontSize.substring (1, fontSize.length () - 1);
+        newString += "font-size:" + fontSize + ";";
+      }
+
+      if (cleanedMessageContent.substring (startTag + 6, closingTag).contains ("color")){
+        int colorLocation = cleanedMessageContent.indexOf ("color", startTag);
+        int equalSign = cleanedMessageContent.indexOf ("=", colorLocation);
+        String colorName = cleanedMessageContent.substring (equalSign + 1, closingTag);
+        if (dividerColon != -1 && dividerColon < closingTag && colorLocation < dividerColon) {
+          colorName = cleanedMessageContent.substring (equalSign + 1, dividerColon);
+        }
+        newString += "color:";
+        colorName = colorName.trim ();
+
+        // Hex form
+        if (colorName.contains ("#")) {
+          newString += colorName;
+        }
+
+        // Word form
+        else {
+          colorName = colorName.substring (1, colorName.length () - 1);
+          newString += colorName;
+        }
+        newString += ";";
+      }
+
+      newString += "'>" + cleanedMessageContent.substring (closingTag + 1, endTag) + "</span>";
+      newString += cleanedMessageContent.substring (endTag + 8);
+      cleanedMessageContent = newString;
+    }
+
+    // styling size
 
     Message message =
         new Message(
