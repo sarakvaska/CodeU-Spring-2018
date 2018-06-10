@@ -1,5 +1,7 @@
 package codeu.model.store.persistence;
 
+import codeu.model.data.Activity;
+import codeu.model.data.Activity.ActivityType;
 import codeu.model.data.Conversation;
 import codeu.model.data.Message;
 import codeu.model.data.User;
@@ -145,5 +147,47 @@ public class PersistentDataStoreTest {
     Assert.assertEquals(authorTwo, resultMessageTwo.getAuthorId());
     Assert.assertEquals(contentTwo, resultMessageTwo.getContent());
     Assert.assertEquals(creationTwo, resultMessageTwo.getCreationTime());
+  }
+
+  @Test
+  public void testSaveAndLoadActivities() throws PersistentDataStoreException {
+    ActivityType newUser = ActivityType.NEW_USER;
+    UUID idOne = UUID.fromString("10000000-2222-3333-4444-555555555555");
+    Instant creationOne = Instant.ofEpochMilli(1000);
+    Activity activityOne = new Activity(newUser, idOne, creationOne);
+
+    ActivityType newConversation = ActivityType.NEW_CONVERSATION;
+    UUID idTwo = UUID.fromString("10000001-2222-3333-4444-555555555555");
+    Instant creationTwo = Instant.ofEpochMilli(2000);
+    Activity activityTwo = new Activity(newConversation, idTwo, creationTwo);
+
+    ActivityType newMessage = ActivityType.NEW_MESSAGE;
+    UUID idThree = UUID.fromString("10000002-2222-3333-4444-555555555555");
+    Instant creationThree = Instant.ofEpochMilli(3000);
+    Activity activityThree = new Activity(newMessage, idThree, creationThree);
+
+    // save
+    persistentDataStore.writeThrough(activityOne);
+    persistentDataStore.writeThrough(activityTwo);
+    persistentDataStore.writeThrough(activityThree);
+
+    // load
+    List<Activity> resultActivities = persistentDataStore.loadActivities();
+
+    // confirm that what we saved matches what we loaded
+    Activity resultActivityThree = resultActivities.get(0);
+    Assert.assertEquals(newMessage, resultActivityThree.getType());
+    Assert.assertEquals(idThree, resultActivityThree.getId());
+    Assert.assertEquals(creationThree, resultActivityThree.getCreationTime());
+
+    Activity resultActivityTwo = resultActivities.get(1);
+    Assert.assertEquals(newConversation, resultActivityTwo.getType());
+    Assert.assertEquals(idTwo, resultActivityTwo.getId());
+    Assert.assertEquals(creationTwo, resultActivityTwo.getCreationTime());
+
+    Activity resultActivityOne = resultActivities.get(2);
+    Assert.assertEquals(newUser, resultActivityOne.getType());
+    Assert.assertEquals(idOne, resultActivityOne.getId());
+    Assert.assertEquals(creationOne, resultActivityOne.getCreationTime());
   }
 }
