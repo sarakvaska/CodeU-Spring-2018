@@ -46,6 +46,22 @@ public class ConversationStoreTest {
   }
 
   @Test
+  public void testGetConversationById_found() {
+    Conversation resultConversation =
+        conversationStore.getConversationById(CONVERSATION_ONE.getId());
+
+    assertEquals(CONVERSATION_ONE, resultConversation);
+  }
+
+  @Test
+  public void testGetConversationById_notFound() {
+    Conversation resultConversation =
+        conversationStore.getConversationById(UUID.randomUUID());
+
+    Assert.assertNull(resultConversation);
+  }
+
+  @Test
   public void testIsTitleTaken_true() {
     boolean isTitleTaken = conversationStore.isTitleTaken(CONVERSATION_ONE.getTitle());
 

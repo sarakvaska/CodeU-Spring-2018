@@ -85,6 +85,20 @@ public class MessageStore {
     return messagesInConversation;
   }
 
+  /**
+   * Access the Message object with the given UUID.
+   *
+   * @return null if the UUID does not match any existing Message.
+   */
+  public Message getMessageById(UUID id) {
+    for (Message message : messages) {
+      if (message.getId().equals(id)) {
+        return message;
+      }
+    }
+    return null;
+  }
+
   /** Sets the List of Messages stored by this MessageStore. */
   public void setMessages(List<Message> messages) {
     this.messages = messages;

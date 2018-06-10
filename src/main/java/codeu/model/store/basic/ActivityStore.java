@@ -2,8 +2,9 @@ package codeu.model.store.basic;
 
 import codeu.model.data.Activity;
 import codeu.model.store.persistence.PersistentStorageAgent;
-import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.UUID;
 
 /**
  * Store class that uses in-memory data structures to hold values and automatically loads from and
@@ -47,15 +48,30 @@ public class ActivityStore {
   /** This class is a singleton, so its constructor is private. Call getInstance() instead. */
   private ActivityStore(PersistentStorageAgent persistentStorageAgent) {
     this.persistentStorageAgent = persistentStorageAgent;
-    activities = new ArrayList<>();
+    activities = new LinkedList<>();
   }
 
   /**
    * Add a new activity to the current set of activities known to the application.
    */
   public void addActivity(Activity activity) {
-    activities.add(activity);
+    // Add to the front of the list
+    activities.add(0, activity);
     persistentStorageAgent.writeThrough(activity);
+  }
+
+  /**
+   * Access the Activity object with the given UUID.
+   *
+   * @return null if the UUID does not match any existing Activity.
+   */
+  public Activity getActivityById(UUID id) {
+    for (Activity activity : activities) {
+      if (activity.getId().equals(id)) {
+        return activity;
+      }
+    }
+    return null;
   }
 
   /** Access the current set of activities known to the application. */
