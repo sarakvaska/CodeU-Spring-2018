@@ -281,7 +281,59 @@ public class ChatServlet extends HttpServlet {
       cleanedMessageContent = newString;
     }
 
-    // styling size
+    // emojis
+    cleanedMessageContent = cleanedMessageContent.replace ("0:-)", "&#x1F607;");
+    cleanedMessageContent = cleanedMessageContent.replace ("0:)", "&#x1F607;");
+    cleanedMessageContent = cleanedMessageContent.replace ("&gt;:-)", "&#x1F608;");
+    cleanedMessageContent = cleanedMessageContent.replace ("&gt;:)", "&#x1F608;");
+    cleanedMessageContent = cleanedMessageContent.replace (":)", "&#x1F642;");
+    cleanedMessageContent = cleanedMessageContent.replace (":-)", "&#x1F642;");
+    cleanedMessageContent = cleanedMessageContent.replace (":D", "&#x1F601;");
+    cleanedMessageContent = cleanedMessageContent.replace (":-D", "&#x1F601;");
+    cleanedMessageContent = cleanedMessageContent.replace (":'D", "&#x1F602;");
+    cleanedMessageContent = cleanedMessageContent.replace (":'-D", "&#x1F602;");
+
+
+    cleanedMessageContent = cleanedMessageContent.replace ("&gt;:(", "&#x1F620;");
+    cleanedMessageContent = cleanedMessageContent.replace ("&gt;:-(", "&#x1F620;");
+    cleanedMessageContent = cleanedMessageContent.replace (":(", "&#x1F641;");
+    cleanedMessageContent = cleanedMessageContent.replace (":-(", "&#x1F641;");
+    cleanedMessageContent = cleanedMessageContent.replace (":'(", "&#x1F622;");
+    cleanedMessageContent = cleanedMessageContent.replace (":'-(", "&#x1F622;");
+    cleanedMessageContent = cleanedMessageContent.replace (":-|", "&#x1F610;");
+    cleanedMessageContent = cleanedMessageContent.replace (":|", "&#x1F610;");
+    cleanedMessageContent = cleanedMessageContent.replace (":-\\", "&#x1F615;");
+    cleanedMessageContent = cleanedMessageContent.replace (":\\", "&#x1F615;");
+
+    cleanedMessageContent = cleanedMessageContent.replace ("B-)", "&#x1F60E;");
+    cleanedMessageContent = cleanedMessageContent.replace ("B)", "&#x1F60E;");
+    cleanedMessageContent = cleanedMessageContent.replace ("8-)", "&#x1F60E;");
+    cleanedMessageContent = cleanedMessageContent.replace ("8)", "&#x1F60E;");
+    cleanedMessageContent = cleanedMessageContent.replace (":*", "&#x1F617;");
+    cleanedMessageContent = cleanedMessageContent.replace (":-*", "&#x1F617;");
+    cleanedMessageContent = cleanedMessageContent.replace (":-O", "&#x1F62E;");
+    cleanedMessageContent = cleanedMessageContent.replace (":O", "&#x1F62E;");
+    cleanedMessageContent = cleanedMessageContent.replace (":-o", "&#x1F62E;");
+    cleanedMessageContent = cleanedMessageContent.replace (":o", "&#x1F62E;");
+
+    cleanedMessageContent = cleanedMessageContent.replace (":-P", "&#x1F61B;");
+    cleanedMessageContent = cleanedMessageContent.replace (":P", "&#x1F61B;");
+    cleanedMessageContent = cleanedMessageContent.replace ("x-P", "&#x1F61D;");
+    cleanedMessageContent = cleanedMessageContent.replace ("xP", "&#x1F61D;");
+    cleanedMessageContent = cleanedMessageContent.replace ("X-P", "&#x1F61D;");
+    cleanedMessageContent = cleanedMessageContent.replace ("XP", "&#x1F61D;");
+
+    cleanedMessageContent = cleanedMessageContent.replace (";)", "&#x1F609;");
+    cleanedMessageContent = cleanedMessageContent.replace (";-)", "&#x1F609;");
+    cleanedMessageContent = cleanedMessageContent.replace ("&gt;_&lt;", "&#x1F616;");
+    cleanedMessageContent = cleanedMessageContent.replace ("-_-", "&#x1F611;");
+
+    cleanedMessageContent = cleanedMessageContent.replace ("D:", "&#x1F629;");
+    cleanedMessageContent = cleanedMessageContent.replace ("D-:", "&#x1F629;");
+    cleanedMessageContent = cleanedMessageContent.replace (":X", "&#x1F636;");
+    cleanedMessageContent = cleanedMessageContent.replace (":x", "&#x1F636;");
+    cleanedMessageContent = cleanedMessageContent.replace (":@", "&#x1F637;");
+
 
     Message message =
         new Message(
