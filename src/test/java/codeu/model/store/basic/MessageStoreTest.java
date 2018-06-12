@@ -62,6 +62,20 @@ public class MessageStoreTest {
   }
 
   @Test
+  public void testGetMessageById_found() {
+    Message resultMessage = messageStore.getMessageById(MESSAGE_ONE.getId());
+
+    Assert.assertEquals(MESSAGE_ONE, resultMessage);
+  }
+
+  @Test
+  public void testGetMessageById_notFound() {
+    Message randomMessage = messageStore.getMessageById(UUID.randomUUID());
+
+    Assert.assertNull(randomMessage);
+  }
+
+  @Test
   public void testAddMessage() {
     UUID inputConversationId = UUID.randomUUID();
     Message inputMessage =

@@ -14,9 +14,12 @@
 
 package codeu.controller;
 
+import codeu.model.data.Activity;
+import codeu.model.data.Activity.ActivityType;
 import codeu.model.data.Conversation;
 import codeu.model.data.Message;
 import codeu.model.data.User;
+import codeu.model.store.basic.ActivityStore;
 import codeu.model.store.basic.ConversationStore;
 import codeu.model.store.basic.MessageStore;
 import codeu.model.store.basic.UserStore;
@@ -46,6 +49,7 @@ public class ChatServletTest {
   private ConversationStore mockConversationStore;
   private MessageStore mockMessageStore;
   private UserStore mockUserStore;
+  private ActivityStore mockActivityStore;
 
   @Before
   public void setup() {
@@ -68,6 +72,9 @@ public class ChatServletTest {
 
     mockUserStore = Mockito.mock(UserStore.class);
     chatServlet.setUserStore(mockUserStore);
+
+    mockActivityStore = Mockito.mock(ActivityStore.class);
+    chatServlet.setActivityStore(mockActivityStore);
   }
 
   @Test
@@ -178,6 +185,10 @@ public class ChatServletTest {
     Mockito.verify(mockMessageStore).addMessage(messageArgumentCaptor.capture());
     Assert.assertEquals("Test message.", messageArgumentCaptor.getValue().getContent());
 
+    ArgumentCaptor<Activity> activityArgumentCaptor = ArgumentCaptor.forClass(Activity.class);
+    Mockito.verify(mockActivityStore).addActivity(activityArgumentCaptor.capture());
+    Assert.assertEquals(ActivityType.NEW_MESSAGE, activityArgumentCaptor.getValue().getType());
+
     Mockito.verify(mockResponse).sendRedirect("/chat/test_conversation");
   }
 
@@ -209,6 +220,10 @@ public class ChatServletTest {
     Assert.assertEquals(
         "Contains html and  content.", messageArgumentCaptor.getValue().getContent());
 
+    ArgumentCaptor<Activity> activityArgumentCaptor = ArgumentCaptor.forClass(Activity.class);
+    Mockito.verify(mockActivityStore).addActivity(activityArgumentCaptor.capture());
+    Assert.assertEquals(ActivityType.NEW_MESSAGE, activityArgumentCaptor.getValue().getType());
+
     Mockito.verify(mockResponse).sendRedirect("/chat/test_conversation");
   }
 
@@ -237,6 +252,10 @@ public class ChatServletTest {
     ArgumentCaptor<Message> messageArgumentCaptor = ArgumentCaptor.forClass(Message.class);
     Mockito.verify(mockMessageStore).addMessage(messageArgumentCaptor.capture());
     Assert.assertEquals("Contains <b>BBCode</b>.", messageArgumentCaptor.getValue().getContent());
+
+    ArgumentCaptor<Activity> activityArgumentCaptor = ArgumentCaptor.forClass(Activity.class);
+    Mockito.verify(mockActivityStore).addActivity(activityArgumentCaptor.capture());
+    Assert.assertEquals(ActivityType.NEW_MESSAGE, activityArgumentCaptor.getValue().getType());
 
     Mockito.verify(mockResponse).sendRedirect("/chat/test_conversation");
 
@@ -268,6 +287,10 @@ public class ChatServletTest {
     Mockito.verify(mockMessageStore).addMessage(messageArgumentCaptor.capture());
     Assert.assertEquals("Contains <i>BBCode</i>.", messageArgumentCaptor.getValue().getContent());
 
+    ArgumentCaptor<Activity> activityArgumentCaptor = ArgumentCaptor.forClass(Activity.class);
+    Mockito.verify(mockActivityStore).addActivity(activityArgumentCaptor.capture());
+    Assert.assertEquals(ActivityType.NEW_MESSAGE, activityArgumentCaptor.getValue().getType());
+
     Mockito.verify(mockResponse).sendRedirect("/chat/test_conversation");
 
   }
@@ -297,6 +320,10 @@ public class ChatServletTest {
     ArgumentCaptor<Message> messageArgumentCaptor = ArgumentCaptor.forClass(Message.class);
     Mockito.verify(mockMessageStore).addMessage(messageArgumentCaptor.capture());
     Assert.assertEquals("Contains <u>BBCode</u>.", messageArgumentCaptor.getValue().getContent());
+
+    ArgumentCaptor<Activity> activityArgumentCaptor = ArgumentCaptor.forClass(Activity.class);
+    Mockito.verify(mockActivityStore).addActivity(activityArgumentCaptor.capture());
+    Assert.assertEquals(ActivityType.NEW_MESSAGE, activityArgumentCaptor.getValue().getType());
 
     Mockito.verify(mockResponse).sendRedirect("/chat/test_conversation");
 

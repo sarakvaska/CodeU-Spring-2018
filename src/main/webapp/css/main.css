@@ -56,3 +56,8 @@ input {
 button {
   font-size: 18px;
 }
+
+#feed {
+  background-color: white;
+  overflow: auto;
+}
