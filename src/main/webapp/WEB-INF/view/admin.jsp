@@ -24,6 +24,7 @@
     <a href="/conversations">Conversations</a>
     <% if(request.getSession().getAttribute("user") != null){ %>
       <a href="/profile"><%= request.getSession().getAttribute("user") %>'s Profile</a>
+      <a href="/friendslist">Friends</a>
     <% } else{ %>
       <a href="/login">Login</a>
     <% } %>

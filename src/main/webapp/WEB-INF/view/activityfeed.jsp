@@ -11,7 +11,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Login</title>
+  <title>Activity Feed</title>
   <link rel="stylesheet" href="/css/main.css">
 </head>
 <body>
@@ -21,6 +21,7 @@
       <a href="/conversations">Conversations</a>
       <% if(request.getSession().getAttribute("user") != null){ %>
         <a href="/profile"><%= request.getSession().getAttribute("user") %>'s Profile</a>
+        <a href="/friendslist">Friends</a>
       <% } else{ %>
         <a href="/login">Login</a>
       <% } %>

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Login</title>
+  <title>Friends List</title>
   <link rel="stylesheet" href="/css/main.css">
 </head>
 <body>
@@ -21,8 +21,7 @@
   </nav>
 
   <div id="container">
-    <h1>Profile</h1>
-    <p> This is <%= request.getSession().getAttribute("user") %>'s profile page</p>
+    <h1>Friends List</h1>
+    <p>This is your friends list.</p>
   </div>
 </body>
-</html>
