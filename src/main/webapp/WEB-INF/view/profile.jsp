@@ -19,8 +19,11 @@
   </nav>
 
   <div id="container">
-    <h1>Profile</h1>
-    <p> This is <%= request.getSession().getAttribute("user") %>'s profile page</p>
+    <h1>Welcome to your profile page.</h1>
+    <p>Here, you can write an About Me to let people know who you are.<p>
+    <form action="/user/<%= request.getSession().getAttribute("user") %>" method="POST">
+      <button type="submit">Logout</button>
+    </form>
   </div>
 </body>
 </html>
