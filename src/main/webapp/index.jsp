@@ -26,19 +26,21 @@
     <a href="/conversations">Conversations</a>
     <% if(request.getSession().getAttribute("user") != null){ %>
       <a href="/user/<%= request.getSession().getAttribute("user") %>"><%= request.getSession().getAttribute("user") %>'s Profile</a>
+      <a href="/friendslist">Friends</a>
     <% } else{ %>
       <a href="/login">Login</a>
     <% } %>
     <a href="/about.jsp">About</a>
     <a href="/activityfeed">Activity Feed</a>
+    <a href="/admin">Admin</a>
   </nav>
 
   <div id="container">
     <div
       style="width:75%; margin-left:auto; margin-right:auto; margin-top: 50px;">
 
-      <h1>CodeU Chat App</h1>
-      <h2>Welcome!</h2>
+      <h1>The Salvatorians' Chat App</h1>
+      <h2>Welcome to the Salvatorian Realm!</h2>
 
       <ul>
         <li><a href="/login">Login</a> to get started.</li>

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Login</title>
+  <title>Friends List</title>
   <link rel="stylesheet" href="/css/main.css">
 </head>
 <body>
@@ -10,7 +10,7 @@
     <a id="navTitle" href="/">CodeU Chat App</a>
     <a href="/conversations">Conversations</a>
     <% if(request.getSession().getAttribute("user") != null){ %>
-      <a href="/user/<%= request.getSession().getAttribute("user") %>"><%= request.getSession().getAttribute("user") %>'s Profile</a>
+      <a href="/profile"><%= request.getSession().getAttribute("user") %>'s Profile</a>
       <a href="/friendslist">Friends</a>
     <% } else{ %>
       <a href="/login">Login</a>
@@ -21,11 +21,7 @@
   </nav>
 
   <div id="container">
-    <h1>Welcome to your profile page.</h1>
-    <p>Here, you can write an About Me to let people know who you are.<p>
-    <form action="/user/<%= request.getSession().getAttribute("user") %>" method="POST">
-      <button type="submit">Logout</button>
-    </form>
+    <h1>Friends List</h1>
+    <p>This is your friends list.</p>
   </div>
 </body>
-</html>
