@@ -902,13 +902,13 @@ public class ChatServletTest {
     Mockito.when(mockConversationStore.getConversationWithTitle("test_conversation"))
         .thenReturn(fakeConversation);
 
-    Mockito.when(mockRequest.getParameter("message")).thenReturn(">:( >:-( :( :-( :'-( :'( :-| :| :-\\ :\\");
+    Mockito.when(mockRequest.getParameter("message")).thenReturn(">:( >:-( :( :-( :'-( :'( :-| :| :-\\ :\\ :-/ :/");
 
     chatServlet.doPost(mockRequest, mockResponse);
 
     ArgumentCaptor<Message> messageArgumentCaptor = ArgumentCaptor.forClass(Message.class);
     Mockito.verify(mockMessageStore).addMessage(messageArgumentCaptor.capture());
-    Assert.assertEquals("&#x1F620; &#x1F620; &#x1F641; &#x1F641; &#x1F622; &#x1F622; &#x1F610; &#x1F610; &#x1F615; &#x1F615;", 
+    Assert.assertEquals("&#x1F620; &#x1F620; &#x1F641; &#x1F641; &#x1F622; &#x1F622; &#x1F610; &#x1F610; &#x1F615; &#x1F615; &#x1F615; &#x1F615;", 
         messageArgumentCaptor.getValue().getContent());
 
     Mockito.verify(mockResponse).sendRedirect("/chat/test_conversation");
@@ -962,13 +962,13 @@ public class ChatServletTest {
     Mockito.when(mockConversationStore.getConversationWithTitle("test_conversation"))
         .thenReturn(fakeConversation);
 
-    Mockito.when(mockRequest.getParameter("message")).thenReturn(":-P :P x-P xP X-P XP ;) ;-) >_< -_-");
+    Mockito.when(mockRequest.getParameter("message")).thenReturn(":-P :P x-P xP X-P XP ;) ;-) >_< -_- T_T ^_^");
 
     chatServlet.doPost(mockRequest, mockResponse);
 
     ArgumentCaptor<Message> messageArgumentCaptor = ArgumentCaptor.forClass(Message.class);
     Mockito.verify(mockMessageStore).addMessage(messageArgumentCaptor.capture());
-    Assert.assertEquals("&#x1F61B; &#x1F61B; &#x1F61D; &#x1F61D; &#x1F61D; &#x1F61D; &#x1F609; &#x1F609; &#x1F616; &#x1F611;", 
+    Assert.assertEquals("&#x1F61B; &#x1F61B; &#x1F61D; &#x1F61D; &#x1F61D; &#x1F61D; &#x1F609; &#x1F609; &#x1F616; &#x1F611; &#x1F62D; &#x1F60A;", 
         messageArgumentCaptor.getValue().getContent());
 
     Mockito.verify(mockResponse).sendRedirect("/chat/test_conversation");

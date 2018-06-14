@@ -200,6 +200,8 @@ public class ChatServlet extends HttpServlet {
       cleanedMessageContent = newString;
     }
 
+    // [url] http://__ewighieoq.com [/url]
+
     // hyperlinks for [url = website] 
     while (cleanedMessageContent.contains ("[url=")) {
       int startTag = cleanedMessageContent.indexOf ("[url=");
@@ -297,58 +299,69 @@ public class ChatServlet extends HttpServlet {
     }
 
     // emojis
-    cleanedMessageContent = cleanedMessageContent.replace ("0:-)", "&#x1F607;");
-    cleanedMessageContent = cleanedMessageContent.replace ("0:)", "&#x1F607;");
-    cleanedMessageContent = cleanedMessageContent.replace ("&gt;:-)", "&#x1F608;");
-    cleanedMessageContent = cleanedMessageContent.replace ("&gt;:)", "&#x1F608;");
-    cleanedMessageContent = cleanedMessageContent.replace (":)", "&#x1F642;");
-    cleanedMessageContent = cleanedMessageContent.replace (":-)", "&#x1F642;");
-    cleanedMessageContent = cleanedMessageContent.replace (":D", "&#x1F601;");
-    cleanedMessageContent = cleanedMessageContent.replace (":-D", "&#x1F601;");
-    cleanedMessageContent = cleanedMessageContent.replace (":'D", "&#x1F602;");
-    cleanedMessageContent = cleanedMessageContent.replace (":'-D", "&#x1F602;");
+    // add a space in front in case message starts with an emoji
+    cleanedMessageContent = " " + cleanedMessageContent;
+
+    // replace emojis with hex code
+    cleanedMessageContent = cleanedMessageContent.replace (" 0:-)", " &#x1F607;");
+    cleanedMessageContent = cleanedMessageContent.replace (" 0:)", " &#x1F607;");
+    cleanedMessageContent = cleanedMessageContent.replace (" &gt;:-)", " &#x1F608;");
+    cleanedMessageContent = cleanedMessageContent.replace (" &gt;:)", " &#x1F608;");
+    cleanedMessageContent = cleanedMessageContent.replace (" :)", " &#x1F642;");
+    cleanedMessageContent = cleanedMessageContent.replace (" :-)", " &#x1F642;");
+    cleanedMessageContent = cleanedMessageContent.replace (" :D", " &#x1F601;");
+    cleanedMessageContent = cleanedMessageContent.replace (" :-D", " &#x1F601;");
+    cleanedMessageContent = cleanedMessageContent.replace (" :'D", " &#x1F602;");
+    cleanedMessageContent = cleanedMessageContent.replace (" :'-D", " &#x1F602;");
 
 
-    cleanedMessageContent = cleanedMessageContent.replace ("&gt;:(", "&#x1F620;");
-    cleanedMessageContent = cleanedMessageContent.replace ("&gt;:-(", "&#x1F620;");
-    cleanedMessageContent = cleanedMessageContent.replace (":(", "&#x1F641;");
-    cleanedMessageContent = cleanedMessageContent.replace (":-(", "&#x1F641;");
-    cleanedMessageContent = cleanedMessageContent.replace (":'(", "&#x1F622;");
-    cleanedMessageContent = cleanedMessageContent.replace (":'-(", "&#x1F622;");
-    cleanedMessageContent = cleanedMessageContent.replace (":-|", "&#x1F610;");
-    cleanedMessageContent = cleanedMessageContent.replace (":|", "&#x1F610;");
-    cleanedMessageContent = cleanedMessageContent.replace (":-\\", "&#x1F615;");
-    cleanedMessageContent = cleanedMessageContent.replace (":\\", "&#x1F615;");
+    cleanedMessageContent = cleanedMessageContent.replace (" &gt;:(", " &#x1F620;");
+    cleanedMessageContent = cleanedMessageContent.replace (" &gt;:-(", " &#x1F620;");
+    cleanedMessageContent = cleanedMessageContent.replace (" :(", " &#x1F641;");
+    cleanedMessageContent = cleanedMessageContent.replace (" :-(", " &#x1F641;");
+    cleanedMessageContent = cleanedMessageContent.replace (" :'(", " &#x1F622;");
+    cleanedMessageContent = cleanedMessageContent.replace (" :'-(", " &#x1F622;");
+    cleanedMessageContent = cleanedMessageContent.replace (" :-|", " &#x1F610;");
+    cleanedMessageContent = cleanedMessageContent.replace (" :|", " &#x1F610;");
+    cleanedMessageContent = cleanedMessageContent.replace (" :-\\", " &#x1F615;");
+    cleanedMessageContent = cleanedMessageContent.replace (" :\\", " &#x1F615;");
+    cleanedMessageContent = cleanedMessageContent.replace (" :-/", " &#x1F615;");
+    cleanedMessageContent = cleanedMessageContent.replace (" :/", " &#x1F615;");
 
-    cleanedMessageContent = cleanedMessageContent.replace ("B-)", "&#x1F60E;");
-    cleanedMessageContent = cleanedMessageContent.replace ("B)", "&#x1F60E;");
-    cleanedMessageContent = cleanedMessageContent.replace ("8-)", "&#x1F60E;");
-    cleanedMessageContent = cleanedMessageContent.replace ("8)", "&#x1F60E;");
-    cleanedMessageContent = cleanedMessageContent.replace (":*", "&#x1F617;");
-    cleanedMessageContent = cleanedMessageContent.replace (":-*", "&#x1F617;");
-    cleanedMessageContent = cleanedMessageContent.replace (":-O", "&#x1F62E;");
-    cleanedMessageContent = cleanedMessageContent.replace (":O", "&#x1F62E;");
-    cleanedMessageContent = cleanedMessageContent.replace (":-o", "&#x1F62E;");
-    cleanedMessageContent = cleanedMessageContent.replace (":o", "&#x1F62E;");
+    cleanedMessageContent = cleanedMessageContent.replace (" B-)", " &#x1F60E;");
+    cleanedMessageContent = cleanedMessageContent.replace (" B)", " &#x1F60E;");
+    cleanedMessageContent = cleanedMessageContent.replace (" 8-)", " &#x1F60E;");
+    cleanedMessageContent = cleanedMessageContent.replace (" 8)", " &#x1F60E;");
+    cleanedMessageContent = cleanedMessageContent.replace (" :*", " &#x1F617;");
+    cleanedMessageContent = cleanedMessageContent.replace (" :-*", " &#x1F617;");
+    cleanedMessageContent = cleanedMessageContent.replace (" :-O", " &#x1F62E;");
+    cleanedMessageContent = cleanedMessageContent.replace (" :O", " &#x1F62E;");
+    cleanedMessageContent = cleanedMessageContent.replace (" :-o", " &#x1F62E;");
+    cleanedMessageContent = cleanedMessageContent.replace (" :o", " &#x1F62E;");
 
-    cleanedMessageContent = cleanedMessageContent.replace (":-P", "&#x1F61B;");
-    cleanedMessageContent = cleanedMessageContent.replace (":P", "&#x1F61B;");
-    cleanedMessageContent = cleanedMessageContent.replace ("x-P", "&#x1F61D;");
-    cleanedMessageContent = cleanedMessageContent.replace ("xP", "&#x1F61D;");
-    cleanedMessageContent = cleanedMessageContent.replace ("X-P", "&#x1F61D;");
-    cleanedMessageContent = cleanedMessageContent.replace ("XP", "&#x1F61D;");
+    cleanedMessageContent = cleanedMessageContent.replace (" :-P", " &#x1F61B;");
+    cleanedMessageContent = cleanedMessageContent.replace (" :P", " &#x1F61B;");
+    cleanedMessageContent = cleanedMessageContent.replace (" x-P", " &#x1F61D;");
+    cleanedMessageContent = cleanedMessageContent.replace (" xP", " &#x1F61D;");
+    cleanedMessageContent = cleanedMessageContent.replace (" X-P", " &#x1F61D;");
+    cleanedMessageContent = cleanedMessageContent.replace (" XP", " &#x1F61D;");
 
-    cleanedMessageContent = cleanedMessageContent.replace (";)", "&#x1F609;");
-    cleanedMessageContent = cleanedMessageContent.replace (";-)", "&#x1F609;");
-    cleanedMessageContent = cleanedMessageContent.replace ("&gt;_&lt;", "&#x1F616;");
-    cleanedMessageContent = cleanedMessageContent.replace ("-_-", "&#x1F611;");
+    cleanedMessageContent = cleanedMessageContent.replace (" ;)", " &#x1F609;");
+    cleanedMessageContent = cleanedMessageContent.replace (" ;-)", " &#x1F609;");
+    cleanedMessageContent = cleanedMessageContent.replace (" &gt;_&lt;", " &#x1F616;");
+    cleanedMessageContent = cleanedMessageContent.replace (" -_-", " &#x1F611;");
+    cleanedMessageContent = cleanedMessageContent.replace (" ^_^", " &#x1F60A;");
+    cleanedMessageContent = cleanedMessageContent.replace (" T_T", " &#x1F62D;");
+     
 
-    cleanedMessageContent = cleanedMessageContent.replace ("D:", "&#x1F629;");
-    cleanedMessageContent = cleanedMessageContent.replace ("D-:", "&#x1F629;");
-    cleanedMessageContent = cleanedMessageContent.replace (":X", "&#x1F636;");
-    cleanedMessageContent = cleanedMessageContent.replace (":x", "&#x1F636;");
-    cleanedMessageContent = cleanedMessageContent.replace (":@", "&#x1F637;");
+    cleanedMessageContent = cleanedMessageContent.replace (" D:", " &#x1F629;");
+    cleanedMessageContent = cleanedMessageContent.replace (" D-:", " &#x1F629;");
+    cleanedMessageContent = cleanedMessageContent.replace (" :X", " &#x1F636;");
+    cleanedMessageContent = cleanedMessageContent.replace (" :x", " &#x1F636;");
+    cleanedMessageContent = cleanedMessageContent.replace (" :@", " &#x1F637;");
 
+    // trim off the added space if messsage doesn't start with space
+    cleanedMessageContent = cleanedMessageContent.trim();
 
     Message message =
         new Message(
