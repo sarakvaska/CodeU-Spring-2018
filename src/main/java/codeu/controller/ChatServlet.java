@@ -190,7 +190,10 @@ public class ChatServlet extends HttpServlet {
     // hyperlinks for just [url] 
     while (cleanedMessageContent.contains ("[url]")) {
       int startTag = cleanedMessageContent.indexOf ("[url]");
-      int endTag = cleanedMessageContent.indexOf ("[/url]");
+      int endTag = cleanedMessageContent.indexOf ("[/url]", startTag);
+      if (endTag == -1){
+        break;
+      }
       String newString = cleanedMessageContent.substring (0, startTag) + "<a href='" ; 
       newString += cleanedMessageContent.substring (startTag + 5, endTag);
       newString += "'>";
@@ -204,7 +207,10 @@ public class ChatServlet extends HttpServlet {
     while (cleanedMessageContent.contains ("[url=")) {
       int startTag = cleanedMessageContent.indexOf ("[url=");
       int closingTag = cleanedMessageContent.indexOf ("]", startTag);
-      int endTag = cleanedMessageContent.indexOf ("[/url]");
+      int endTag = cleanedMessageContent.indexOf ("[/url]", closingTag);
+      if (closingTag == -1 || endTag == -1) {
+        break;
+      }
       String newString = cleanedMessageContent.substring (0, startTag) + "<a href='" ; 
       newString += cleanedMessageContent.substring (startTag + 5, closingTag);
       newString += "'>";
@@ -222,7 +228,10 @@ public class ChatServlet extends HttpServlet {
     while (cleanedMessageContent.contains ("[quote")) {
       int startTag = cleanedMessageContent.indexOf ("[quote");
       int closingTag = cleanedMessageContent.indexOf ("]", startTag);
-      int endTag = cleanedMessageContent.indexOf ("[/quote]");
+      int endTag = cleanedMessageContent.indexOf ("[/quote]", closingTag);
+      if (closingTag == -1 || endTag == -1){
+        break;
+      }
       String newString = cleanedMessageContent.substring (0, startTag) + "<blockquote";
 
       // if this is [quote = "author"]
@@ -252,13 +261,19 @@ public class ChatServlet extends HttpServlet {
     while (cleanedMessageContent.contains ("[style")) {
       int startTag = cleanedMessageContent.indexOf ("[style");
       int closingTag = cleanedMessageContent.indexOf ("]", startTag);
-      int endTag = cleanedMessageContent.indexOf ("[/style]");
+      int endTag = cleanedMessageContent.indexOf ("[/style]", closingTag);
       int dividerColon = cleanedMessageContent.indexOf (";", startTag);
+      if (closingTag == -1 || endTag == -1) {
+        break;
+      }
       String newString = cleanedMessageContent.substring (0, startTag) + "<span style='";
 
       if (cleanedMessageContent.substring (startTag + 6, closingTag).contains ("size")) {
         int sizeLocation = cleanedMessageContent.indexOf ("size", startTag);
         int equalSign = cleanedMessageContent.indexOf ("=", sizeLocation);
+        if (equalSign == -1 || equalSign > closingTag){
+          break;
+        }
         String fontSize = cleanedMessageContent.substring (equalSign + 1, closingTag);
         if (dividerColon != -1 && dividerColon < closingTag && sizeLocation < dividerColon) {
           fontSize = cleanedMessageContent.substring (equalSign + 1, dividerColon);
@@ -271,6 +286,9 @@ public class ChatServlet extends HttpServlet {
       if (cleanedMessageContent.substring (startTag + 6, closingTag).contains ("color")){
         int colorLocation = cleanedMessageContent.indexOf ("color", startTag);
         int equalSign = cleanedMessageContent.indexOf ("=", colorLocation);
+        if (equalSign == -1 || equalSign > closingTag) {
+          break;
+        }
         String colorName = cleanedMessageContent.substring (equalSign + 1, closingTag);
         if (dividerColon != -1 && dividerColon < closingTag && colorLocation < dividerColon) {
           colorName = cleanedMessageContent.substring (equalSign + 1, dividerColon);
@@ -296,7 +314,70 @@ public class ChatServlet extends HttpServlet {
       cleanedMessageContent = newString;
     }
 
-    // styling size
+    // emojis
+    // add a space in front in case message starts with an emoji
+    cleanedMessageContent = " " + cleanedMessageContent + " ";
+
+    // replace emojis with hex code
+    cleanedMessageContent = cleanedMessageContent.replace (" 0:-) ", " &#x1F607; ");
+    cleanedMessageContent = cleanedMessageContent.replace (" 0:) ", " &#x1F607; ");
+    cleanedMessageContent = cleanedMessageContent.replace (" &gt;:-) ", " &#x1F608; ");
+    cleanedMessageContent = cleanedMessageContent.replace (" &gt;:) ", " &#x1F608; ");
+    cleanedMessageContent = cleanedMessageContent.replace (" :) ", " &#x1F642; ");
+    cleanedMessageContent = cleanedMessageContent.replace (" :-) ", " &#x1F642; ");
+    cleanedMessageContent = cleanedMessageContent.replace (" :D ", " &#x1F601; ");
+    cleanedMessageContent = cleanedMessageContent.replace (" :-D ", " &#x1F601; ");
+    cleanedMessageContent = cleanedMessageContent.replace (" :'D ", " &#x1F602; ");
+    cleanedMessageContent = cleanedMessageContent.replace (" :'-D ", " &#x1F602; ");
+
+
+    cleanedMessageContent = cleanedMessageContent.replace (" &gt;:( ", " &#x1F620; ");
+    cleanedMessageContent = cleanedMessageContent.replace (" &gt;:-( ", " &#x1F620; ");
+    cleanedMessageContent = cleanedMessageContent.replace (" :( ", " &#x1F641; ");
+    cleanedMessageContent = cleanedMessageContent.replace (" :-( ", " &#x1F641; ");
+    cleanedMessageContent = cleanedMessageContent.replace (" :'( ", " &#x1F622; ");
+    cleanedMessageContent = cleanedMessageContent.replace (" :'-( ", " &#x1F622; ");
+    cleanedMessageContent = cleanedMessageContent.replace (" :-| ", " &#x1F610; ");
+    cleanedMessageContent = cleanedMessageContent.replace (" :| ", " &#x1F610; ");
+    cleanedMessageContent = cleanedMessageContent.replace (" :-\\ ", " &#x1F615; ");
+    cleanedMessageContent = cleanedMessageContent.replace (" :\\ ", " &#x1F615; ");
+    cleanedMessageContent = cleanedMessageContent.replace (" :-/ ", " &#x1F615; ");
+    cleanedMessageContent = cleanedMessageContent.replace (" :/ ", " &#x1F615; ");
+
+    cleanedMessageContent = cleanedMessageContent.replace (" B-) ", " &#x1F60E; ");
+    cleanedMessageContent = cleanedMessageContent.replace (" B) ", " &#x1F60E; ");
+    cleanedMessageContent = cleanedMessageContent.replace (" 8-) ", " &#x1F60E; ");
+    cleanedMessageContent = cleanedMessageContent.replace (" 8) ", " &#x1F60E; ");
+    cleanedMessageContent = cleanedMessageContent.replace (" :* ", " &#x1F617; ");
+    cleanedMessageContent = cleanedMessageContent.replace (" :-* ", " &#x1F617; ");
+    cleanedMessageContent = cleanedMessageContent.replace (" :-O ", " &#x1F62E; ");
+    cleanedMessageContent = cleanedMessageContent.replace (" :O ", " &#x1F62E; ");
+    cleanedMessageContent = cleanedMessageContent.replace (" :-o ", " &#x1F62E; ");
+    cleanedMessageContent = cleanedMessageContent.replace (" :o ", " &#x1F62E; ");
+
+    cleanedMessageContent = cleanedMessageContent.replace (" :-P ", " &#x1F61B; ");
+    cleanedMessageContent = cleanedMessageContent.replace (" :P ", " &#x1F61B; ");
+    cleanedMessageContent = cleanedMessageContent.replace (" x-P ", " &#x1F61D; ");
+    cleanedMessageContent = cleanedMessageContent.replace (" xP ", " &#x1F61D; ");
+    cleanedMessageContent = cleanedMessageContent.replace (" X-P ", " &#x1F61D; ");
+    cleanedMessageContent = cleanedMessageContent.replace (" XP ", " &#x1F61D; ");
+
+    cleanedMessageContent = cleanedMessageContent.replace (" ;) ", " &#x1F609; ");
+    cleanedMessageContent = cleanedMessageContent.replace (" ;-) ", " &#x1F609; ");
+    cleanedMessageContent = cleanedMessageContent.replace (" &gt;_&lt; ", " &#x1F616; ");
+    cleanedMessageContent = cleanedMessageContent.replace (" -_- ", " &#x1F611; ");
+    cleanedMessageContent = cleanedMessageContent.replace (" ^_^ ", " &#x1F60A; ");
+    cleanedMessageContent = cleanedMessageContent.replace (" T_T ", " &#x1F62D; ");
+
+
+    cleanedMessageContent = cleanedMessageContent.replace (" D: ", " &#x1F629; ");
+    cleanedMessageContent = cleanedMessageContent.replace (" D-: ", " &#x1F629; ");
+    cleanedMessageContent = cleanedMessageContent.replace (" :X ", " &#x1F636; ");
+    cleanedMessageContent = cleanedMessageContent.replace (" :x ", " &#x1F636; ");
+    cleanedMessageContent = cleanedMessageContent.replace (" :@ ", " &#x1F637; ");
+
+    // trim off the added space if messsage doesn't start with space
+    cleanedMessageContent = cleanedMessageContent.trim();
 
     Message message =
         new Message(
