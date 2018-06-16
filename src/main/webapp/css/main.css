@@ -59,5 +59,6 @@ button {
 
 #feed {
   background-color: white;
-  overflow: auto;
+  height: 500px;
+  overflow-y: scroll;
 }
