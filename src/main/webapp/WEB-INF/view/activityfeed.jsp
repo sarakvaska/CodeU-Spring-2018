@@ -1,4 +1,9 @@
+<%@ page import="java.time.Instant" %>
+<%@ page import="java.time.ZoneId" %>
+<%@ page import="java.time.format.DateTimeFormatter" %>
+<%@ page import="java.time.format.FormatStyle" %>
 <%@ page import="java.util.List" %>
+
 <%@ page import="codeu.model.data.Activity" %>
 <%@ page import="codeu.model.data.Activity.ActivityType" %>
 <%@ page import="codeu.model.data.Conversation" %>
@@ -7,6 +12,16 @@
 <%@ page import="codeu.model.store.basic.ConversationStore" %>
 <%@ page import="codeu.model.store.basic.MessageStore" %>
 <%@ page import="codeu.model.store.basic.UserStore" %>
+
+<%!
+private String formatCreationTime(Instant time) {
+  DateTimeFormatter formatter =
+      DateTimeFormatter.ofPattern("EEE MM/dd/yy hh:mm a")
+                       .withZone(ZoneId.systemDefault());
+
+  return formatter.format(time);
+}
+%>
 
 <!DOCTYPE html>
 <html>
@@ -32,7 +47,6 @@
 
   <div id="container">
     <h1>Activity Feed</h1>
-    <p>This is the activity feed.</p>
 
     <div id="feed">
       <ul>
@@ -52,7 +66,7 @@
             if (activity.getType() == ActivityType.NEW_USER) {
               User user = userStore.getUser(activity.getId());
         %>
-          <li><%= activity.getCreationTime().toString() %>
+          <li><b><%= formatCreationTime(activity.getCreationTime()) %>:</b>
             <%= user.getName() %> joined.</li>
         <%
             } else if (activity.getType() == ActivityType.NEW_CONVERSATION) {
@@ -63,7 +77,7 @@
               } else {
                 User user = userStore.getUser(conversation.getOwnerId());
         %>
-          <li><%= activity.getCreationTime().toString() %>
+          <li><b><%= formatCreationTime(activity.getCreationTime()) %>:</b>
             <%= user.getName() %> created a new conversation:
             <a href="/chat/<%= conversation.getTitle() %>"><%= conversation.getTitle() %></a>
           </li>
@@ -80,7 +94,7 @@
                 User user =
                     userStore.getUser(message.getAuthorId());
         %>
-          <li><%= activity.getCreationTime().toString() %>
+          <li><b><%= formatCreationTime(activity.getCreationTime()) %>:</b>
             <%= user.getName() %> sent a message in
             <a href="/chat/<%= conversation.getTitle() %>">
               <%= conversation.getTitle() %></a>:
