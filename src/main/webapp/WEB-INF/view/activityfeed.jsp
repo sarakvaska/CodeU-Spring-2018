@@ -15,13 +15,8 @@
 
 <%!
 /** Formats creation time to the pattern:
-<<<<<<< HEAD
  * Day of the week (Mon), followed by the date (01/01/18),
  * followed by the time (04:30 PM).
-=======
- * Day of the week (Mon), followed by the date (01/01/2018),
- * followed by the time (04:30 PM)
->>>>>>> 7106b968c3f94694f9aba1cbce7ffbb3dfde6201
  */
 private String formatCreationTime(Instant time) {
   DateTimeFormatter formatter =
