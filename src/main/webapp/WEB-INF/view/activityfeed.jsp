@@ -14,6 +14,10 @@
 <%@ page import="codeu.model.store.basic.UserStore" %>
 
 <%!
+/** Formats creation time to the pattern:
+ * Day of the week (Mon), followed by the date (01/01/18),
+ * followed by the time (04:30 PM).
+ */
 private String formatCreationTime(Instant time) {
   DateTimeFormatter formatter =
       DateTimeFormatter.ofPattern("EEE MM/dd/yy hh:mm a")
