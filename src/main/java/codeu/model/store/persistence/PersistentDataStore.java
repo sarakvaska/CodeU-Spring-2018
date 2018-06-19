@@ -17,6 +17,8 @@ package codeu.model.store.persistence;
 import codeu.model.data.Activity;
 import codeu.model.data.Activity.ActivityType;
 import codeu.model.data.Conversation;
+import codeu.model.data.Friendship;
+import codeu.model.data.Friendship.Status;
 import codeu.model.data.Message;
 import codeu.model.data.User;
 import codeu.model.store.persistence.PersistentDataStoreException;
@@ -231,5 +233,23 @@ public class PersistentDataStore {
     activityEntity.setProperty("uuid", activity.getId().toString());
     activityEntity.setProperty("creation_time", activity.getCreationTime().toString());
     datastore.put(activityEntity);
+  }
+
+  /** Write a Friendship object to the Datastore service. */
+  public void writeThrough(Friendship friendship) {
+    Entity friendshipEntity = new Entity("chat-friendships", friendship.getId().toString());
+
+    /* Storing both user IDs as properties. */
+    friendshipEntity.setProperty("user_id", friendship.getUser().getId().toString());
+    friendshipEntity.setProperty("friend_id", friendship.getFriend().getId().toString());
+    
+    friendshipEntity.setProperty("uuid", friendship.getId().toString());
+
+    /* Using the index representation of the enum Status as a way to store
+    what the friendship status is. */
+    friendshipEntity.setProperty("status", friendship.getStatus().ordinal());
+
+    friendshipEntity.setProperty("creation_time", friendship.getCreationTime().toString());
+    datastore.put(friendshipEntity);
   }
 }
