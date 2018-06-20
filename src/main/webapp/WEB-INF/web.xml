@@ -86,4 +86,24 @@
     <url-pattern>/user/*</url-pattern>
   </servlet-mapping>
 
+  <servlet>
+    <servlet-name>AdminServlet</servlet-name>
+    <servlet-class>codeu.controller.AdminServlet</servlet-class>
+  </servlet>
+
+  <servlet-mapping>
+    <servlet-name>AdminServlet</servlet-name>
+    <url-pattern>/admin</url-pattern>
+  </servlet-mapping>
+
+  <servlet>
+    <servlet-name>FriendsListServlet</servlet-name>
+    <servlet-class>codeu.controller.FriendsListServlet</servlet-class>
+  </servlet>
+
+  <servlet-mapping>
+    <servlet-name>FriendsListServlet</servlet-name>
+    <url-pattern>/friendslist</url-pattern>
+  </servlet-mapping>
+
 </web-app>
