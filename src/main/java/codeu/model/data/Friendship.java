@@ -8,7 +8,7 @@ public class Friendship {
   private final User user;
   private final User friend;
   private final UUID id;
-  private final Status status;
+  private Status status;
   private final Instant creation;
 
   /** Enum representing the status of this Friendship. */
@@ -59,6 +59,13 @@ public class Friendship {
    */
   public Status getStatus() {
     return status;
+  }
+
+  /**
+   * Sets this friendship's Status to the given status
+   */
+  public void setStatus(Status status) {
+    this.status = status;
   }
 
   /**
