@@ -201,9 +201,9 @@ public class PersistentDataStore {
    * @throws PersistentDataStoreException if an error was detected during the load from the
    *     Datastore service
    */
-  public Map<User, List<Friendship>> loadFriendships() throws PersistentDataStoreException {
+  public Map<UUID, List<Friendship>> loadFriendships() throws PersistentDataStoreException {
 
-    Map<User, List<Friendship>> friendships = new HashMap<>();
+    Map<UUID, List<Friendship>> friendships = new HashMap<>();
 
     // Retrieve all friendships from the datastore.
     Query query = new Query("chat-friendships");
@@ -211,14 +211,8 @@ public class PersistentDataStore {
 
     for (Entity entity : results.asIterable()) {
       try {
-        UserStore userStore = UserStore.getInstance();
-
         UUID userId = UUID.fromString((String) entity.getProperty("user_id"));
         UUID friendId = UUID.fromString((String) entity.getProperty("friend_id"));
-
-        User user = userStore.getUser(userId);
-        User friend = userStore.getUser(friendId);
-
         UUID uuid = UUID.fromString((String) entity.getProperty("uuid"));
 
         // Since the index of the status type is stored, I use it to access the type.
@@ -228,14 +222,14 @@ public class PersistentDataStore {
 
         Instant creationTime = Instant.parse((String) entity.getProperty("creation_time"));
 
-        Friendship friendship = new Friendship(user, friend, uuid, status, creationTime);
+        Friendship friendship = new Friendship(userId, friendId, uuid, status, creationTime);
 
-        if (!friendships.containsKey(user)) {
+        if (!friendships.containsKey(userId)) {
           List<Friendship> friends = new ArrayList<>();
           friends.add(friendship);
-          friendships.put(user, friends);
+          friendships.put(userId, friends);
         } else {
-          friendships.get(user).add(friendship);
+          friendships.get(userId).add(friendship);
         }
 
       } catch (Exception e) {
@@ -298,8 +292,8 @@ public class PersistentDataStore {
     Entity friendshipEntity = new Entity("chat-friendships", friendship.getId().toString());
 
     /* Storing both user IDs as properties. */
-    friendshipEntity.setProperty("user_id", friendship.getUser().getId().toString());
-    friendshipEntity.setProperty("friend_id", friendship.getFriend().getId().toString());
+    friendshipEntity.setProperty("user_id", friendship.getUserId().toString());
+    friendshipEntity.setProperty("friend_id", friendship.getFriendId().toString());
 
     friendshipEntity.setProperty("uuid", friendship.getId().toString());
 

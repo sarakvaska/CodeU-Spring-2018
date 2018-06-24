@@ -22,6 +22,7 @@ import codeu.model.data.User;
 import codeu.model.store.persistence.PersistentDataStore;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 /**
  * This class is the interface between the application and PersistentDataStore, which handles
@@ -108,7 +109,7 @@ public class PersistentStorageAgent {
    * @throws PersistentDataStoreException if an error was detected during the load from the
    *     Datastore service
    */
-  public Map<User, List<Friendship>> loadFriendships() throws PersistentDataStoreException {
+  public Map<UUID, List<Friendship>> loadFriendships() throws PersistentDataStoreException {
     return persistentDataStore.loadFriendships();
   }
 

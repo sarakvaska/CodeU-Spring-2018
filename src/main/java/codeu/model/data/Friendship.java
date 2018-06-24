@@ -5,8 +5,8 @@ import java.util.UUID;
 
 /** Class representing a friendship between two Users. */
 public class Friendship {
-  private final User user;
-  private final User friend;
+  private final UUID userId;
+  private final UUID friendId;
   private final UUID id;
   private Status status;
   private final Instant creation;
@@ -19,32 +19,32 @@ public class Friendship {
   /**
    * Constructs a new Friendship.
    *
-   * @param user the User this Friendship is based on
-   * @param friend the other User that user is friends with
+   * @param userId the ID of the User this Friendship is based on
+   * @param friendId the ID of the user's friend
    * @param id the ID of this Friendship
    * @param status the status of this Friendship
    * @param creation the creation time of this Friendship
    */
-  public Friendship(User user, User friend, UUID id, Status status, Instant creation) {
-    this.user = user;
-    this.friend = friend;
+  public Friendship(UUID userId, UUID friendId, UUID id, Status status, Instant creation) {
+    this.userId = userId;
+    this.friendId = friendId;
     this.id = id;
     this.status = status;
     this.creation = creation;
   }
 
   /**
-   * @return the User this Friendship is based on
+   * @return the ID of the User this Friendship is based on
    */
-  public User getUser() {
-    return user;
+  public UUID getUserId() {
+    return userId;
   }
 
   /**
-   * @return the other User that user is friends with
+   * @return the ID of the user's friend
    */
-  public User getFriend() {
-    return friend;
+  public UUID getFriendId() {
+    return friendId;
   }
 
   /**

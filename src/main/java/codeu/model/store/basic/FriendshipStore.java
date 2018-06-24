@@ -53,7 +53,7 @@ public class FriendshipStore {
    * In-memory map of Friendships. Each User maps to a List of Friendships,
    * and each Friendship has a variable that stores one of the User's friends.
    */
-  private Map<User, List<Friendship>> friendships;
+  private Map<UUID, List<Friendship>> friendships;
 
   /** This class is a singleton, so its constructor is private. Call getInstance() instead. */
   private FriendshipStore(PersistentStorageAgent persistentStorageAgent) {
@@ -66,14 +66,14 @@ public class FriendshipStore {
    * to in the HashMap.
    */
   public void addFriendship(Friendship friendship) {
-    User user = friendship.getUser();
+    UUID userId = friendship.getUserId();
 
-    if (!friendships.containsKey(user)) {
+    if (!friendships.containsKey(userId)) {
       List<Friendship> friends = new ArrayList<>();
       friends.add(friendship);
-      friendships.put(user, friends);
+      friendships.put(userId, friends);
     } else {
-      friendships.get(user).add(friendship);
+      friendships.get(userId).add(friendship);
     }
 
     persistentStorageAgent.writeThrough(friendship);
@@ -88,15 +88,15 @@ public class FriendshipStore {
    * both users have with each other.
    */
   public void acceptFriendship(Friendship friendship) {
-    for (Friendship friend : friendships.get(friendship.getUser())) {
-      if (friend.getFriend() == friendship.getFriend()) {
+    for (Friendship friend : friendships.get(friendship.getUserId())) {
+      if (friend.getFriendId() == friendship.getFriendId()) {
         friend.setStatus(Status.ACCEPTED);
         break;
       }
     }
 
     Friendship mutualFriendship = new Friendship(
-        friendship.getFriend(), friendship.getUser(), UUID.randomUUID(),
+        friendship.getFriendId(), friendship.getUserId(), UUID.randomUUID(),
         Status.ACCEPTED, Instant.now()
     );
 
@@ -108,14 +108,14 @@ public class FriendshipStore {
    * in Datastore.
    */
   public void rejectFriendship(Friendship friendship) {
-    friendships.get(friendship.getUser()).remove(friendship);
+    friendships.get(friendship.getUserId()).remove(friendship);
 
     friendship.setStatus(Status.REJECTED);
     persistentStorageAgent.writeThrough(friendship);
   }
 
   /** Access the current set of friendships known to the application. */
-  public Map<User, List<Friendship>> getFriendships() {
+  public Map<UUID, List<Friendship>> getFriendships() {
     return friendships;
   }
 
@@ -123,7 +123,7 @@ public class FriendshipStore {
    * Sets the List of Friendships stored by this FriendshipStore.
    * This should only be called once, when the data is loaded from Datastore.
    */
-  public void setFriendships(Map<User, List<Friendship>> friendships) {
+  public void setFriendships(Map<UUID, List<Friendship>> friendships) {
     this.friendships = friendships;
   }
 }
