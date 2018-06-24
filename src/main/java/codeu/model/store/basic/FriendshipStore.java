@@ -80,18 +80,6 @@ public class FriendshipStore {
   }
 
   /**
-   * Updates an existing friendship. This method is called when a friend request
-   * is either accepted or rejected.
-   */
-  public void updateFriendship(Friendship friendship) {
-    if (friendship.getStatus() == Status.ACCEPTED) {
-      acceptFriendship(friendship);
-    } else if (friendship.getStatus() == Status.REJECTED) {
-      rejectFriendship(friendship);
-    }
-  }
-
-  /**
    * Updates the status of the existing one-way friendship from PENDING to ACCEPTED
    * by first looking through the list of friends to find the friend that accepted
    * the request.
@@ -122,6 +110,7 @@ public class FriendshipStore {
   public void rejectFriendship(Friendship friendship) {
     friendships.get(friendship.getUser()).remove(friendship);
 
+    friendship.setStatus(Status.REJECTED);
     persistentStorageAgent.writeThrough(friendship);
   }
 
