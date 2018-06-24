@@ -21,6 +21,7 @@ import codeu.model.data.Friendship;
 import codeu.model.data.Friendship.Status;
 import codeu.model.data.Message;
 import codeu.model.data.User;
+import codeu.model.store.basic.UserStore;
 import codeu.model.store.persistence.PersistentDataStoreException;
 import com.google.appengine.api.datastore.DatastoreService;
 import com.google.appengine.api.datastore.DatastoreServiceFactory;
@@ -30,8 +31,10 @@ import com.google.appengine.api.datastore.Query;
 import com.google.appengine.api.datastore.Query.SortDirection;
 import java.time.Instant;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 /**
@@ -191,6 +194,61 @@ public class PersistentDataStore {
     return activities;
   }
 
+  /**
+   * Loads all Friendship objects from the Datastore service and returns them in
+   * a HashMap.
+   *
+   * @throws PersistentDataStoreException if an error was detected during the load from the
+   *     Datastore service
+   */
+  public Map<User, List<Friendship>> loadFriendships() throws PersistentDataStoreException {
+
+    Map<User, List<Friendship>> friendships = new HashMap<>();
+
+    // Retrieve all friendships from the datastore.
+    Query query = new Query("chat-friendships");
+    PreparedQuery results = datastore.prepare(query);
+
+    for (Entity entity : results.asIterable()) {
+      try {
+        UserStore userStore = UserStore.getInstance();
+
+        UUID userId = UUID.fromString((String) entity.getProperty("user_id"));
+        UUID friendId = UUID.fromString((String) entity.getProperty("friend_id"));
+
+        User user = userStore.getUser(userId);
+        User friend = userStore.getUser(friendId);
+
+        UUID uuid = UUID.fromString((String) entity.getProperty("uuid"));
+
+        // Since the index of the status type is stored, I use it to access the type.
+        Long indexLong = (Long) entity.getProperty("status");
+        int index = indexLong.intValue();
+        Status status = Status.values()[index];
+
+        Instant creationTime = Instant.parse((String) entity.getProperty("creation_time"));
+
+        Friendship friendship = new Friendship(user, friend, uuid, status, creationTime);
+
+        if (!friendships.containsKey(user)) {
+          List<Friendship> friends = new ArrayList<>();
+          friends.add(friendship);
+          friendships.put(user, friends);
+        } else {
+          friendships.get(user).add(friendship);
+        }
+
+      } catch (Exception e) {
+        // In a production environment, errors should be very rare. Errors which may
+        // occur include network errors, Datastore service errors, authorization errors,
+        // database entity definition mismatches, or service mismatches.
+        throw new PersistentDataStoreException(e);
+      }
+    }
+
+    return friendships;
+  }
+
   /** Write a User object to the Datastore service. */
   public void writeThrough(User user) {
     Entity userEntity = new Entity("chat-users", user.getId().toString());
@@ -242,7 +300,7 @@ public class PersistentDataStore {
     /* Storing both user IDs as properties. */
     friendshipEntity.setProperty("user_id", friendship.getUser().getId().toString());
     friendshipEntity.setProperty("friend_id", friendship.getFriend().getId().toString());
-    
+
     friendshipEntity.setProperty("uuid", friendship.getId().toString());
 
     /* Using the index representation of the enum Status as a way to store
