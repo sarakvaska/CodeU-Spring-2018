@@ -70,7 +70,16 @@
       <%
           } else {
       %>
-            <li><%= friend.getName() %></li>
+            <li>
+              <%= friend.getName() %>
+              <%
+              if (status == Status.PENDING) {
+              %>
+                <em>PENDING</em>
+      <%
+              }
+      %>
+            </li>
       <%
           }
         }
