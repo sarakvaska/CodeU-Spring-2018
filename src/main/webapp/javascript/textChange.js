@@ -1,17 +1,3 @@
-
-function textLoad(){
- 	str_message = document.getElementsByName('message')[0].innerHTML;
- 	if (str_message.length >= 3) {
- 		index_of_last = str_message.length - 3;
- 		if (str_message.substring(index_of_last) == ":) ") {
- 			image = "&#x1F641; ";
- 			str_message = document.getElementsByName('message')[0].innerHTML.substring(0, str_message.length - 3) + image;
- 			document.getElementsByName('message')[0].innerHTML = str_message;
- 		}
- 	}
-}
-
-
 function smileEmoji(){
 	var string = document.getElementsByName('message')[0].value;
 	if (document.getElementsByName('message')[0].selectionStart != 
