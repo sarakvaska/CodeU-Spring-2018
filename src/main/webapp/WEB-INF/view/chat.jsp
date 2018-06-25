@@ -34,6 +34,7 @@ List<Message> messages = (List<Message>) request.getAttribute("messages");
       overflow-y: scroll
     }
   </style>
+  <script type="text/javascript" src="http://code.jquery.com/jquery-latest.min.js"></script>
   <script src="/javascript/textChange.js"></script>
   <script>
     // scroll the chat div to the bottom
@@ -83,15 +84,41 @@ List<Message> messages = (List<Message>) request.getAttribute("messages");
     <hr/>
 
     <% if (request.getSession().getAttribute("user") != null) { %>
-    <form action="/chat/<%= conversation.getTitle() %>" method="POST">
       <button type="button" id ="bold" style="border-style:outset;" onclick="boldFunction()"><b>Bold</b></button>
       <button type="button" id ="italic" style="border-style:outset;" onclick="italicFunction()"><i>Italic</i></button>
       <button type="button" id ="underline" style="border-style:outset;" onclick="underlineFunction()"><u>Underline</u></button> 
-      <br/>
-        <input type="text" name="message">
+      <button class = "collapsible"> Emojis </button>
+    <div class="content">
+      <table>
+          <tr>
+            <td><button class="emoji" onclick="angelEmoji()">&#x1F607;</button></td>
+            <td><button class="emoji" onclick="devilEmoji()">&#x1F608;</button></td>
+            <td><button class="emoji" onclick="smileEmoji()">&#x1F642;</button></td>
+            <td><button class="emoji" onclick="happyEmoji()">&#x1F601;</button></td>
+            <td><button class="emoji" onclick="tearEmoji()">&#x1F602;</button></td>
+          </tr>
+      </table>
+    </div>
+    <br/>
+    <form action="/chat/<%= conversation.getTitle() %>" method="POST">
+        <input type="text" name="message" oninput="textLoad()">
         <br/>
         <button type="submit">Send</button>
     </form>
+    <script>
+    var coll = document.getElementsByClassName("collapsible");
+      coll[0].addEventListener("click", function() {
+        this.classList.toggle("active");
+        var content = this.nextElementSibling;
+        if (content.style.maxHeight){
+          content.style.maxHeight = null;
+        } else {
+          content.style.maxHeight = content.scrollHeight + "px";
+        } 
+      });
+    </script>
+
+
 
     <% } else { %>
       <p><a href="/login">Login</a> to send a message.</p>

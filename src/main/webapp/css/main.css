@@ -62,3 +62,23 @@ button {
   height: 500px;
   overflow-y: scroll;
 }
+
+.collapsible {
+  cursor: pointer;
+  border: none;
+  text-align: left;
+  outline: none;
+  font-size: 18px;
+}
+
+.content {
+  padding: 0 18px;
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.2s ease-out;
+}
+
+.emoji {
+  background-color: #eeeeee;
+  border: none;
+}
