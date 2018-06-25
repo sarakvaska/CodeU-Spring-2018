@@ -64,9 +64,18 @@ public class FriendshipStore {
   /**
    * Adds a friendship by adding the user's friend to a list that a user maps
    * to in the HashMap.
+   *
+   * This method actually adds the same friendship to both lists mapped to by
+   * userId and friendId, only if the status is PENDING.
+   *
+   * This is to distinguish whether the pending friendship was made by the user
+   * who started it. For example, if a friendship appears in a list,
+   * whose userId is different from the ID that it is mapped in,
+   * then this means that the friendship originated from another user.
    */
   public void addFriendship(Friendship friendship) {
     UUID userId = friendship.getUserId();
+    UUID friendId = friendship.getFriendId();
 
     if (!friendships.containsKey(userId)) {
       List<Friendship> friends = new ArrayList<>();
@@ -76,25 +85,43 @@ public class FriendshipStore {
       friendships.get(userId).add(friendship);
     }
 
+    if (friendship.getStatus() == Status.PENDING) {
+      if (!friendships.containsKey(friendId)) {
+        List<Friendship> friends = new ArrayList<>();
+        friends.add(friendship);
+        friendships.put(friendId, friends);
+      } else {
+        friendships.get(friendId).add(friendship);
+      }
+    }
+
     persistentStorageAgent.writeThrough(friendship);
   }
 
   /**
-   * Updates the status of the existing one-way friendship from PENDING to ACCEPTED
+   * Updates the status of the existing friendship from PENDING to ACCEPTED
    * by first looking through the list of friends to find the friend that accepted
    * the request.
+   *
+   * The extra friendship object that was added to the list of friends under the
+   * friendId key is removed.
    *
    * Then, a new Friendship object is made to represent the now two-way friendship
    * both users have with each other.
    */
   public void acceptFriendship(Friendship friendship) {
+    // Search for the friendship that was accepted
     for (Friendship friend : friendships.get(friendship.getUserId())) {
-      if (friend.getFriendId() == friendship.getFriendId()) {
+      if (friend.getFriendId().equals(friendship.getFriendId())) {
         friend.setStatus(Status.ACCEPTED);
         break;
       }
     }
 
+    // Remove extra friendship
+    friendships.get(friendship.getFriendId()).remove(friendship);
+
+    // Add the mutual friendship to make it two-way
     Friendship mutualFriendship = new Friendship(
         friendship.getFriendId(), friendship.getUserId(), UUID.randomUUID(),
         Status.ACCEPTED, Instant.now()
@@ -104,11 +131,12 @@ public class FriendshipStore {
   }
 
   /**
-   * Removes the rejected friendship from the HashMap, then updates the friendship
-   * in Datastore.
+   * Removes the rejected friendship and the extra pending friendship from the HashMap,
+   * then updates the friendship in Datastore.
    */
   public void rejectFriendship(Friendship friendship) {
     friendships.get(friendship.getUserId()).remove(friendship);
+    friendships.get(friendship.getFriendId()).remove(friendship);
 
     friendship.setStatus(Status.REJECTED);
     persistentStorageAgent.writeThrough(friendship);
