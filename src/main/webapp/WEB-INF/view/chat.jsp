@@ -88,17 +88,17 @@ List<Message> messages = (List<Message>) request.getAttribute("messages");
       <button type="button" id ="italic" style="border-style:outset;" onclick="italicFunction()"><i>Italic</i></button>
       <button type="button" id ="underline" style="border-style:outset;" onclick="underlineFunction()"><u>Underline</u></button> 
       <button class = "collapsible"> Emojis </button>
-    <div class="content">
-      <table>
-          <tr>
-            <td><button class="emoji" onclick="angelEmoji()">&#x1F607;</button></td>
-            <td><button class="emoji" onclick="devilEmoji()">&#x1F608;</button></td>
-            <td><button class="emoji" onclick="smileEmoji()">&#x1F642;</button></td>
-            <td><button class="emoji" onclick="happyEmoji()">&#x1F601;</button></td>
-            <td><button class="emoji" onclick="tearEmoji()">&#x1F602;</button></td>
-          </tr>
-      </table>
-    </div>
+      <div class="content">
+        <table>
+            <tr>
+              <td><button class="emoji" onclick="angelEmoji()">&#x1F607;</button></td>
+              <td><button class="emoji" onclick="devilEmoji()">&#x1F608;</button></td>
+              <td><button class="emoji" onclick="smileEmoji()">&#x1F642;</button></td>
+              <td><button class="emoji" onclick="happyEmoji()">&#x1F601;</button></td>
+              <td><button class="emoji" onclick="tearEmoji()">&#x1F602;</button></td>
+            </tr>
+        </table>
+      </div>
     <br/>
     <form action="/chat/<%= conversation.getTitle() %>" method="POST">
         <input type="text" name="message">
