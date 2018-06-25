@@ -70,12 +70,20 @@ public class FriendshipStoreTest {
     List<Friendship> userOneFriends = new ArrayList<>();
     userOneFriends.add(FRIENDSHIP_ONE);
 
+    List<Friendship> userTwoFriends = new ArrayList<>();
+    userTwoFriends.add(FRIENDSHIP_ONE);
+
     List<Friendship> userThreeFriends = new ArrayList<>();
     userThreeFriends.add(FRIENDSHIP_TWO);
 
+    List<Friendship> userFourFriends = new ArrayList<>();
+    userFourFriends.add(FRIENDSHIP_TWO);
+
     Map<UUID, List<Friendship>> friendshipMap = new HashMap<>();
     friendshipMap.put(USER_ONE.getId(), userOneFriends);
+    friendshipMap.put(USER_TWO.getId(), userTwoFriends);
     friendshipMap.put(USER_THREE.getId(), userThreeFriends);
+    friendshipMap.put(USER_FOUR.getId(), userFourFriends);
 
     friendshipStore.setFriendships(friendshipMap);
   }
@@ -85,7 +93,9 @@ public class FriendshipStoreTest {
     Map<UUID, List<Friendship>> resultFriendshipMap = friendshipStore.getFriendships();
 
     assertEquals(FRIENDSHIP_ONE, resultFriendshipMap.get(USER_ONE.getId()).get(0));
+    assertEquals(FRIENDSHIP_ONE, resultFriendshipMap.get(USER_TWO.getId()).get(0));
     assertEquals(FRIENDSHIP_TWO, resultFriendshipMap.get(USER_THREE.getId()).get(0));
+    assertEquals(FRIENDSHIP_TWO, resultFriendshipMap.get(USER_FOUR.getId()).get(0));
   }
 
   @Test
@@ -100,9 +110,11 @@ public class FriendshipStoreTest {
         );
 
     friendshipStore.addFriendship(newFriendship);
-    Friendship resultFriendship = friendshipStore.getFriendships().get(USER_ONE.getId()).get(1);
+    Friendship resultFriendshipOne = friendshipStore.getFriendships().get(USER_ONE.getId()).get(1);
+    Friendship resultFriendshipTwo = friendshipStore.getFriendships().get(USER_THREE.getId()).get(1);
 
-    assertEquals(newFriendship, resultFriendship);
+    assertEquals(newFriendship, resultFriendshipOne);
+    assertEquals(newFriendship, resultFriendshipTwo);
     Mockito.verify(mockPersistentStorageAgent).writeThrough(newFriendship);
   }
 
@@ -127,6 +139,8 @@ public class FriendshipStoreTest {
     friendshipStore.rejectFriendship(FRIENDSHIP_TWO);
     Assert.assertTrue(friendshipStore.getFriendships().containsKey(USER_THREE.getId()));
     Assert.assertTrue(friendshipStore.getFriendships().get(USER_THREE.getId()).isEmpty());
+    Assert.assertTrue(friendshipStore.getFriendships().containsKey(USER_FOUR.getId()));
+    Assert.assertTrue(friendshipStore.getFriendships().get(USER_FOUR.getId()).isEmpty());
 
     Assert.assertEquals(Status.REJECTED, FRIENDSHIP_TWO.getStatus());
     Mockito.verify(mockPersistentStorageAgent).writeThrough(FRIENDSHIP_TWO);
