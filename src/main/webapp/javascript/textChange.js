@@ -1,4 +1,5 @@
 function smileEmoji(){
+	document.getElementsByName('message')[0].focus();
 	var string = document.getElementsByName('message')[0].value;
 	if (document.getElementsByName('message')[0].selectionStart != 
 		document.getElementsByName('message')[0].selectionEnd){
@@ -8,12 +9,14 @@ function smileEmoji(){
 		string.substring(0, start) + " :) " + string.substring(end);
 	}
 	else {
+		var start = document.getElementsByName('message')[0].selectionStart;
 		document.getElementsByName('message')[0].value = 
-		string.substring(0, start) + " :) ";
+		string.substring(0, start) + " :) " + string.substring(start);
 	}
 }
 
 function devilEmoji(){
+	document.getElementsByName('message')[0].focus();
 	var string = document.getElementsByName('message')[0].value;
 	if (document.getElementsByName('message')[0].selectionStart != 
 		document.getElementsByName('message')[0].selectionEnd){
@@ -23,12 +26,14 @@ function devilEmoji(){
 		string.substring(0, start) + " >:)  " + string.substring(end);
 	}
 	else{
+		var start = document.getElementsByName('message')[0].selectionStart;
 		document.getElementsByName('message')[0].value = 
-		string.substring(0, start) + " >:) ";
+		string.substring(0, start) + " >:) " + string.substring(start);
 	}
 }
 
 function happyEmoji(){
+	document.getElementsByName('message')[0].focus();
 	var string = document.getElementsByName('message')[0].value;
 	if (document.getElementsByName('message')[0].selectionStart != 
 		document.getElementsByName('message')[0].selectionEnd){
@@ -38,12 +43,14 @@ function happyEmoji(){
 		string.substring(0, start) + " :D " + string.substring(end);
 	}
 	else{
+		var start = document.getElementsByName('message')[0].selectionStart;
 		document.getElementsByName('message')[0].value = 
-		string.substring(0, start) + " :D ";
+		string.substring(0, start) + " :D " + string.substring(start);
 	}
 }
 
 function angelEmoji(){
+	document.getElementsByName('message')[0].focus();
 	var string = document.getElementsByName('message')[0].value;
 	if (document.getElementsByName('message')[0].selectionStart != 
 		document.getElementsByName('message')[0].selectionEnd){
@@ -53,12 +60,14 @@ function angelEmoji(){
 		string.substring(0, start) + " 0:) " + string.substring(end);
 	}
 	else{
+		var start = document.getElementsByName('message')[0].selectionStart;
 		document.getElementsByName('message')[0].value = 
-		string.substring(0, start) + " 0:) ";
+		string.substring(0, start) + " 0:) " + string.substring(start);
 	}
 }
 
 function tearEmoji(){
+	document.getElementsByName('message')[0].focus();
 	var string = document.getElementsByName('message')[0].value;
 	if (document.getElementsByName('message')[0].selectionStart != 
 		document.getElementsByName('message')[0].selectionEnd){
@@ -68,8 +77,9 @@ function tearEmoji(){
 		string.substring(0, start) + " :'D " + string.substring(end);
 	}
 	else{
+		var start = document.getElementsByName('message')[0].selectionStart;
 		document.getElementsByName('message')[0].value = 
-		string.substring(0, start) + " :'D ";
+		string.substring(0, start) + " :'D " + string.substring(start);
 	}
 }
 
