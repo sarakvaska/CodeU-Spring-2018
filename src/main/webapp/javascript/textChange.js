@@ -1,5 +1,4 @@
 function smileEmoji(){
-	document.getElementsByName('message')[0].focus();
 	var string = document.getElementsByName('message')[0].value;
 	if (document.getElementsByName('message')[0].selectionStart != 
 		document.getElementsByName('message')[0].selectionEnd){
@@ -16,7 +15,6 @@ function smileEmoji(){
 }
 
 function devilEmoji(){
-	document.getElementsByName('message')[0].focus();
 	var string = document.getElementsByName('message')[0].value;
 	if (document.getElementsByName('message')[0].selectionStart != 
 		document.getElementsByName('message')[0].selectionEnd){
@@ -25,7 +23,7 @@ function devilEmoji(){
 		document.getElementsByName('message')[0].value = 
 		string.substring(0, start) + " >:)  " + string.substring(end);
 	}
-	else{
+	else {
 		var start = document.getElementsByName('message')[0].selectionStart;
 		document.getElementsByName('message')[0].value = 
 		string.substring(0, start) + " >:) " + string.substring(start);
@@ -33,7 +31,6 @@ function devilEmoji(){
 }
 
 function happyEmoji(){
-	document.getElementsByName('message')[0].focus();
 	var string = document.getElementsByName('message')[0].value;
 	if (document.getElementsByName('message')[0].selectionStart != 
 		document.getElementsByName('message')[0].selectionEnd){
@@ -50,7 +47,6 @@ function happyEmoji(){
 }
 
 function angelEmoji(){
-	document.getElementsByName('message')[0].focus();
 	var string = document.getElementsByName('message')[0].value;
 	if (document.getElementsByName('message')[0].selectionStart != 
 		document.getElementsByName('message')[0].selectionEnd){
@@ -67,7 +63,6 @@ function angelEmoji(){
 }
 
 function tearEmoji(){
-	document.getElementsByName('message')[0].focus();
 	var string = document.getElementsByName('message')[0].value;
 	if (document.getElementsByName('message')[0].selectionStart != 
 		document.getElementsByName('message')[0].selectionEnd){
