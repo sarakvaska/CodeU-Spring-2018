@@ -375,6 +375,7 @@ public class ChatServlet extends HttpServlet {
     cleanedMessageContent = cleanedMessageContent.replace (" :X ", " &#x1F636; ");
     cleanedMessageContent = cleanedMessageContent.replace (" :x ", " &#x1F636; ");
     cleanedMessageContent = cleanedMessageContent.replace (" :@ ", " &#x1F637; ");
+    cleanedMessageContent = cleanedMessageContent.replace (" &lt;3 ", " &#x1F499; ");
 
     // trim off the added space if messsage doesn't start with space
     cleanedMessageContent = cleanedMessageContent.trim();

@@ -97,11 +97,38 @@ List<Message> messages = (List<Message>) request.getAttribute("messages");
               <td><button class="emoji" onclick="happyEmoji()">&#x1F601;</button></td>
               <td><button class="emoji" onclick="tearEmoji()">&#x1F602;</button></td>
             </tr>
+            <tr>
+              <td><button class="emoji" onclick="angryEmoji()">&#x1F620;</button></td>
+              <td><button class="emoji" onclick="sadEmoji()">&#x1F641;</button></td>
+              <td><button class="emoji" onclick="tearCryEmoji()">&#x1F622;</button></td>
+              <td><button class="emoji" onclick="stoicEmoji()">&#x1F610;</button></td>
+              <td><button class="emoji" onclick="mehEmoji()">&#x1F615;</button></td>
+            </tr>
+            <tr>
+              <td><button class="emoji" onclick="coolEmoji()">&#x1F60E;</button></td>
+              <td><button class="emoji" onclick="smoochEmoji()">&#x1F617;</button></td>
+              <td><button class="emoji" onclick="woahEmoji()">&#x1F62E;</button></td>
+              <td><button class="emoji" onclick="tongueEmoji()">&#x1F61B;</button></td>
+              <td><button class="emoji" onclick="xPEmoji()">&#x1F61D;</button></td>
+            </tr>
+            <tr>
+              <td><button class="emoji" onclick="winkEmoji()">&#x1F609;</button></td>
+              <td><button class="emoji" onclick="twoArrowEmoji()">&#x1F616;</button></td>
+              <td><button class="emoji" onclick="superMehEmoji()">&#x1F611;</button></td>
+              <td><button class="emoji" onclick="happyGoLuckyEmoji()">&#x1F60A;</button></td>
+              <td><button class="emoji" onclick="superCryEmoji()">&#x1F62D;</button></td>
+            </tr>
+            <tr>
+              <td><button class="emoji" onclick="wahEmoji()">&#x1F629;</button></td>
+              <td><button class="emoji" onclick="noTalkEmoji()">&#x1F636;</button></td>
+              <td><button class="emoji" onclick="sickEmoji()">&#x1F637;</button></td>
+              <td><button class="emoji" onclick="heartEmoji()">&#x1F499;</button></td>
+            </tr>
         </table>
       </div>
     <br/>
     <form action="/chat/<%= conversation.getTitle() %>" method="POST">
-        <input type="text" name="message">
+        <input type="text" name="message" onselect="setButtonsInset()" onkeydown="setButtonsInset()" onclick="setButtonsInset()">
         <br/>
         <button type="submit">Send</button>
     </form>
