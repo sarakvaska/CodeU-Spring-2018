@@ -128,7 +128,7 @@ List<Message> messages = (List<Message>) request.getAttribute("messages");
       </div>
     <br/>
     <form action="/chat/<%= conversation.getTitle() %>" method="POST">
-        <input type="text" name="message" onselect="setButtonsInset()" onkeydown="setButtonsInset()" onclick="setButtonsInset()">
+        <input type="text" name="message" oninput= "setButtonsInset()" onselect="setButtonsInset()" onkeydown="setButtonsInset()" onclick="setButtonsInset()">
         <br/>
         <button type="submit">Send</button>
     </form>
