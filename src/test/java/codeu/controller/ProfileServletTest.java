@@ -40,6 +40,7 @@ public class ProfileServletTest {
   private HttpServletResponse mockResponse;
   private RequestDispatcher mockRequestDispatcher;
   private UserStore mockUserStore;
+  private User mockUser;
 
   @Before
   public void setup() {
@@ -67,22 +68,23 @@ public class ProfileServletTest {
         new User(
             UUID.randomUUID(),
             "test_username",
-            "$2a$10$eDhncK/4cNH2KE.Y51AWpeL8/5znNBQLuAFlyJpSYNODR/SJQ/Fg6",
-            Instant.now());
+            "$2a$10$Ajfzp.s.7EFhdKL10QvRtwdDTRihl5U656Pyx87wterbBBMIplcgFL",
+            Instant.now(),
+            "test_aboutMe");
     Mockito.when(mockUserStore.getUser("test_username")).thenReturn(fakeUser);
 
     profileServlet.doGet(mockRequest, mockResponse);
     Mockito.verify(mockRequestDispatcher).forward(mockRequest, mockResponse);
   }
 
-  @Test
-  public void testDoPost_logoutWithoutLogin() throws IOException, ServletException {
+@Test
+  public void testDoPost_notLoggedIn() throws IOException, ServletException {
+    UserStore mockUserStore = Mockito.mock(UserStore.class);
     Mockito.when(mockSession.getAttribute("user")).thenReturn(null);
 
     profileServlet.doPost(mockRequest, mockResponse);
 
     Mockito.verify(mockUserStore, Mockito.never()).updateUser(Mockito.any(User.class));
-    Mockito.verify(mockResponse).sendRedirect("/login");
   }
 
   @Test
@@ -95,19 +97,25 @@ public class ProfileServletTest {
 
     Mockito.verify(mockUserStore, Mockito.never()).addUser(Mockito.any(User.class));
 
-    Mockito.verify(mockResponse).sendRedirect("/login");
   }
-
-  /**@Test
-  public void testDoPost_UserProfile() throws IOException, ServletException {
-    Mockito.when(mockRequest.getRequestURI()).thenReturn("/user/test_username");
-    Mockito.when(mockSession.getAttribute("user")).thenReturn("test_username");
-
   @Test
-  public void testDoPost_InvalidAboutMe() throws IOException, ServletException {
+  public void testDoPost_userUrl() throws IOException, ServletException {
     Mockito.when(mockRequest.getRequestURI()).thenReturn("/user/test_username");
     Mockito.when(mockSession.getAttribute("user")).thenReturn("test_username");
 
-  @Test: viewing other profiles */
+    User fakeUser =
+        new User(
+            UUID.randomUUID(),
+            "test_username",
+            "$2a$10$Ajfzp.s.7EFhdKL10QvRtwdDTRihl5U656Pyx87wterbBBMIplcgFL",
+            Instant.now(),
+            "test_aboutMe");
+    Mockito.when(mockUserStore.getUser("test_username")).thenReturn(fakeUser);
 
+    Mockito.when(mockRequest.getParameter("user")).thenReturn("test_username");
+
+    profileServlet.doPost(mockRequest, mockResponse);
+
+    Assert.assertEquals("test_username", fakeUser.getName());
   }
+}

@@ -52,25 +52,16 @@ public class ProfileServlet extends HttpServlet {
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response)
       throws IOException, ServletException {
-        String username = (String) request.getSession().getAttribute("user");
-        if (username == null) {
-          // user is not logged in, don't let them add a message
-          response.sendRedirect("/login");
-          return;
-        }
+    String username = (String) request.getSession().getAttribute("user");
+    User user = userStore.getUser(username);
 
-        User user = userStore.getUser(username);
-        if (user == null) {
-          // user was not found, don't let them add a message
-          response.sendRedirect("/login");
-          return;
-        }
+    // if user presses logout button
     if(request.getParameter("logout") != null) {
         username = null;
     request.getSession().setAttribute("user", username);
     response.sendRedirect("/login");
   }
-
+    // if user wants to presses submit on their aboutMe description
     else if (request.getParameter("about") != null) {
     /**
      * This function should fire  when a user submits the About Me form on the profile page. It gets the logged-in
@@ -78,12 +69,6 @@ public class ProfileServlet extends HttpServlet {
      * submitted form data. It adds what the user input into the model and then
      * redirects back to the profile page.
      */
-      if (username == null) {
-        // user was not found, don't let them click their profile
-        response.sendRedirect("/login");
-        return;
-      }
-
       String aboutMeContent = request.getParameter("aboutMe");
 
       // this removes any HTML from the message content
@@ -93,9 +78,6 @@ public class ProfileServlet extends HttpServlet {
       userStore.getInstance().updateUser(user);
 
       // redirect to a GET request
-
-      String requestUrl = request.getRequestURI();
-      String userProfile = requestUrl.substring("/user/".length());
       response.sendRedirect("/user/" + username);
     }
   }

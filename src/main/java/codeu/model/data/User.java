@@ -32,9 +32,9 @@ public class User {
    * @param name the username of this User
    * @param passwordHash the password hash of this User
    * @param creation the creation time of this User
-   * @param aboutMe the about text of the user
+   * @param aboutMe the text that the user uses to describe themself
    */
-  public User(UUID id, String name, String passwordHash, Instant creation) {
+  public User(UUID id, String name, String passwordHash, Instant creation, String aboutMe) {
     this.id = id;
     this.name = name;
     this.passwordHash = passwordHash;
