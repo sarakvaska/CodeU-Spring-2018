@@ -16,6 +16,8 @@ package codeu.controller;
 
 import codeu.model.data.User;
 import codeu.model.store.basic.UserStore;
+import codeu.model.data.Message;
+import codeu.model.store.basic.MessageStore;
 import java.io.IOException;
 import java.time.Instant;
 import java.util.ArrayList;
@@ -40,6 +42,7 @@ public class ProfileServletTest {
   private HttpServletResponse mockResponse;
   private RequestDispatcher mockRequestDispatcher;
   private UserStore mockUserStore;
+  private MessageStore mockMessageStore;
   private User mockUser;
 
   @Before
@@ -54,6 +57,9 @@ public class ProfileServletTest {
     mockRequestDispatcher = Mockito.mock(RequestDispatcher.class);
     Mockito.when(mockRequest.getRequestDispatcher("/WEB-INF/view/profile.jsp"))
         .thenReturn(mockRequestDispatcher);
+
+    mockMessageStore = Mockito.mock(MessageStore.class);
+    profileServlet.setMessageStore(mockMessageStore);
 
     mockUserStore = Mockito.mock(UserStore.class);
     profileServlet.setUserStore(mockUserStore);
@@ -71,7 +77,20 @@ public class ProfileServletTest {
             "$2a$10$Ajfzp.s.7EFhdKL10QvRtwdDTRihl5U656Pyx87wterbBBMIplcgFL",
             Instant.now(),
             "test_aboutMe");
+
     Mockito.when(mockUserStore.getUser("test_username")).thenReturn(fakeUser);
+
+    UUID testAuthor = UUID.randomUUID();
+    List<Message> fakeMessageList = new ArrayList<>();
+    fakeMessageList.add(
+        new Message(
+            UUID.randomUUID(),
+            UUID.randomUUID(),
+            testAuthor,
+            "test message",
+            Instant.now()));
+    Mockito.when(mockMessageStore.getMessagesByAuthor(testAuthor))
+        .thenReturn(fakeMessageList);
 
     profileServlet.doGet(mockRequest, mockResponse);
     Mockito.verify(mockRequestDispatcher).forward(mockRequest, mockResponse);
