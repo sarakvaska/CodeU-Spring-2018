@@ -15,56 +15,6 @@ List<Message> messages = (List<Message>) request.getAttribute("messages");
 <head>
   <title>Profile Page</title>
   <link rel="stylesheet" href="/css/main.css" type="text/css">
-
-     <style>
-      #box {
-        background-color: white;
-        width: 785px;
-        height: 75px;
-        font-size: 15px;
-      }
-      </style>
-
-
-      <style>
-       #searchInput {
-         width: 98.5%;
-         font-size: 16px;
-         padding: 12px 0px 12px 0px;
-         border: 1px solid #ddd;
-         margin-bottom: 12px;
-      }
-      </style>
-
-      <style>
-       #messageList {
-        list-style-type: none;
-        padding: 0;
-        margin: 0;
-        width:790px;
-        height: 200px;
-        overflow:hidden; overflow-y:scroll;
-      }
-      </style>
-
-      <style>
-       #messageList li a{
-        margin-top: -1px; /* Prevent double borders */
-        background-color: #f6f6f6;
-        padding: 12px;
-        text-decoration: none;
-        font-size: 18px;
-        color: black;
-        display: block
-      }
-      </style>
-
-      <style>
-       #messageList li a:hover:not(.header) {
-          background-color: #eee;
-        }
-      </style>
-
   </head>
 
   <nav>
@@ -137,6 +87,7 @@ List<Message> messages = (List<Message>) request.getAttribute("messages");
             }
         }
         </script>
+        
         <br>
         <form action="/user/<%= getProfile.getName()%>" method="POST">
         <button style="margin-left: 90%;" type="submit" name="logout" value="Logout">Logout</button>
