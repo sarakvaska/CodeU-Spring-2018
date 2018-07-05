@@ -73,7 +73,6 @@ public class ProfileServlet extends HttpServlet {
       throws IOException, ServletException {
     String username = (String) request.getSession().getAttribute("user");
     User user = userStore.getUser(username);
-
     // if user presses logout button
     if(request.getParameter("logout") != null) {
         username = null;
@@ -95,9 +94,8 @@ public class ProfileServlet extends HttpServlet {
 
       user.setAboutMe(cleanedAboutContent);
       userStore.getInstance().updateUser(user);
-
       // redirect to a GET request
       response.sendRedirect("/user/" + username);
     }
-  }
+ }
 }

@@ -13,35 +13,59 @@ List<Message> messages = (List<Message>) request.getAttribute("messages");
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Login</title>
+  <title>Profile Page</title>
   <link rel="stylesheet" href="/css/main.css" type="text/css">
 
-    <style>
-      #chat {
-        background-color: white;
-        height: 500px;
-        width: 790px;
-        overflow-y: scroll
-      }
-    </style>
-    <style>
+     <style>
       #box {
         background-color: white;
-        width: 790px;
+        width: 785px;
         height: 75px;
         font-size: 15px;
       }
       </style>
-    <script>
-      // scroll the chat div to the bottom
-      function scrollChat() {
-        var chatDiv = document.getElementById('chat');
-        chatDiv.scrollTop = chatDiv.scrollHeight;
-      };
 
-    </script>
+
+      <style>
+       #searchInput {
+         width: 98.5%;
+         font-size: 16px;
+         padding: 12px 0px 12px 0px;
+         border: 1px solid #ddd;
+         margin-bottom: 12px;
+      }
+      </style>
+
+      <style>
+       #messageList {
+        list-style-type: none;
+        padding: 0;
+        margin: 0;
+        width:790px;
+        height: 200px;
+        overflow:hidden; overflow-y:scroll;
+      }
+      </style>
+
+      <style>
+       #messageList li a{
+        margin-top: -1px; /* Prevent double borders */
+        background-color: #f6f6f6;
+        padding: 12px;
+        text-decoration: none;
+        font-size: 18px;
+        color: black;
+        display: block
+      }
+      </style>
+
+      <style>
+       #messageList li a:hover:not(.header) {
+          background-color: #eee;
+        }
+      </style>
+
   </head>
-  <body onload="scrollChat()">
 
   <nav>
     <a id="navTitle" href="/">CodeU Chat App</a>
@@ -58,7 +82,8 @@ List<Message> messages = (List<Message>) request.getAttribute("messages");
   </nav>
 
   <div id="container">
-    <h1> <%= getProfile.getName() %>'s Profile Page</h1>
+  <h1> <%= getProfile.getName() %>'s Profile Page</h1>
+  </form>
     <hr/>
     <h3> About <%= getProfile.getName() %> </h3>
     <% if(getProfile.getAboutMe() != null){%>
@@ -75,8 +100,7 @@ List<Message> messages = (List<Message>) request.getAttribute("messages");
               <textarea id = "box" font-size: 25px  type ="text" name="aboutMe" placeholder = "<%=getProfile.getAboutMe()%>"></textarea>
               </div>
             <hr/>
-            <% } else {%>
-
+            <% } else { %>
               <div class="form-group">
                 <textarea id = "box" type ="text" name="aboutMe"
                   placeholder = "Write about yourself!"></textarea>
@@ -86,22 +110,39 @@ List<Message> messages = (List<Message>) request.getAttribute("messages");
           </form>
           <button type ="submit" name="about" value="About">Submit</button>
           <h3><%= getProfile.getName() %>'s Sent Messages</h3>
-          <div id = "chat">
-            <ul>
+          <input type="text" id="searchInput" onkeyup="mySearch()" placeholder="Search for messages...">
+
+          <ul id="messageList">
               <%
                 for (Message message : messages) {
                   Date date = Date.from(message.getCreationTime());
-              %>
-              <li><b><small><%=date%> : </b></small><%= message.getContent() %></li>
+                  %><li><a href="#"><b><small><%=date %>: </b></small><%= message.getContent() %></a></li>
               <% } %>
-            </ul>
-          </div>
-          <hr/>
+        </ul>
+
+        <script>
+        function mySearch() {
+            var input, filter, listMessage, li, a, i;
+            input = document.getElementById("searchInput");
+            filter = input.value.toUpperCase();
+            listMessage = document.getElementById("messageList");
+            indivMessage = listMessage.getElementsByTagName("li");
+            for (i = 0; i < indivMessage.length; i++) {
+                a = indivMessage[i].getElementsByTagName("a")[0];
+                if (a.innerHTML.toUpperCase().indexOf(filter) > -1) {
+                    indivMessage[i].style.display = "";
+                } else {
+                    indivMessage[i].style.display = "none";
+                }
+            }
+        }
+        </script>
+        <br>
         <form action="/user/<%= getProfile.getName()%>" method="POST">
-        <button type="submit" name="logout" value="Logout">Logout</button>
-      </form>
+        <button style="margin-left: 90%;" type="submit" name="logout" value="Logout">Logout</button>
+       </form>
+        <br><br>
           <% } %>
           <% } %>
-  </div>
 </body>
 </html>
