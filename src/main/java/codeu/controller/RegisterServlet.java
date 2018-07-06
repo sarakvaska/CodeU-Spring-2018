@@ -78,8 +78,9 @@ public class RegisterServlet extends HttpServlet {
 
     String password = request.getParameter("password");
     String hashedPassword = BCrypt.hashpw(password, BCrypt.gensalt());
+    String about = "This user has no description";
 
-    User user = new User(UUID.randomUUID(), username, hashedPassword, Instant.now());
+    User user = new User(UUID.randomUUID(), username, hashedPassword, Instant.now(), about);
     userStore.addUser(user);
 
     Activity activity = new Activity(ActivityType.NEW_USER, user.getId(), Instant.now());
