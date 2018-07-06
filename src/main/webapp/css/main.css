@@ -93,3 +93,9 @@ input {
 button {
   font-size: 18px;
 }
+
+#feed {
+  background-color: white;
+  height: 500px;
+  overflow-y: scroll;
+}

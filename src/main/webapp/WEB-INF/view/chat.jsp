@@ -24,7 +24,6 @@ List<Message> messages = (List<Message>) request.getAttribute("messages");
 <head>
   <title><%= conversation.getTitle() %></title>
   <link rel="stylesheet" href="/css/main.css" type="text/css">
-
   <style>
     #chat {
       background-color: white;
@@ -32,7 +31,7 @@ List<Message> messages = (List<Message>) request.getAttribute("messages");
       overflow-y: scroll
     }
   </style>
-
+  <script src="/javascript/textChange.js"></script>
   <script>
     // scroll the chat div to the bottom
     function scrollChat() {
@@ -81,10 +80,15 @@ List<Message> messages = (List<Message>) request.getAttribute("messages");
 
     <% if (request.getSession().getAttribute("user") != null) { %>
     <form action="/chat/<%= conversation.getTitle() %>" method="POST">
+      <button type="button" id ="bold" style="border-style:outset;" onclick="boldFunction()"><b>Bold</b></button>
+      <button type="button" id ="italic" style="border-style:outset;" onclick="italicFunction()"><i>Italic</i></button>
+      <button type="button" id ="underline" style="border-style:outset;" onclick="underlineFunction()"><u>Underline</u></button> 
+      <br/>
         <input type="text" name="message">
         <br/>
         <button type="submit">Send</button>
     </form>
+
     <% } else { %>
       <p><a href="/login">Login</a> to send a message.</p>
     <% } %>

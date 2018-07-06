@@ -3,12 +3,15 @@ package codeu.model.store.persistence;
 import codeu.model.data.Activity;
 import codeu.model.data.Activity.ActivityType;
 import codeu.model.data.Conversation;
+import codeu.model.data.Friendship;
+import codeu.model.data.Friendship.Status;
 import codeu.model.data.Message;
 import codeu.model.data.User;
 import com.google.appengine.tools.development.testing.LocalDatastoreServiceTestConfig;
 import com.google.appengine.tools.development.testing.LocalServiceTestHelper;
 import java.time.Instant;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 import org.junit.After;
 import org.junit.Assert;
@@ -193,5 +196,40 @@ public class PersistentDataStoreTest {
     Assert.assertEquals(newUser, resultActivityOne.getType());
     Assert.assertEquals(idOne, resultActivityOne.getId());
     Assert.assertEquals(creationOne, resultActivityOne.getCreationTime());
+  }
+
+  @Test
+  public void testSaveAndLoadFriendships() throws PersistentDataStoreException {
+    UUID userId = UUID.fromString("10000000-2222-3333-4444-555555555555");
+    String userName = "test_user";
+    String userPasswordHash = "$2a$10$BNte6sC.qoL4AVjO3Rk8ouY6uFaMnsW8B9NjtHWaDNe8GlQRPRT1S";
+    Instant userCreation = Instant.ofEpochMilli(1000);
+    User inputUser = new User(userId, userName, userPasswordHash, userCreation);
+
+    UUID friendId = UUID.fromString("10000001-2222-3333-4444-555555555555");
+    String friendName = "test_friend";
+    String friendPasswordHash = "$2a$10$ttaMOMMGLKxBBuTN06VPvu.jVKif.IczxZcXfLcqEcFi1lq.sLb6i";
+    Instant friendCreation = Instant.ofEpochMilli(2000);
+    User inputFriend = new User(friendId, friendName, friendPasswordHash, friendCreation);
+
+    UUID friendshipId = UUID.fromString("10000002-2222-3333-4444-555555555555");
+    Status inputStatus = Status.PENDING;
+    Instant inputCreation = Instant.ofEpochMilli(3000);
+    Friendship inputFriendship =
+        new Friendship(userId, friendId, friendshipId, inputStatus, inputCreation);
+
+    // save
+    persistentDataStore.writeThrough(inputFriendship);
+
+    // load
+    Map<UUID, List<Friendship>> resultFriendships = persistentDataStore.loadFriendships();
+
+    // confirm that what we saved matches what we loaded
+    Friendship resultFriendship = resultFriendships.get(userId).get(0);
+    Assert.assertEquals(userId, resultFriendship.getUserId());
+    Assert.assertEquals(friendId, resultFriendship.getFriendId());
+    Assert.assertEquals(friendshipId, resultFriendship.getId());
+    Assert.assertEquals(inputStatus, resultFriendship.getStatus());
+    Assert.assertEquals(inputCreation, resultFriendship.getCreationTime());
   }
 }
