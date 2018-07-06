@@ -108,6 +108,26 @@ public class UserStore {
   public void updateUser(User user) {
     persistentStorageAgent.writeThrough(user);
   }
+  /**
+   * Find user with aboutMe.
+   */
+  public User userAbout (String about) {
+    for (User user : users) {
+      if (user.getAboutMe().equals(about)) {
+        return user;
+      }
+    }
+    return null;
+  }
+
+  public boolean userAboutExists (String about) {
+    for (User user : users) {
+      if(user.getAboutMe().equals(about)){
+        return true;
+      }
+    }
+    return false;
+  }
 
   /** Return true if the given username is known to the application. */
   public boolean isUserRegistered(String username) {
@@ -118,7 +138,6 @@ public class UserStore {
     }
     return false;
   }
-
   /**
    * Sets the List of Users stored by this UserStore. This should only be called once, when the data
    * is loaded from Datastore.
