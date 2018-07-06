@@ -2,15 +2,19 @@ package codeu.controller;
 
 import codeu.model.data.Activity;
 import codeu.model.data.Conversation;
+import codeu.model.data.Friendship;
 import codeu.model.data.Message;
 import codeu.model.data.User;
 import codeu.model.store.basic.ActivityStore;
 import codeu.model.store.basic.ConversationStore;
+import codeu.model.store.basic.FriendshipStore;
 import codeu.model.store.basic.MessageStore;
 import codeu.model.store.basic.UserStore;
 import codeu.model.store.persistence.PersistentDataStoreException;
 import codeu.model.store.persistence.PersistentStorageAgent;
 import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 
@@ -35,6 +39,9 @@ public class ServerStartupListener implements ServletContextListener {
 
       List<Activity> activities = PersistentStorageAgent.getInstance().loadActivities();
       ActivityStore.getInstance().setActivities(activities);
+
+      Map<UUID, List<Friendship>> friendships = PersistentStorageAgent.getInstance().loadFriendships();
+      FriendshipStore.getInstance().setFriendships(friendships);
 
     } catch (PersistentDataStoreException e) {
       System.err.println("Server didn't start correctly. An error occurred during Datastore load!");
