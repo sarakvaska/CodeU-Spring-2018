@@ -315,69 +315,89 @@ public class ChatServlet extends HttpServlet {
     }
 
     // emojis
-    // add a space in front in case message starts with an emoji
-    cleanedMessageContent = " " + cleanedMessageContent + " ";
 
-    // replace emojis with hex code
-    cleanedMessageContent = cleanedMessageContent.replace (" 0:-) ", " &#x1F607; ");
-    cleanedMessageContent = cleanedMessageContent.replace (" 0:) ", " &#x1F607; ");
-    cleanedMessageContent = cleanedMessageContent.replace (" &gt;:-) ", " &#x1F608; ");
-    cleanedMessageContent = cleanedMessageContent.replace (" &gt;:) ", " &#x1F608; ");
-    cleanedMessageContent = cleanedMessageContent.replace (" :) ", " &#x1F642; ");
-    cleanedMessageContent = cleanedMessageContent.replace (" :-) ", " &#x1F642; ");
-    cleanedMessageContent = cleanedMessageContent.replace (" :D ", " &#x1F601; ");
-    cleanedMessageContent = cleanedMessageContent.replace (" :-D ", " &#x1F601; ");
-    cleanedMessageContent = cleanedMessageContent.replace (" :'D ", " &#x1F602; ");
-    cleanedMessageContent = cleanedMessageContent.replace (" :'-D ", " &#x1F602; ");
+    String[] messageArray = cleanedMessageContent.split("\\s");
+    for (int i = 0; i < messageArray.length; i++) {
+      // replace emojis with hex code
+      if (messageArray[i].equals("0:-)") || messageArray[i].equals("0:)")){
+        messageArray[i] = "&#x1F607;";
+      }
+      else if (messageArray[i].equals("&gt;:-)") || messageArray[i].equals("&gt;:)")){
+        messageArray[i] = "&#x1F608;";
+      }
+      else if (messageArray[i].equals(":-)") || messageArray[i].equals(":)")){
+        messageArray[i] = "&#x1F642;";
+      }
+      else if (messageArray[i].equals(":-D") || messageArray[i].equals(":D")){
+        messageArray[i] = "&#x1F601;";
+      }
+      else if (messageArray[i].equals(":'-D") || messageArray[i].equals(":'D")){
+        messageArray[i] = "&#x1F602;";
+      }
+      else if (messageArray[i].equals("&gt;:(") || messageArray[i].equals("&gt;:-(")){
+        messageArray[i] = "&#x1F620;";
+      }
+      else if (messageArray[i].equals(":-(") || messageArray[i].equals(":(")){
+        messageArray[i] = "&#x1F641;";
+      }
+      else if (messageArray[i].equals(":'-(") || messageArray[i].equals(":'(")){
+        messageArray[i] = "&#x1F622;";
+      }
+      else if (messageArray[i].equals(":-|") || messageArray[i].equals(":|")){
+        messageArray[i] = "&#x1F610;";
+      }
+      else if (messageArray[i].equals(":-\\") || messageArray[i].equals(":\\") || 
+               messageArray[i].equals(":-/") || messageArray[i].equals(":/")){
+        messageArray[i] = "&#x1F615;";
+      }
+      else if (messageArray[i].equals("B-)") || messageArray[i].equals("B)") ||
+               messageArray[i].equals("8-)") || messageArray[i].equals("8)")){
+        messageArray[i] = "&#x1F60E;";
+      }
+      else if (messageArray[i].equals(":-O") || messageArray[i].equals(":O") ||
+               messageArray[i].equals(":-o") || messageArray[i].equals(":o")){
+        messageArray[i] = "&#x1F62E;";
+      }
+      else if (messageArray[i].equals(":-*") || messageArray[i].equals(":*")){
+        messageArray[i] = "&#x1F617;";
+      }
+      else if (messageArray[i].equals(":-P") || messageArray[i].equals(":P")){
+        messageArray[i] = "&#x1F61B;";
+      }
+      else if (messageArray[i].equals("x-P") || messageArray[i].equals("xP") ||
+               messageArray[i].equals("X-P") || messageArray[i].equals("XP")){
+        messageArray[i] = "&#x1F61D;";
+      }
+      else if (messageArray[i].equals(";-)") || messageArray[i].equals(";)")){
+        messageArray[i] = "&#x1F609;";
+      }
+      else if (messageArray[i].equals("&gt;_&lt;")){
+        messageArray[i] = "&#x1F616;";
+      }
+      else if (messageArray[i].equals("-_-")){
+        messageArray[i] = "&#x1F611;";
+      }
+      else if (messageArray[i].equals("^_^")){
+        messageArray[i] = "&#x1F60A;";
+      }
+      else if (messageArray[i].equals("T_T")){
+        messageArray[i] = "&#x1F62D;";
+      }
+      else if (messageArray[i].equals("D-:") || messageArray[i].equals("D:")){
+        messageArray[i] = "&#x1F629;";
+      }
+      else if (messageArray[i].equals(":X") || messageArray[i].equals(":x")){
+        messageArray[i] = "&#x1F636;";
+      }
+      else if (messageArray[i].equals(":@")){
+        messageArray[i] = "&#x1F637;";
+      }
+      else if (messageArray[i].equals("&lt;3")){
+        messageArray[i] = "&#x1F499;";
+      }
+    }
 
-
-    cleanedMessageContent = cleanedMessageContent.replace (" &gt;:( ", " &#x1F620; ");
-    cleanedMessageContent = cleanedMessageContent.replace (" &gt;:-( ", " &#x1F620; ");
-    cleanedMessageContent = cleanedMessageContent.replace (" :( ", " &#x1F641; ");
-    cleanedMessageContent = cleanedMessageContent.replace (" :-( ", " &#x1F641; ");
-    cleanedMessageContent = cleanedMessageContent.replace (" :'( ", " &#x1F622; ");
-    cleanedMessageContent = cleanedMessageContent.replace (" :'-( ", " &#x1F622; ");
-    cleanedMessageContent = cleanedMessageContent.replace (" :-| ", " &#x1F610; ");
-    cleanedMessageContent = cleanedMessageContent.replace (" :| ", " &#x1F610; ");
-    cleanedMessageContent = cleanedMessageContent.replace (" :-\\ ", " &#x1F615; ");
-    cleanedMessageContent = cleanedMessageContent.replace (" :\\ ", " &#x1F615; ");
-    cleanedMessageContent = cleanedMessageContent.replace (" :-/ ", " &#x1F615; ");
-    cleanedMessageContent = cleanedMessageContent.replace (" :/ ", " &#x1F615; ");
-
-    cleanedMessageContent = cleanedMessageContent.replace (" B-) ", " &#x1F60E; ");
-    cleanedMessageContent = cleanedMessageContent.replace (" B) ", " &#x1F60E; ");
-    cleanedMessageContent = cleanedMessageContent.replace (" 8-) ", " &#x1F60E; ");
-    cleanedMessageContent = cleanedMessageContent.replace (" 8) ", " &#x1F60E; ");
-    cleanedMessageContent = cleanedMessageContent.replace (" :* ", " &#x1F617; ");
-    cleanedMessageContent = cleanedMessageContent.replace (" :-* ", " &#x1F617; ");
-    cleanedMessageContent = cleanedMessageContent.replace (" :-O ", " &#x1F62E; ");
-    cleanedMessageContent = cleanedMessageContent.replace (" :O ", " &#x1F62E; ");
-    cleanedMessageContent = cleanedMessageContent.replace (" :-o ", " &#x1F62E; ");
-    cleanedMessageContent = cleanedMessageContent.replace (" :o ", " &#x1F62E; ");
-
-    cleanedMessageContent = cleanedMessageContent.replace (" :-P ", " &#x1F61B; ");
-    cleanedMessageContent = cleanedMessageContent.replace (" :P ", " &#x1F61B; ");
-    cleanedMessageContent = cleanedMessageContent.replace (" x-P ", " &#x1F61D; ");
-    cleanedMessageContent = cleanedMessageContent.replace (" xP ", " &#x1F61D; ");
-    cleanedMessageContent = cleanedMessageContent.replace (" X-P ", " &#x1F61D; ");
-    cleanedMessageContent = cleanedMessageContent.replace (" XP ", " &#x1F61D; ");
-
-    cleanedMessageContent = cleanedMessageContent.replace (" ;) ", " &#x1F609; ");
-    cleanedMessageContent = cleanedMessageContent.replace (" ;-) ", " &#x1F609; ");
-    cleanedMessageContent = cleanedMessageContent.replace (" &gt;_&lt; ", " &#x1F616; ");
-    cleanedMessageContent = cleanedMessageContent.replace (" -_- ", " &#x1F611; ");
-    cleanedMessageContent = cleanedMessageContent.replace (" ^_^ ", " &#x1F60A; ");
-    cleanedMessageContent = cleanedMessageContent.replace (" T_T ", " &#x1F62D; ");
-
-
-    cleanedMessageContent = cleanedMessageContent.replace (" D: ", " &#x1F629; ");
-    cleanedMessageContent = cleanedMessageContent.replace (" D-: ", " &#x1F629; ");
-    cleanedMessageContent = cleanedMessageContent.replace (" :X ", " &#x1F636; ");
-    cleanedMessageContent = cleanedMessageContent.replace (" :x ", " &#x1F636; ");
-    cleanedMessageContent = cleanedMessageContent.replace (" :@ ", " &#x1F637; ");
-
-    // trim off the added space if messsage doesn't start with space
-    cleanedMessageContent = cleanedMessageContent.trim();
+    cleanedMessageContent = String.join(" ", messageArray);
 
     Message message =
         new Message(
