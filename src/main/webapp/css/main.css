@@ -44,6 +44,7 @@ nav a {
   margin-right: auto;
   width: 800px;
 }
+
 #box {
    background-color: white;
    width: 785px;
@@ -60,27 +61,13 @@ nav a {
  }
 
 #messageList {
-   list-style-type: none;
+   background-color: white;
    padding: 0;
    margin: 0;
    width:790px;
-   height: 200px;
-   overflow:hidden; overflow-y:scroll;
+   height:200px;
+   overflow-y: scroll;
  }
-
-#messageList li a{
-   margin-top: -1px; /* Prevent double borders */
-   background-color: #f6f6f6;
-   padding: 12px;
-   text-decoration: none;
-   font-size: 18px;
-   color: black;
-   display: block
- }
-
-#messageList li a:hover:not(.header) {
-     background-color: #eee;
-   }
 
 h1 {
   color: #757575;

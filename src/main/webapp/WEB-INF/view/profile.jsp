@@ -61,25 +61,24 @@ List<Message> messages = (List<Message>) request.getAttribute("messages");
           <button type ="submit" name="about" value="About">Submit</button>
           <h3><%= getProfile.getName() %>'s Sent Messages</h3>
           <input type="text" id="searchInput" onkeyup="mySearch()" placeholder="Search for messages...">
-
-          <ul id="messageList">
+          <div id="messageList">
+            <ul>
               <%
                 for (Message message : messages) {
                   Date date = Date.from(message.getCreationTime());
-                  %><li><a href="#"><b><small><%=date %>: </b></small><%= message.getContent() %></a></li>
+                  %><li><p><b><small><%=date %>: </small></b><%= message.getContent() %></p></li>
               <% } %>
-        </ul>
+            </ul>
+          </div>
 
         <script>
         function mySearch() {
-            var input, filter, listMessage, li, a, i;
-            input = document.getElementById("searchInput");
-            filter = input.value.toUpperCase();
-            listMessage = document.getElementById("messageList");
-            indivMessage = listMessage.getElementsByTagName("li");
+            var filterMessage, indivMessage, p, i;
+            filterMessage = document.getElementById("searchInput").value.toLowerCase();
+            indivMessage = document.getElementById("messageList").getElementsByTagName("li");
             for (i = 0; i < indivMessage.length; i++) {
-                a = indivMessage[i].getElementsByTagName("a")[0];
-                if (a.innerHTML.toUpperCase().indexOf(filter) > -1) {
+                p = indivMessage[i].getElementsByTagName("p")[0];
+                if (p.innerHTML.toLowerCase().indexOf(filterMessage) > -1) {
                     indivMessage[i].style.display = "";
                 } else {
                     indivMessage[i].style.display = "none";
@@ -87,7 +86,7 @@ List<Message> messages = (List<Message>) request.getAttribute("messages");
             }
         }
         </script>
-        
+
         <br>
         <form action="/user/<%= getProfile.getName()%>" method="POST">
         <button style="margin-left: 90%;" type="submit" name="logout" value="Logout">Logout</button>
