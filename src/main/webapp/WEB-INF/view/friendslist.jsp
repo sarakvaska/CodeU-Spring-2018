@@ -1,3 +1,11 @@
+<%@ page import="java.util.List" %>
+<%@ page import="java.util.Map" %>
+<%@ page import="java.util.UUID" %>
+<%@ page import="codeu.model.data.Friendship" %>
+<%@ page import="codeu.model.data.Friendship.Status" %>
+<%@ page import="codeu.model.data.User" %>
+<%@ page import="codeu.model.store.basic.UserStore" %>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -22,6 +30,61 @@
 
   <div id="container">
     <h1>Friends List</h1>
-    <p>This is your friends list.</p>
+
+    <ul>
+      <%
+      Map<UUID, List<Friendship>> friendships =
+          (Map<UUID, List<Friendship>>) request.getAttribute("friendships");
+
+      String username = (String) request.getSession().getAttribute("user");
+
+      UserStore userStore = UserStore.getInstance();
+      User user = userStore.getUser(username);
+      UUID userId = user.getId();
+
+      List<Friendship> friendsList = friendships.get(userId);
+
+      if (friendsList == null || friendsList.isEmpty()) {
+      %>
+        <li>Your friends list is empty.</li>
+      <%
+      } else {
+        for (Friendship friendship : friendsList) {
+          UUID friendId = friendship.getId();
+          User friend = userStore.getUser(friendId);
+          Status status = friendship.getStatus();
+
+          if (userId.equals(friendId)) {
+            UUID pendingFriendId = friendship.getUserId();
+            User pendingFriend = userStore.getUser(pendingFriendId);
+      %>
+            <li>
+              <%= pendingFriend.getName() %>
+              <em>PENDING</em>
+              <form action="/friendslist" method="POST">
+                <input type="hidden" name="friendId" value="<%= friendId.toString() %>">
+                <input type="submit" name="accept" value="Accept" />
+                <input type="submit" name="remove" value="Reject" />
+              </form>
+            </li>
+      <%
+          } else {
+      %>
+            <li>
+              <%= friend.getName() %>
+              <%
+              if (status == Status.PENDING) {
+              %>
+                <em>PENDING</em>
+      <%
+              }
+      %>
+            </li>
+      <%
+          }
+        }
+      }
+      %>
+    </ul>
   </div>
 </body>

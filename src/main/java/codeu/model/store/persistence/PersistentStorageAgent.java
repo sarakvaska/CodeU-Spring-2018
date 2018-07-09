@@ -16,10 +16,13 @@ package codeu.model.store.persistence;
 
 import codeu.model.data.Activity;
 import codeu.model.data.Conversation;
+import codeu.model.data.Friendship;
 import codeu.model.data.Message;
 import codeu.model.data.User;
 import codeu.model.store.persistence.PersistentDataStore;
 import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 
 /**
  * This class is the interface between the application and PersistentDataStore, which handles
@@ -100,6 +103,16 @@ public class PersistentStorageAgent {
     return persistentDataStore.loadActivities();
   }
 
+  /**
+   * Retrieve all Friendship objects from the Datastore service. The returned map may be empty.
+   *
+   * @throws PersistentDataStoreException if an error was detected during the load from the
+   *     Datastore service
+   */
+  public Map<UUID, List<Friendship>> loadFriendships() throws PersistentDataStoreException {
+    return persistentDataStore.loadFriendships();
+  }
+
   /** Write a User object to the Datastore service. */
   public void writeThrough(User user) {
     persistentDataStore.writeThrough(user);
@@ -118,5 +131,10 @@ public class PersistentStorageAgent {
   /** Write an Activity object to the Datastore service. */
   public void writeThrough(Activity activity) {
     persistentDataStore.writeThrough(activity);
+  }
+
+  /** Write a Friendship object to the Datastore service. */
+  public void writeThrough(Friendship friendship) {
+    persistentDataStore.writeThrough(friendship);
   }
 }
