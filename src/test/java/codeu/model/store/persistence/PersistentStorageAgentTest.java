@@ -89,13 +89,15 @@ public class PersistentStorageAgentTest {
             UUID.randomUUID(),
             "test_user",
             "$2a$10$5GNCbSPS1sqqM9.hdiE2hexn1w.vnNoR.CaHIztFEhdAD7h82tqX.",
-            Instant.now());
+            Instant.now(),
+            "test_aboutMe");
     User friend =
         new User(
             UUID.randomUUID(),
             "test_friend",
             "$2a$10$5GNCbSPS1sqqM9.hdiE2hexn1w.vnNoR.CaHIztFEhdAD7h82tqA.",
-            Instant.now());
+            Instant.now(),
+            "test_aboutMe");
     Friendship friendship =
         new Friendship(user.getId(), friend.getId(), UUID.randomUUID(),
                        Status.PENDING, Instant.now());

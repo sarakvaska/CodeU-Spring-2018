@@ -42,23 +42,24 @@ List<Message> messages = (List<Message>) request.getAttribute("messages");
       <p> This user has no description </p>
     <% } %>
       <% if(request.getSession().getAttribute("user") != null) {%>
-          <% if(request.getSession().getAttribute("user").equals(getProfile.getName())) {%>
+          <% if(request.getSession().getAttribute("user").equals(getProfile.getName())) { %>
             <h4> Edit your About Me (only you can see this) </h4>
             <form action="/user/<%= request.getAttribute("user") %>" method="POST">
-            <% if(getProfile.getAboutMe() != null) {%>
+            <% if(getProfile.getAboutMe() == null) {%>
               <div class="form-group">
-              <textarea id = "box" font-size: 25px  type ="text" name="aboutMe" placeholder = "<%=getProfile.getAboutMe()%>"></textarea>
+                <textarea id = "box" font-size: 25px type ="text" name="aboutMe"
+                  placeholder = "Write about yourself!"></textarea>
               </div>
             <hr/>
             <% } else { %>
               <div class="form-group">
-                <textarea id = "box" type ="text" name="aboutMe"
-                  placeholder = "Write about yourself!"></textarea>
+              <textarea id = "box" font-size: 25px  type ="text" name="aboutMe" placeholder = "<%=getProfile.getAboutMe()%>"></textarea>
               </div>
               <hr/>
               <% } %>
+            <button type ="submit" name="about" value="About">Submit</button>
           </form>
-          <button type ="submit" name="about" value="About">Submit</button>
+
           <h3><%= getProfile.getName() %>'s Sent Messages</h3>
           <input type="text" id="searchInput" onkeyup="mySearch()" placeholder="Search for messages...">
           <div id="messageList">

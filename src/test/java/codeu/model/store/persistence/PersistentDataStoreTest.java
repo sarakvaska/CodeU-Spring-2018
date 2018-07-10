@@ -204,13 +204,15 @@ public class PersistentDataStoreTest {
     String userName = "test_user";
     String userPasswordHash = "$2a$10$BNte6sC.qoL4AVjO3Rk8ouY6uFaMnsW8B9NjtHWaDNe8GlQRPRT1S";
     Instant userCreation = Instant.ofEpochMilli(1000);
-    User inputUser = new User(userId, userName, userPasswordHash, userCreation);
+    String userAboutMe = "test_aboutMe";
+    User inputUser = new User(userId, userName, userPasswordHash, userCreation, userAboutMe);
 
     UUID friendId = UUID.fromString("10000001-2222-3333-4444-555555555555");
     String friendName = "test_friend";
     String friendPasswordHash = "$2a$10$ttaMOMMGLKxBBuTN06VPvu.jVKif.IczxZcXfLcqEcFi1lq.sLb6i";
     Instant friendCreation = Instant.ofEpochMilli(2000);
-    User inputFriend = new User(friendId, friendName, friendPasswordHash, friendCreation);
+    String friendAboutMe = "test_aboutMe";
+    User inputFriend = new User(friendId, friendName, friendPasswordHash, friendCreation, friendAboutMe);
 
     UUID friendshipId = UUID.fromString("10000002-2222-3333-4444-555555555555");
     Status inputStatus = Status.PENDING;
