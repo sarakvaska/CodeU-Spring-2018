@@ -15,6 +15,7 @@ List<Message> messages = (List<Message>) request.getAttribute("messages");
 <head>
   <title>Profile Page</title>
   <link rel="stylesheet" href="/css/main.css" type="text/css">
+  <script src="/javascript/search.js"></script>
   </head>
 
   <nav>
@@ -71,22 +72,6 @@ List<Message> messages = (List<Message>) request.getAttribute("messages");
               <% } %>
             </ul>
           </div>
-
-        <script>
-        function mySearch() {
-            var filterMessage, indivMessage, p, i;
-            filterMessage = document.getElementById("searchInput").value.toLowerCase();
-            indivMessage = document.getElementById("messageList").getElementsByTagName("li");
-            for (i = 0; i < indivMessage.length; i++) {
-                p = indivMessage[i].getElementsByTagName("p")[0];
-                if (p.innerHTML.toLowerCase().indexOf(filterMessage) > -1) {
-                    indivMessage[i].style.display = "";
-                } else {
-                    indivMessage[i].style.display = "none";
-                }
-            }
-        }
-        </script>
 
         <br>
         <form action="/user/<%= getProfile.getName()%>" method="POST">
