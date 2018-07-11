@@ -54,7 +54,7 @@ List<Message> messages = (List<Message>) request.getAttribute("messages");
             <hr/>
             <% } else { %>
               <div class="form-group">
-              <textarea id = "box" font-size: 25px  type ="text" name="aboutMe" placeholder = "<%=getProfile.getAboutMe()%>"></textarea>
+              <textarea id = "box" type ="text" name="aboutMe" placeholder = "<%=getProfile.getAboutMe()%>"></textarea>
               </div>
               <hr/>
               <% } %>
