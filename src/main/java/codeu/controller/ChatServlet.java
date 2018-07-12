@@ -315,7 +315,6 @@ public class ChatServlet extends HttpServlet {
     }
 
     // emojis
-
     String[] messageArray = cleanedMessageContent.split("\\s");
     for (int i = 0; i < messageArray.length; i++) {
       // replace emojis with hex code
