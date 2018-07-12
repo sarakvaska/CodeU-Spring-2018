@@ -11,8 +11,8 @@ public class FriendshipTest {
 
   @Test
   public void testCreate() {
-    User user = new User(UUID.randomUUID(), "test_user", "user_password", Instant.now());
-    User friend = new User(UUID.randomUUID(), "test_friend", "friend_password", Instant.now());
+    User user = new User(UUID.randomUUID(), "test_user", "user_password", Instant.now(), "user_aboutMe");
+    User friend = new User(UUID.randomUUID(), "test_friend", "friend_password", Instant.now(), "user_aboutMe");
 
     UUID userId = user.getId();
     UUID friendId = friend.getId();

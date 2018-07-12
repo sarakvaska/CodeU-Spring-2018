@@ -25,7 +25,7 @@
     <a id="navTitle" href="/">CodeU Chat App</a>
     <a href="/conversations">Conversations</a>
     <% if(request.getSession().getAttribute("user") != null){ %>
-      <a href="/profile"><%= request.getSession().getAttribute("user") %>'s Profile</a>
+      <a href="/user/<%= request.getSession().getAttribute("user") %>"><%= request.getSession().getAttribute("user") %>'s Profile</a>
       <a href="/friendslist">Friends</a>
     <% } else{ %>
       <a href="/login">Login</a>
@@ -43,7 +43,9 @@
       <h2>Welcome to the Salvatorian Realm!</h2>
 
       <ul>
+        <% if(request.getSession().getAttribute("user") == null) {%>
         <li><a href="/login">Login</a> to get started.</li>
+        <%} %>
         <li>Go to the <a href="/conversations">conversations</a> page to
             create or join a conversation.</li>
         <li>View the <a href="/about.jsp">about</a> page to learn more about the

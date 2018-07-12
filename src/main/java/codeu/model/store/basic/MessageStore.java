@@ -98,7 +98,19 @@ public class MessageStore {
     }
     return null;
   }
+  /** Access the current set of Messages sent by the author. */
+  public List<Message> getMessagesByAuthor(UUID author) {
 
+    List<Message> messagesByAuthor = new ArrayList<>();
+
+    for (Message message : messages) {
+      if (message.getAuthorId().equals(author)) {
+        messagesByAuthor.add(message);
+      }
+    }
+
+    return messagesByAuthor;
+  }
   /** Sets the List of Messages stored by this MessageStore. */
   public void setMessages(List<Message> messages) {
     this.messages = messages;

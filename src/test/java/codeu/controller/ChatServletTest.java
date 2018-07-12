@@ -146,8 +146,9 @@ public class ChatServletTest {
         new User(
             UUID.randomUUID(),
             "test_username",
-            "$2a$10$bBiLUAVmUFK6Iwg5rmpBUOIBW6rIMhU1eKfi3KR60V9UXaYTwPfHy",
-            Instant.now());
+            "$2a$10$eDhncK/4cNH2KE.Y51AWpeL8/5znNBQLuAFlyJpSYNODR/SJQ/Fg6",
+            Instant.now(),
+            "test_aboutMe");
     Mockito.when(mockUserStore.getUser("test_username")).thenReturn(fakeUser);
 
     Mockito.when(mockConversationStore.getConversationWithTitle("test_conversation"))
@@ -168,8 +169,9 @@ public class ChatServletTest {
         new User(
             UUID.randomUUID(),
             "test_username",
-            "$2a$10$bBiLUAVmUFK6Iwg5rmpBUOIBW6rIMhU1eKfi3KR60V9UXaYTwPfHy",
-            Instant.now());
+            "$2a$10$eDhncK/4cNH2KE.Y51AWpeL8/5znNBQLuAFlyJpSYNODR/SJQ/Fg6",
+            Instant.now(),
+            "test_aboutMe");
     Mockito.when(mockUserStore.getUser("test_username")).thenReturn(fakeUser);
 
     Conversation fakeConversation =
@@ -202,7 +204,8 @@ public class ChatServletTest {
             UUID.randomUUID(),
             "test_username",
             "$2a$10$eDhncK/4cNH2KE.Y51AWpeL8/5znNBQLuAFlyJpSYNODR/SJQ/Fg6",
-            Instant.now());
+            Instant.now(),
+            "test_aboutMe");
     Mockito.when(mockUserStore.getUser("test_username")).thenReturn(fakeUser);
 
     Conversation fakeConversation =
@@ -236,8 +239,9 @@ public class ChatServletTest {
         new User(
             UUID.randomUUID(),
             "test_username",
-            "$2a$10$eDhncK/4cNH2KE.Y51AWpeL8/5znNBQLuANlyJpSYNODR/SJQ/Fg7",
-            Instant.now());
+            "$2a$10$eDhncK/4cNH2KE.Y51AWpeL8/5znNBQLuAFlyJpSYNODR/SJQ/Fg6",
+            Instant.now(),
+            "test_aboutMe");
     Mockito.when(mockUserStore.getUser("test_username")).thenReturn(fakeUser);
 
     Conversation fakeConversation =
@@ -270,8 +274,9 @@ public class ChatServletTest {
         new User(
             UUID.randomUUID(),
             "test_username",
-            "$2a$10$eDhncK/4cNH2KE.Y51AWpeL8/6znNBQLuBNlyJpSYNODR/SJQ/Fg8",
-            Instant.now());
+            "$2a$10$eDhncK/4cNH2KE.Y51AWpeL8/5znNBQLuAFlyJpSYNODR/SJQ/Fg6",
+            Instant.now(),
+            "test_aboutMe");
     Mockito.when(mockUserStore.getUser("test_username")).thenReturn(fakeUser);
 
     Conversation fakeConversation =
@@ -304,8 +309,9 @@ public class ChatServletTest {
         new User(
             UUID.randomUUID(),
             "test_username",
-            "$2a$10$eDhncK/4cNH2KE.Y51AWpeL8/5znXBQLwANlyKpSYNODR/SJQ/Fg7",
-            Instant.now());
+            "$2a$10$eDhncK/4cNH2KE.Y51AWpeL8/5znNBQLuAFlyJpSYNODR/SJQ/Fg6",
+            Instant.now(),
+            "test_aboutMe");
     Mockito.when(mockUserStore.getUser("test_username")).thenReturn(fakeUser);
 
     Conversation fakeConversation =
@@ -338,8 +344,9 @@ public class ChatServletTest {
         new User(
             UUID.randomUUID(),
             "test_username",
-            "$2a$10$eDhncK/4cNH2KE.Y51AWpeL8/14nXBQMwANlyKpSYNODR/SJQ/Fg7",
-            Instant.now());
+            "$2a$10$eDhncK/4cNH2KE.Y51AWpeL8/5znNBQLuAFlyJpSYNODR/SJQ/Fg6",
+            Instant.now(),
+            "test_aboutMe");
     Mockito.when(mockUserStore.getUser("test_username")).thenReturn(fakeUser);
 
     Conversation fakeConversation =
@@ -369,8 +376,9 @@ public class ChatServletTest {
         new User(
             UUID.randomUUID(),
             "test_username",
-            "$2a$10$eDhncK/4cNH2KE.Z321WpeL8/14nXBQMwANlyKpSYNODR/SJQ/Fg7",
-            Instant.now());
+            "$2a$10$eDhncK/4cNH2KE.Y51AWpeL8/5znNBQLuAFlyJpSYNODR/SJQ/Fg6",
+            Instant.now(),
+            "test_aboutMe");
     Mockito.when(mockUserStore.getUser("test_username")).thenReturn(fakeUser);
 
     Conversation fakeConversation =
@@ -399,8 +407,9 @@ public class ChatServletTest {
         new User(
             UUID.randomUUID(),
             "test_username",
-            "$2a$10$eDhncK/4cNH2KE.Y51AWpeL8/15znXQLwANlyKpSYNODR/SJQ/Fg7",
-            Instant.now());
+            "$2a$10$eDhncK/4cNH2KE.Y51AWpeL8/5znNBQLuAFlyJpSYNODR/SJQ/Fg6",
+            Instant.now(),
+            "test_aboutMe");
     Mockito.when(mockUserStore.getUser("test_username")).thenReturn(fakeUser);
 
     Conversation fakeConversation =
@@ -428,8 +437,9 @@ public class ChatServletTest {
         new User(
             UUID.randomUUID(),
             "test_username",
-            "$2a$10$eDhncK/2cMZ2KE.SD51ApeL8/15znXQLwANlyKpSYNODR/SJQ/Fg7",
-            Instant.now());
+            "$2a$10$eDhncK/4cNH2KE.Y51AWpeL8/5znNBQLuAFlyJpSYNODR/SJQ/Fg6",
+            Instant.now(),
+            "test_aboutMe");
     Mockito.when(mockUserStore.getUser("test_username")).thenReturn(fakeUser);
 
     Conversation fakeConversation =
@@ -457,8 +467,9 @@ public class ChatServletTest {
         new User(
             UUID.randomUUID(),
             "test_username",
-            "$2a$10$eDhncK/2cMZ2KE.T51AWpeL/15znXQLwANlyKpSYNODR/SJQ/Fg7",
-            Instant.now());
+            "$2a$10$eDhncK/4cNH2KE.Y51AWpeL8/5znNBQLuAFlyJpSYNODR/SJQ/Fg6",
+            Instant.now(),
+            "test_aboutMe");
     Mockito.when(mockUserStore.getUser("test_username")).thenReturn(fakeUser);
 
     Conversation fakeConversation =
@@ -486,8 +497,9 @@ public class ChatServletTest {
         new User(
             UUID.randomUUID(),
             "test_username",
-            "$2a$10$eDhncK/2cMZ2KE.GH1AWpeL8/15znXQLwANlypSYNODR/SJQ/Fg7",
-            Instant.now());
+            "$2a$10$eDhncK/4cNH2KE.Y51AWpeL8/5znNBQLuAFlyJpSYNODR/SJQ/Fg6",
+            Instant.now(),
+            "test_aboutMe");
     Mockito.when(mockUserStore.getUser("test_username")).thenReturn(fakeUser);
 
     Conversation fakeConversation =
@@ -515,8 +527,9 @@ public class ChatServletTest {
         new User(
             UUID.randomUUID(),
             "test_username",
-            "$2a$10$eDhncK/2cMZ2KE.GH1AWpeL8/15znXQLwANlybnYNODR/SJQ/GH2",
-            Instant.now());
+            "$2a$10$eDhncK/4cNH2KE.Y51AWpeL8/5znNBQLuAFlyJpSYNODR/SJQ/Fg6",
+            Instant.now(),
+            "test_aboutMe");
     Mockito.when(mockUserStore.getUser("test_username")).thenReturn(fakeUser);
 
     Conversation fakeConversation =
@@ -544,8 +557,9 @@ public class ChatServletTest {
         new User(
             UUID.randomUUID(),
             "test_username",
-            "$2a$10$eDhncK/2cMZ45E.GH1AWpeL8/15znXQLwANlybnYNODR/SJQ/GH2",
-            Instant.now());
+            "$2a$10$eDhncK/4cNH2KE.Y51AWpeL8/5znNBQLuAFlyJpSYNODR/SJQ/Fg6",
+            Instant.now(),
+            "test_aboutMe");
     Mockito.when(mockUserStore.getUser("test_username")).thenReturn(fakeUser);
 
     Conversation fakeConversation =
@@ -573,8 +587,9 @@ public class ChatServletTest {
         new User(
             UUID.randomUUID(),
             "test_username",
-            "$2a$10$eDhncK/2cMZ45E.GH1AWpeL8/15znXQLwANlycmYNODR/SJQ/GH2",
-            Instant.now());
+            "$2a$10$eDhncK/4cNH2KE.Y51AWpeL8/5znNBQLuAFlyJpSYNODR/SJQ/Fg6",
+            Instant.now(),
+            "test_aboutMe");
     Mockito.when(mockUserStore.getUser("test_username")).thenReturn(fakeUser);
 
     Conversation fakeConversation =
@@ -602,8 +617,9 @@ public class ChatServletTest {
         new User(
             UUID.randomUUID(),
             "test_username",
-            "$2a$10$eDhncK/2cMZ45E.GH1AXDeL8/15znXQLwAMlycmYNODR/SJQ/GH2",
-            Instant.now());
+            "$2a$10$eDhncK/4cNH2KE.Y51AWpeL8/5znNBQLuAFlyJpSYNODR/SJQ/Fg6",
+            Instant.now(),
+            "test_aboutMe");
     Mockito.when(mockUserStore.getUser("test_username")).thenReturn(fakeUser);
 
     Conversation fakeConversation =
@@ -631,8 +647,9 @@ public class ChatServletTest {
         new User(
             UUID.randomUUID(),
             "test_username",
-            "$2a$10$eDhncK/2cMZ45E.GH1AWpeL8/15znXQLwANmzbmYNODR/SJQ/GH2",
-            Instant.now());
+            "$2a$10$eDhncK/4cNH2KE.Y51AWpeL8/5znNBQLuAFlyJpSYNODR/SJQ/Fg6",
+            Instant.now(),
+            "test_aboutMe");
     Mockito.when(mockUserStore.getUser("test_username")).thenReturn(fakeUser);
 
     Conversation fakeConversation =
@@ -660,8 +677,9 @@ public class ChatServletTest {
         new User(
             UUID.randomUUID(),
             "test_username",
-            "$2a$10$eDhncK/2cMZ45E.GH1AWpeL8/28znXQLwANmzbmYNODR/SJQ/GH2",
-            Instant.now());
+            "$2a$10$eDhncK/4cNH2KE.Y51AWpeL8/5znNBQLuAFlyJpSYNODR/SJQ/Fg6",
+            Instant.now(),
+            "test_aboutMe");
     Mockito.when(mockUserStore.getUser("test_username")).thenReturn(fakeUser);
 
     Conversation fakeConversation =
@@ -683,14 +701,16 @@ public class ChatServletTest {
   @Test
   public void testDoPost_ConvertingFontColorWordthroughBBCode() throws IOException, ServletException {
     Mockito.when(mockRequest.getRequestURI()).thenReturn("/chat/test_conversation");
+
     Mockito.when(mockSession.getAttribute("user")).thenReturn("test_username");
 
     User fakeUser =
         new User(
             UUID.randomUUID(),
             "test_username",
-            "$2a$10$eDhncK/2cMZ45E.GH1AWpeL8/28znXQLwANmzbmYNODR/TKL/GH2",
-            Instant.now());
+            "$2a$10$eDhncK/4cNH2KE.Y51AWpeL8/5znNBQLuAFlyJpSYNODR/SJQ/Fg6",
+            Instant.now(),
+            "test_aboutMe");
     Mockito.when(mockUserStore.getUser("test_username")).thenReturn(fakeUser);
 
     Conversation fakeConversation =
@@ -712,14 +732,16 @@ public class ChatServletTest {
   @Test
   public void testDoPost_ConvertingFontColorHexthroughBBCode() throws IOException, ServletException {
     Mockito.when(mockRequest.getRequestURI()).thenReturn("/chat/test_conversation");
+
     Mockito.when(mockSession.getAttribute("user")).thenReturn("test_username");
 
     User fakeUser =
         new User(
             UUID.randomUUID(),
             "test_username",
-            "$2a$10$eDhncK/2cMZ45E.GH1AWpeL8/28znXQLwANmzcmkNODR/TKL/GH2",
-            Instant.now());
+            "$2a$10$eDhncK/4cNH2KE.Y51AWpeL8/5znNBQLuAFlyJpSYNODR/SJQ/Fg6",
+            Instant.now(),
+            "test_aboutMe");
     Mockito.when(mockUserStore.getUser("test_username")).thenReturn(fakeUser);
 
     Conversation fakeConversation =
@@ -741,14 +763,16 @@ public class ChatServletTest {
   @Test
   public void testDoPost_ConvertingStylingChangingSizeFirstHexthroughBBCode() throws IOException, ServletException {
     Mockito.when(mockRequest.getRequestURI()).thenReturn("/chat/test_conversation");
+
     Mockito.when(mockSession.getAttribute("user")).thenReturn("test_username");
 
     User fakeUser =
         new User(
             UUID.randomUUID(),
             "test_username",
-            "$2a$10$eDhncK/2cMZ45E.GH1AWpeL8/28znXQLwANmzBBkNODR/TKL/ZH2",
-            Instant.now());
+            "$2a$10$eDhncK/4cNH2KE.Y51AWpeL8/5znNBQLuAFlyJpSYNODR/SJQ/Fg6",
+            Instant.now(),
+            "test_aboutMe");
     Mockito.when(mockUserStore.getUser("test_username")).thenReturn(fakeUser);
 
     Conversation fakeConversation =
@@ -770,14 +794,16 @@ public class ChatServletTest {
   @Test
   public void testDoPost_ConvertingStylingChangingSizeFirstColorWordthroughBBCode() throws IOException, ServletException {
     Mockito.when(mockRequest.getRequestURI()).thenReturn("/chat/test_conversation");
+
     Mockito.when(mockSession.getAttribute("user")).thenReturn("test_username");
 
     User fakeUser =
         new User(
             UUID.randomUUID(),
             "test_username",
-            "$2a$10$eDhncK/2cMZ45E.GH1AWpeL8/28znXQLwANmzBBkWORD/TKL/ZH2",
-            Instant.now());
+            "$2a$10$eDhncK/4cNH2KE.Y51AWpeL8/5znNBQLuAFlyJpSYNODR/SJQ/Fg6",
+            Instant.now(),
+            "test_aboutMe");
     Mockito.when(mockUserStore.getUser("test_username")).thenReturn(fakeUser);
 
     Conversation fakeConversation =
@@ -799,14 +825,16 @@ public class ChatServletTest {
   @Test
   public void testDoPost_ConvertingStylingChangingColorFirstHexthroughBBCode() throws IOException, ServletException {
     Mockito.when(mockRequest.getRequestURI()).thenReturn("/chat/test_conversation");
+
     Mockito.when(mockSession.getAttribute("user")).thenReturn("test_username");
 
     User fakeUser =
         new User(
             UUID.randomUUID(),
             "test_username",
-            "$2a$10$eDhncK/2cMZ45E.GH1AWpeL8/28znXBHwANmzBBkWORD/TKL/ZH2",
-            Instant.now());
+            "$2a$10$eDhncK/4cNH2KE.Y51AWpeL8/5znNBQLuAFlyJpSYNODR/SJQ/Fg6",
+            Instant.now(),
+            "test_aboutMe");
     Mockito.when(mockUserStore.getUser("test_username")).thenReturn(fakeUser);
 
     Conversation fakeConversation =
@@ -828,14 +856,16 @@ public class ChatServletTest {
   @Test
   public void testDoPost_ConvertingStylingChangingColorFirstWordthroughBBCode() throws IOException, ServletException {
     Mockito.when(mockRequest.getRequestURI()).thenReturn("/chat/test_conversation");
+
     Mockito.when(mockSession.getAttribute("user")).thenReturn("test_username");
 
     User fakeUser =
         new User(
             UUID.randomUUID(),
             "test_username",
-            "$2a$10$eDhncK/2cMZ45E.GH1AWpeL8/28znXBHwANmzBBkWORD/TKL/ZH2",
-            Instant.now());
+            "$2a$10$eDhncK/4cNH2KE.Y51AWpeL8/5znNBQLuAFlyJpSYNODR/SJQ/Fg6",
+            Instant.now(),
+            "test_aboutMe");
     Mockito.when(mockUserStore.getUser("test_username")).thenReturn(fakeUser);
 
     Conversation fakeConversation =
@@ -864,7 +894,8 @@ public class ChatServletTest {
             UUID.randomUUID(),
             "test_username",
             "$2a$10$eDhncK/2cMZ45E.GH1AWpeL8/28znXBHwANmzBBwEMOJI/TKL/ZH2",
-            Instant.now());
+            Instant.now(),
+            "test_aboutMe");
     Mockito.when(mockUserStore.getUser("test_username")).thenReturn(fakeUser);
 
     Conversation fakeConversation =
@@ -878,7 +909,7 @@ public class ChatServletTest {
 
     ArgumentCaptor<Message> messageArgumentCaptor = ArgumentCaptor.forClass(Message.class);
     Mockito.verify(mockMessageStore).addMessage(messageArgumentCaptor.capture());
-    Assert.assertEquals("&#x1F607; &#x1F607; &#x1F608; &#x1F608; &#x1F642; &#x1F642; &#x1F601; &#x1F601; &#x1F602; &#x1F602;", 
+    Assert.assertEquals("&#x1F607; &#x1F607; &#x1F608; &#x1F608; &#x1F642; &#x1F642; &#x1F601; &#x1F601; &#x1F602; &#x1F602;",
         messageArgumentCaptor.getValue().getContent());
 
     Mockito.verify(mockResponse).sendRedirect("/chat/test_conversation");
@@ -894,7 +925,8 @@ public class ChatServletTest {
             UUID.randomUUID(),
             "test_username",
             "$2a$10$eDhncK/2cMZ45E.GH1AWpeL8/38znXBHwANmzBBwEMOJI/TKL/ZH2",
-            Instant.now());
+            Instant.now(),
+            "test_aboutMe");
     Mockito.when(mockUserStore.getUser("test_username")).thenReturn(fakeUser);
 
     Conversation fakeConversation =
@@ -908,7 +940,7 @@ public class ChatServletTest {
 
     ArgumentCaptor<Message> messageArgumentCaptor = ArgumentCaptor.forClass(Message.class);
     Mockito.verify(mockMessageStore).addMessage(messageArgumentCaptor.capture());
-    Assert.assertEquals("&#x1F620; &#x1F620; &#x1F641; &#x1F641; &#x1F622; &#x1F622; &#x1F610; &#x1F610; &#x1F615; &#x1F615; &#x1F615; &#x1F615;", 
+    Assert.assertEquals("&#x1F620; &#x1F620; &#x1F641; &#x1F641; &#x1F622; &#x1F622; &#x1F610; &#x1F610; &#x1F615; &#x1F615; &#x1F615; &#x1F615;",
         messageArgumentCaptor.getValue().getContent());
 
     Mockito.verify(mockResponse).sendRedirect("/chat/test_conversation");
@@ -924,7 +956,8 @@ public class ChatServletTest {
             UUID.randomUUID(),
             "test_username",
             "$2a$10$eDhncK/2cMZ45E.GH1AWpeL8/48znXBHwANmzBBwEMOJI/TKL/ZH2",
-            Instant.now());
+            Instant.now(),
+            "test_aboutMe");
     Mockito.when(mockUserStore.getUser("test_username")).thenReturn(fakeUser);
 
     Conversation fakeConversation =
@@ -938,7 +971,7 @@ public class ChatServletTest {
 
     ArgumentCaptor<Message> messageArgumentCaptor = ArgumentCaptor.forClass(Message.class);
     Mockito.verify(mockMessageStore).addMessage(messageArgumentCaptor.capture());
-    Assert.assertEquals("&#x1F60E; &#x1F60E; &#x1F60E; &#x1F60E; &#x1F617; &#x1F617; &#x1F62E; &#x1F62E; &#x1F62E; &#x1F62E;", 
+    Assert.assertEquals("&#x1F60E; &#x1F60E; &#x1F60E; &#x1F60E; &#x1F617; &#x1F617; &#x1F62E; &#x1F62E; &#x1F62E; &#x1F62E;",
         messageArgumentCaptor.getValue().getContent());
 
     Mockito.verify(mockResponse).sendRedirect("/chat/test_conversation");
@@ -954,7 +987,8 @@ public class ChatServletTest {
             UUID.randomUUID(),
             "test_username",
             "$2a$10$eDhncK/2cMZ45E.GH1AWpeL8/58znXBHwANmzBBwEMOJI/TKL/ZH2",
-            Instant.now());
+            Instant.now(),
+            "test_aboutMe");
     Mockito.when(mockUserStore.getUser("test_username")).thenReturn(fakeUser);
 
     Conversation fakeConversation =
@@ -968,7 +1002,7 @@ public class ChatServletTest {
 
     ArgumentCaptor<Message> messageArgumentCaptor = ArgumentCaptor.forClass(Message.class);
     Mockito.verify(mockMessageStore).addMessage(messageArgumentCaptor.capture());
-    Assert.assertEquals("&#x1F61B; &#x1F61B; &#x1F61D; &#x1F61D; &#x1F61D; &#x1F61D; &#x1F609; &#x1F609; &#x1F616; &#x1F611; &#x1F62D; &#x1F60A;", 
+    Assert.assertEquals("&#x1F61B; &#x1F61B; &#x1F61D; &#x1F61D; &#x1F61D; &#x1F61D; &#x1F609; &#x1F609; &#x1F616; &#x1F611; &#x1F62D; &#x1F60A;",
         messageArgumentCaptor.getValue().getContent());
 
     Mockito.verify(mockResponse).sendRedirect("/chat/test_conversation");
@@ -984,7 +1018,8 @@ public class ChatServletTest {
             UUID.randomUUID(),
             "test_username",
             "$2a$10$eDhncK/2cMZ45E.GH1AWpeL8/68znXBHwANmzBBwEMOJI/TKL/ZH2",
-            Instant.now());
+            Instant.now(),
+            "test_aboutMe");
     Mockito.when(mockUserStore.getUser("test_username")).thenReturn(fakeUser);
 
     Conversation fakeConversation =
@@ -998,7 +1033,7 @@ public class ChatServletTest {
 
     ArgumentCaptor<Message> messageArgumentCaptor = ArgumentCaptor.forClass(Message.class);
     Mockito.verify(mockMessageStore).addMessage(messageArgumentCaptor.capture());
-    Assert.assertEquals("&#x1F629; &#x1F629; &#x1F636; &#x1F636; &#x1F637;", 
+    Assert.assertEquals("&#x1F629; &#x1F629; &#x1F636; &#x1F636; &#x1F637;",
         messageArgumentCaptor.getValue().getContent());
 
     Mockito.verify(mockResponse).sendRedirect("/chat/test_conversation");
