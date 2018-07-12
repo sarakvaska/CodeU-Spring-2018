@@ -1049,7 +1049,8 @@ public class ChatServletTest {
             UUID.randomUUID(),
             "test_username",
             "$2a$10$eDhncK/2cMZ45E.GH1BQEeL8/68znXBHwANmzBBwEMOJI/TKL/ZH2",
-            Instant.now());
+            Instant.now(),
+            "test_aboutMe");
     Mockito.when(mockUserStore.getUser("test_username")).thenReturn(fakeUser);
 
     Conversation fakeConversation =
@@ -1063,7 +1064,7 @@ public class ChatServletTest {
 
     ArgumentCaptor<Message> messageArgumentCaptor = ArgumentCaptor.forClass(Message.class);
     Mockito.verify(mockMessageStore).addMessage(messageArgumentCaptor.capture());
-    Assert.assertEquals("&#x1F629; &#x1F629; &#x1F629; &#x1F629;", 
+    Assert.assertEquals("&#x1F629; &#x1F629; &#x1F629; &#x1F629;",
         messageArgumentCaptor.getValue().getContent());
 
     Mockito.verify(mockResponse).sendRedirect("/chat/test_conversation");
