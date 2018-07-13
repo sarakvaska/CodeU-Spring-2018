@@ -48,7 +48,7 @@ List<Message> messages = (List<Message>) request.getAttribute("messages");
             <form action="/user/<%= request.getAttribute("user") %>" method="POST">
             <% if(getProfile.getAboutMe() == null) {%>
               <div class="form-group">
-                <textarea id = "box" font-size: 25px type ="text" name="aboutMe"
+                <textarea id = "box" font-size: "25px" type ="text" name="aboutMe"
                   placeholder = "Write about yourself!"></textarea>
               </div>
             <hr/>
