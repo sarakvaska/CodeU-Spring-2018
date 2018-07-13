@@ -1,7 +1,8 @@
 package codeu.controller;
 
+import codeu.model.data.Friendship;
+import codeu.model.data.Friendship.Status;
 import codeu.model.data.User;
-import codeu.model.store.basic.UserStore;
 import java.io.IOException;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -9,14 +10,14 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.jsoup.Jsoup;
 import org.jsoup.safety.Whitelist;
-import java.util.List;
 import codeu.model.store.basic.ConversationStore;
+import codeu.model.store.basic.FriendshipStore;
 import codeu.model.store.basic.MessageStore;
 import codeu.model.store.basic.UserStore;
 import codeu.model.data.Message;
-import java.io.IOException;
 import java.time.Instant;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 import java.util.Date;
 
@@ -29,11 +30,15 @@ public class ProfileServlet extends HttpServlet {
   /** Store class that gives access to Messages. */
   private MessageStore messageStore;
 
+  /** Store class that gives access to Friendships. */
+  private FriendshipStore friendshipStore;
+
   @Override
   public void init() throws ServletException {
     super.init();
     setMessageStore(MessageStore.getInstance());
     setUserStore(UserStore.getInstance());
+    setFriendshipStore(FriendshipStore.getInstance());
   }
 
   /**
@@ -52,6 +57,14 @@ public class ProfileServlet extends HttpServlet {
     this.messageStore = messageStore;
   }
 
+  /**
+   * Sets the FriendshipStore used by this servlet. This function provides a common setup method for
+   * use by the test framework or the servlet's init() function.
+   */
+  void setFriendshipStore(FriendshipStore friendshipStore) {
+    this.friendshipStore = friendshipStore;
+  }
+
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response)
       throws IOException, ServletException {
@@ -60,6 +73,10 @@ public class ProfileServlet extends HttpServlet {
     User getProfile = userStore.getUser(userProfile);
     String username = (String) request.getSession().getAttribute("user");
     List<Message> messages = messageStore.getMessagesByAuthor(userStore.getUser(username).getId());
+
+    Map<UUID, List<Friendship>> friendships = friendshipStore.getFriendships();
+    request.setAttribute("friendships", friendships);
+
     request.setAttribute("messages", messages);
     request.setAttribute("getProfile", getProfile);
     request.getRequestDispatcher("/WEB-INF/view/profile.jsp").forward(request, response);
@@ -78,7 +95,7 @@ public class ProfileServlet extends HttpServlet {
         username = null;
     request.getSession().setAttribute("user", username);
     response.sendRedirect("/login");
-  }
+    }
     // if user wants to presses submit on their aboutMe description
     else if (request.getParameter("about") != null) {
     /**
@@ -97,5 +114,21 @@ public class ProfileServlet extends HttpServlet {
       // redirect to a GET request
       response.sendRedirect("/user/" + username);
     }
- }
+
+    // if the user clicks the Add Friend button
+    else if (request.getParameter("addFriend") != null) {
+      String requestUrl = request.getRequestURI();
+      String friendName = requestUrl.substring("/user/".length());
+      User friend = userStore.getUser(friendName);
+
+      Friendship newFriend = new Friendship(
+          user.getId(), friend.getId(), UUID.randomUUID(), Status.PENDING, Instant.now()
+      );
+
+      friendshipStore.addFriendship(newFriend);
+
+      // redirect to a GET request
+      response.sendRedirect("/user/" + friendName);
+    }
+  }
 }
