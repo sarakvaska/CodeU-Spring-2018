@@ -50,28 +50,29 @@
       <%
       } else {
         for (Friendship friendship : friendsList) {
-          UUID friendId = friendship.getId();
+          UUID friendId = friendship.getFriendId();
           User friend = userStore.getUser(friendId);
           Status status = friendship.getStatus();
 
           if (userId.equals(friendId)) {
             UUID pendingFriendId = friendship.getUserId();
             User pendingFriend = userStore.getUser(pendingFriendId);
+            String pendingFriendName = pendingFriend.getName();
       %>
             <li>
-              <%= pendingFriend.getName() %>
+              <a href="/user/<%= pendingFriendName %>"><%= pendingFriendName %></a>
               <em>PENDING</em>
               <form action="/friendslist" method="POST">
-                <input type="hidden" name="friendId" value="<%= friendId.toString() %>">
+                <input type="hidden" name="friendId" value="<%= pendingFriendId.toString() %>">
                 <input type="submit" name="accept" value="Accept" />
-                <input type="submit" name="remove" value="Reject" />
+                <input type="submit" name="reject" value="Reject" />
               </form>
             </li>
       <%
           } else {
       %>
             <li>
-              <%= friend.getName() %>
+              <a href="/user/<%= friend.getName() %>"><%= friend.getName() %></a>
               <%
               if (status == Status.PENDING) {
               %>
