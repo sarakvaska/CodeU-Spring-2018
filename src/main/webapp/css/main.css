@@ -42,7 +42,8 @@ nav a {
 #container {
   margin-left: auto;
   margin-right: auto;
-  width: 800px;
+  width: 80%;
+  height: 50%;
 }
 
 #box {
