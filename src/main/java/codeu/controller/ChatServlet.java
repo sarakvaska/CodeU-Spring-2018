@@ -398,6 +398,123 @@ public class ChatServlet extends HttpServlet {
 
     cleanedMessageContent = String.join(" ", messageArray);
 
+
+    // Debugging - checking for missing bold, italic, or underline tags
+
+    // resolving bold 
+    int start_tag = 0;
+    int end_tag = 0;
+    int start_sym_tag = 0;
+
+    while (start_sym_tag < cleanedMessageContent.length()){
+      start_sym_tag = cleanedMessageContent.indexOf("<b>", start_sym_tag);
+      if (start_sym_tag == -1){
+        break;
+      }
+      start_tag++;
+      start_sym_tag++;
+    }
+
+    int end_sym_tag = 0;
+    while (end_sym_tag < cleanedMessageContent.length()){
+      end_sym_tag = cleanedMessageContent.indexOf("</b>", end_sym_tag);
+      if (end_sym_tag == -1){
+        break;
+      }
+      end_tag++;
+      end_sym_tag++;
+    }
+
+    int difference = start_tag - end_tag;
+
+    // if there's a end tag before a start tag, add one more to the difference
+    start_sym_tag = cleanedMessageContent.indexOf("<b>", 0);
+    end_sym_tag = cleanedMessageContent.indexOf("</b>", 0);
+    if (end_sym_tag < start_sym_tag && end_sym_tag != -1) {
+      difference++;
+    }
+
+
+    for (int i = 0; i < difference; i++) {
+      cleanedMessageContent += "</b>";
+    }
+
+    // resolving italic
+    start_tag = 0;
+    end_tag = 0;
+    start_sym_tag = 0;
+
+    while (start_sym_tag < cleanedMessageContent.length()){
+      start_sym_tag = cleanedMessageContent.indexOf("<i>", start_sym_tag);
+      if (start_sym_tag == -1){
+        break;
+      }
+      start_tag++;
+      start_sym_tag++;
+    }
+
+    end_sym_tag = 0;
+    while (end_sym_tag < cleanedMessageContent.length()){
+      end_sym_tag = cleanedMessageContent.indexOf("</i>", end_sym_tag);
+      if (end_sym_tag == -1){
+        break;
+      }
+      end_tag++;
+      end_sym_tag++;
+    }
+
+    difference = start_tag - end_tag;
+
+    // if there's a end tag before a start tag, add one more to the difference
+    start_sym_tag = cleanedMessageContent.indexOf("<i>", 0);
+    end_sym_tag = cleanedMessageContent.indexOf("</i>", 0);
+    if (end_sym_tag < start_sym_tag && end_sym_tag != -1){
+      difference++;
+    }
+    
+
+    for (int i = 0; i < difference; i++) {
+      cleanedMessageContent += "</i>";
+    }
+
+    // resolving underline
+    start_tag = 0;
+    end_tag = 0;
+    start_sym_tag = 0;
+
+    while (start_sym_tag < cleanedMessageContent.length()){
+      start_sym_tag = cleanedMessageContent.indexOf("<u>", start_sym_tag);
+      if (start_sym_tag == -1){
+        break;
+      }
+      start_tag++;
+      start_sym_tag++;
+    }
+
+    end_sym_tag = 0;
+    while (end_sym_tag < cleanedMessageContent.length()){
+      end_sym_tag = cleanedMessageContent.indexOf("</u>", end_sym_tag);
+      if (end_sym_tag == -1){
+        break;
+      }
+      end_tag++;
+      end_sym_tag++;
+    }
+
+    difference = start_tag - end_tag;
+
+    // if there's a end tag before a start tag, add one more to the difference
+    start_sym_tag = cleanedMessageContent.indexOf("<u>", 0);
+    end_sym_tag = cleanedMessageContent.indexOf("</u>", 0);
+    if (end_sym_tag < start_sym_tag && end_sym_tag != -1){
+      difference++;
+    }
+  
+
+    for (int i = 0; i < difference; i++) {
+      cleanedMessageContent += "</u>";
+    }
+
     Message message =
         new Message(
             UUID.randomUUID(),
