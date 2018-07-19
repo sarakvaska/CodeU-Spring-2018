@@ -233,5 +233,22 @@ public class PersistentDataStoreTest {
     Assert.assertEquals(friendshipId, resultFriendship.getId());
     Assert.assertEquals(inputStatus, resultFriendship.getStatus());
     Assert.assertEquals(inputCreation, resultFriendship.getCreationTime());
+
+    // update status
+    inputFriendship.setStatus(Status.REJECTED);
+
+    // update friendship in datastore
+    persistentDataStore.writeThrough(inputFriendship);
+
+    // load
+    resultFriendships = persistentDataStore.loadFriendships();
+
+    // confirm that what we saved matches what we loaded
+    resultFriendship = resultFriendships.get(userId).get(0);
+    Assert.assertEquals(userId, resultFriendship.getUserId());
+    Assert.assertEquals(friendId, resultFriendship.getFriendId());
+    Assert.assertEquals(friendshipId, resultFriendship.getId());
+    Assert.assertEquals(Status.REJECTED, resultFriendship.getStatus());
+    Assert.assertEquals(inputCreation, resultFriendship.getCreationTime());
   }
 }
