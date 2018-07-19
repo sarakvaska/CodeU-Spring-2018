@@ -78,7 +78,7 @@ public class FriendsListServlet extends HttpServlet {
 
   private Friendship searchFriendship(List<Friendship> friendsList, UUID friendId) {
     for (Friendship friendship : friendsList) {
-      if (friendship.getFriendId().equals(friendId)) {
+      if (friendship.getUserId().equals(friendId)) {
         return friendship;
       }
     }

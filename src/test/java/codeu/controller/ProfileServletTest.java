@@ -18,10 +18,15 @@ import codeu.model.data.User;
 import codeu.model.store.basic.UserStore;
 import codeu.model.data.Message;
 import codeu.model.store.basic.MessageStore;
+import codeu.model.data.Friendship;
+import codeu.model.data.Friendship.Status;
+import codeu.model.store.basic.FriendshipStore;
 import java.io.IOException;
 import java.time.Instant;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -43,6 +48,7 @@ public class ProfileServletTest {
   private RequestDispatcher mockRequestDispatcher;
   private UserStore mockUserStore;
   private MessageStore mockMessageStore;
+  private FriendshipStore mockFriendshipStore;
   private User mockUser;
 
   @Before
@@ -63,6 +69,9 @@ public class ProfileServletTest {
 
     mockUserStore = Mockito.mock(UserStore.class);
     profileServlet.setUserStore(mockUserStore);
+
+    mockFriendshipStore = Mockito.mock(FriendshipStore.class);
+    profileServlet.setFriendshipStore(mockFriendshipStore);
   }
 
   @Test
@@ -80,6 +89,17 @@ public class ProfileServletTest {
 
     Mockito.when(mockUserStore.getUser("test_username")).thenReturn(fakeUser);
 
+    UUID fakeUserId = fakeUser.getId();
+    List<Friendship> fakeFriendsList = new ArrayList<>();
+    fakeFriendsList.add(
+      new Friendship(fakeUserId, UUID.randomUUID(), UUID.randomUUID(),
+                     Status.PENDING, Instant.now())
+    );
+
+    Map<UUID, List<Friendship>> fakeFriendshipMap = new HashMap<>();
+    fakeFriendshipMap.put(fakeUserId, fakeFriendsList);
+    Mockito.when(mockFriendshipStore.getFriendships()).thenReturn(fakeFriendshipMap);
+
     UUID testAuthor = UUID.randomUUID();
     List<Message> fakeMessageList = new ArrayList<>();
     fakeMessageList.add(
@@ -93,6 +113,8 @@ public class ProfileServletTest {
         .thenReturn(fakeMessageList);
 
     profileServlet.doGet(mockRequest, mockResponse);
+
+    Mockito.verify(mockRequest).setAttribute("friendships", fakeFriendshipMap);
     Mockito.verify(mockRequestDispatcher).forward(mockRequest, mockResponse);
   }
 

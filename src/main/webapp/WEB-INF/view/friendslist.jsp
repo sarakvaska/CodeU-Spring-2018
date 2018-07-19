@@ -18,7 +18,7 @@
     <a id="navTitle" href="/">CodeU Chat App</a>
     <a href="/conversations">Conversations</a>
     <% if(request.getSession().getAttribute("user") != null){ %>
-      <a href="/profile"><%= request.getSession().getAttribute("user") %>'s Profile</a>
+      <a href="/user/<%= request.getSession().getAttribute("user") %>"><%= request.getSession().getAttribute("user") %>'s Profile</a>
       <a href="/friendslist">Friends</a>
     <% } else{ %>
       <a href="/login">Login</a>
@@ -50,28 +50,29 @@
       <%
       } else {
         for (Friendship friendship : friendsList) {
-          UUID friendId = friendship.getId();
+          UUID friendId = friendship.getFriendId();
           User friend = userStore.getUser(friendId);
           Status status = friendship.getStatus();
 
           if (userId.equals(friendId)) {
             UUID pendingFriendId = friendship.getUserId();
             User pendingFriend = userStore.getUser(pendingFriendId);
+            String pendingFriendName = pendingFriend.getName();
       %>
             <li>
-              <%= pendingFriend.getName() %>
+              <a href="/user/<%= pendingFriendName %>"><%= pendingFriendName %></a>
               <em>PENDING</em>
               <form action="/friendslist" method="POST">
-                <input type="hidden" name="friendId" value="<%= friendId.toString() %>">
+                <input type="hidden" name="friendId" value="<%= pendingFriendId.toString() %>">
                 <input type="submit" name="accept" value="Accept" />
-                <input type="submit" name="remove" value="Reject" />
+                <input type="submit" name="reject" value="Reject" />
               </form>
             </li>
       <%
           } else {
       %>
             <li>
-              <%= friend.getName() %>
+              <a href="/user/<%= friend.getName() %>"><%= friend.getName() %></a>
               <%
               if (status == Status.PENDING) {
               %>

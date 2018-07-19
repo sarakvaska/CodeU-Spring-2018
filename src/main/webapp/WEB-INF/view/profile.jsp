@@ -2,12 +2,17 @@
 <%@ page import="codeu.model.store.basic.UserStore" %>
 <% User getProfile = (User) request.getAttribute("getProfile"); %>
 <%@ page import="java.util.List" %>
+<%@ page import="java.util.Map" %>
 <%@ page import="codeu.model.data.Conversation" %>
+<%@ page import="codeu.model.data.Friendship" %>
+<%@ page import="codeu.model.data.Friendship.Status" %>
 <%@ page import="codeu.model.data.Message" %>
-<%@ page import="codeu.model.store.basic.UserStore" %>
 <%@ page import="java.util.Date" %>
+<%@ page import="java.util.UUID" %>
 <%
 List<Message> messages = (List<Message>) request.getAttribute("messages");
+Map<UUID, List<Friendship>> friendships =
+    (Map<UUID, List<Friendship>>) request.getAttribute("friendships");
 %>
 
 <!DOCTYPE html>
@@ -34,7 +39,61 @@ List<Message> messages = (List<Message>) request.getAttribute("messages");
 
   <div id="container">
   <h1> <%= getProfile.getName() %>'s Profile Page</h1>
-  </form>
+
+  <%
+  if (!request.getSession().getAttribute("user").equals(getProfile.getName())) {
+    UserStore userStore = UserStore.getInstance();
+    String username = (String) request.getSession().getAttribute("user");
+    User user = userStore.getUser(username);
+
+    UUID userId = user.getId();
+    List<Friendship> userFriendsList = friendships.get(userId);
+
+    UUID friendId = getProfile.getId();
+    boolean isFriend = false;
+    boolean pending = false;
+
+    if (userFriendsList != null) {
+      for (Friendship friendship : userFriendsList) {
+
+        if (friendship.getFriendId().equals(friendId)) {
+          if (friendship.getStatus() == Status.PENDING) {
+            pending = true;
+          } else {
+            isFriend = true;
+          }
+
+          break;
+        } else if (friendship.getUserId().equals(friendId)) {
+          /* This condition is true if the friendship is pending because FriendshipStore
+          adds the same friendship twice to the two users in the map who are involved
+          in this friendship. */
+          pending = true;
+          break;
+        }
+
+      }
+    }
+
+
+    if (isFriend) {
+  %>
+      <p>Friends</p>
+  <%
+    } else if (pending) {
+  %>
+      <p>Friend request pending.</p>
+  <%
+    } else {
+  %>
+      <form action="/user/<%= getProfile.getName() %>" method="POST">
+        <input type="submit" name="addFriend" value="Add Friend" />
+      </form>
+  <%
+    }
+  }
+  %>
+
     <hr/>
     <h3> About <%= getProfile.getName() %> </h3>
     <% if(getProfile.getAboutMe() != null){%>

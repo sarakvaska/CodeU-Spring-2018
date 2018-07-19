@@ -118,6 +118,9 @@ public class FriendshipStore {
       }
     }
 
+    // Update friendship to accepted.
+    persistentStorageAgent.writeThrough(friendship);
+
     // Remove extra friendship
     friendships.get(friendship.getFriendId()).remove(friendship);
 
