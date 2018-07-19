@@ -427,6 +427,14 @@ public class ChatServlet extends HttpServlet {
 
     int difference = start_tag - end_tag;
 
+    // if there's a end tag before a start tag, add one more to the difference
+    start_sym_tag = cleanedMessageContent.indexOf("<b>", 0);
+    end_sym_tag = cleanedMessageContent.indexOf("</b>", 0);
+    if (end_sym_tag < start_sym_tag && end_sym_tag != -1) {
+      difference++;
+    }
+
+
     for (int i = 0; i < difference; i++) {
       cleanedMessageContent += "</b>";
     }
@@ -457,6 +465,14 @@ public class ChatServlet extends HttpServlet {
 
     difference = start_tag - end_tag;
 
+    // if there's a end tag before a start tag, add one more to the difference
+    start_sym_tag = cleanedMessageContent.indexOf("<i>", 0);
+    end_sym_tag = cleanedMessageContent.indexOf("</i>", 0);
+    if (end_sym_tag < start_sym_tag && end_sym_tag != -1){
+      difference++;
+    }
+    
+
     for (int i = 0; i < difference; i++) {
       cleanedMessageContent += "</i>";
     }
@@ -486,6 +502,14 @@ public class ChatServlet extends HttpServlet {
     }
 
     difference = start_tag - end_tag;
+
+    // if there's a end tag before a start tag, add one more to the difference
+    start_sym_tag = cleanedMessageContent.indexOf("<u>", 0);
+    end_sym_tag = cleanedMessageContent.indexOf("</u>", 0);
+    if (end_sym_tag < start_sym_tag && end_sym_tag != -1){
+      difference++;
+    }
+  
 
     for (int i = 0; i < difference; i++) {
       cleanedMessageContent += "</u>";
