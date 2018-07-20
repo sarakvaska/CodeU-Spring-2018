@@ -520,13 +520,8 @@ function boldFunction(){
 	}
 
 	// otherwise add to end for now
-	else if (document.getElementById('bold').style.borderStyle == "inset"){
-		  document.getElementsByName('message')[0].value += "[/b]";
-		  document.getElementById('bold').style.borderStyle = "outset";
-	}
-	else {
-	  document.getElementsByName('message')[0].value += "[b]";
-	  document.getElementById('bold').style.borderStyle = "inset";
+	else{
+		document.getElementsByName('message')[0].value += "[b][/b]";
 	}
 }
 function italicFunction (){
@@ -544,13 +539,8 @@ function italicFunction (){
 	}
 
 	// otherwise add to end for now
-	else if (document.getElementById('italic').style.borderStyle == "inset"){
-	  document.getElementsByName('message')[0].value += "[/i]";
-	  document.getElementById('italic').style.borderStyle = "outset";
-	}
 	else {
-	  document.getElementsByName('message')[0].value += "[i]";
-	  document.getElementById('italic').style.borderStyle = "inset";
+	  document.getElementsByName('message')[0].value += "[i][/i]";
 	}
 }
 function underlineFunction(){
@@ -568,12 +558,7 @@ function underlineFunction(){
 	}
 
 	// otherwise add to end for now
-	else if (document.getElementById('underline').style.borderStyle == "inset"){
-	  document.getElementsByName('message')[0].value += "[/u]";
-	  document.getElementById('underline').style.borderStyle = "outset";
-	}
 	else {
-	  document.getElementsByName('message')[0].value += "[u]";
-	  document.getElementById('underline').style.borderStyle = "inset";
+	  document.getElementsByName('message')[0].value += "[u][/u]";
 	}
 }
