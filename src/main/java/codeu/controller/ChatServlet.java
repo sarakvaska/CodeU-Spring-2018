@@ -408,48 +408,44 @@ public class ChatServlet extends HttpServlet {
       String tagEnd = "</" + tagArray[tag] + ">";
 
       int start_tag = 0;
-      int start_sym_tag = 0;
-      while (start_sym_tag < cleanedMessageContent.length()){
-        start_sym_tag = cleanedMessageContent.indexOf(tagStart, start_sym_tag);
-        // if no more or no start tags 
-        if (start_sym_tag == -1){
-          break;
-        }
-        int end_sym_tag = cleanedMessageContent.indexOf(tagEnd, start_sym_tag + 1);
-        int next_start = cleanedMessageContent.indexOf(tagStart, start_sym_tag + 1);
+      int prev_index = 0;
+      while (prev_index < cleanedMessageContent.length()){
+        int start_sym_tag = cleanedMessageContent.indexOf(tagStart, prev_index);
+        int end_sym_tag = cleanedMessageContent.indexOf(tagEnd, prev_index);
 
-        // if both don't exist, add 1 for current start tag
-        // break - no point in searching for next start
-        if (next_start == -1 && end_sym_tag == -1){
-          start_tag += 1;
-          break;
+        // if no more end or no start tags 
+        if (start_sym_tag == -1 && end_sym_tag == -1){
+            break;
         }
-
-        // if no next start, break
-        // end tag canceled out current tag
-        else if (next_start == -1) {
-          break;
+        
+        // if no start but it's a leftover end
+        // check to see if the end cancel out
+        else if (start_sym_tag == -1){
+          if (start_tag > 0){
+              start_tag--;
+            }
+            prev_index = end_sym_tag + 1;
         }
 
-        // if there is a next start
-        // search again in case there are extra start tags
-        // only plus one to start_sym_tag to catch the next one when looping again
+        // if it's a start tag, but no end
         else if (end_sym_tag == -1){
-          start_tag += 1;
-          start_sym_tag += 1;
+            start_tag++;
+            prev_index = start_sym_tag + 1;
         }
 
-        // both exist, check which one comes first
-        // if next start tag comes first, add 1
-        // otherwise, don't add 1: end tag canceled out current tag
-        // search again
-        else{
-          if (next_start < end_sym_tag){
-            start_sym_tag += 1;
-            start_tag += 1;
+        // otherwise, compare who comes first
+        // if start tag comes first - add 1, then search from current start tag
+        // if end tag comes first, check if it cancels out a start tag, then search from end tag
+        else {
+          if (start_sym_tag < end_sym_tag) {
+            start_tag++;
+            prev_index = start_sym_tag + 1;
           }
           else {
-            start_sym_tag = end_sym_tag + 1;
+            if (start_tag > 0){
+              start_tag--;
+            }
+            prev_index = end_sym_tag + 1;
           }
         }
       }
