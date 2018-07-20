@@ -401,118 +401,61 @@ public class ChatServlet extends HttpServlet {
 
     // Debugging - checking for missing bold, italic, or underline tags
 
-    // resolving bold 
-    int start_tag = 0;
-    int end_tag = 0;
-    int start_sym_tag = 0;
+    String[] tagArray = {"b", "i", "u"};
 
-    while (start_sym_tag < cleanedMessageContent.length()){
-      start_sym_tag = cleanedMessageContent.indexOf("<b>", start_sym_tag);
-      if (start_sym_tag == -1){
-        break;
+    for (int tag = 0; tag < tagArray.length; tag++) {
+      String tagStart = "<" + tagArray[tag] + ">";
+      String tagEnd = "</" + tagArray[tag] + ">";
+
+      int start_tag = 0;
+      int start_sym_tag = 0;
+      while (start_sym_tag < cleanedMessageContent.length()){
+        start_sym_tag = cleanedMessageContent.indexOf(tagStart, start_sym_tag);
+        // if no more or no start tags 
+        if (start_sym_tag == -1){
+          break;
+        }
+        int end_sym_tag = cleanedMessageContent.indexOf(tagEnd, start_sym_tag + 1);
+        int next_start = cleanedMessageContent.indexOf(tagStart, start_sym_tag + 1);
+
+        // if both don't exist, add 1 for current start tag
+        // break - no point in searching for next start
+        if (next_start == -1 && end_sym_tag == -1){
+          start_tag += 1;
+          break;
+        }
+
+        // if no next start, break
+        // end tag canceled out current tag
+        else if (next_start == -1) {
+          break;
+        }
+
+        // if there is a next start
+        // search again in case there are extra start tags
+        // only plus one to start_sym_tag to catch the next one when looping again
+        else if (end_sym_tag == -1){
+          start_tag += 1;
+          start_sym_tag += 1;
+        }
+
+        // both exist, check which one comes first
+        // if next start tag comes first, add 1
+        // otherwise, don't add 1: end tag canceled out current tag
+        // search again
+        else{
+          if (next_start < end_sym_tag){
+            start_sym_tag += 1;
+            start_tag += 1;
+          }
+          else {
+            start_sym_tag = end_sym_tag + 1;
+          }
+        }
       }
-      start_tag++;
-      start_sym_tag++;
-    }
-
-    int end_sym_tag = 0;
-    while (end_sym_tag < cleanedMessageContent.length()){
-      end_sym_tag = cleanedMessageContent.indexOf("</b>", end_sym_tag);
-      if (end_sym_tag == -1){
-        break;
+      for (int i = 0; i < start_tag; i++) {
+        cleanedMessageContent += tagEnd;
       }
-      end_tag++;
-      end_sym_tag++;
-    }
-
-    int difference = start_tag - end_tag;
-
-    // if there's a end tag before a start tag, add one more to the difference
-    start_sym_tag = cleanedMessageContent.indexOf("<b>", 0);
-    end_sym_tag = cleanedMessageContent.indexOf("</b>", 0);
-    if (end_sym_tag < start_sym_tag && end_sym_tag != -1) {
-      difference++;
-    }
-
-
-    for (int i = 0; i < difference; i++) {
-      cleanedMessageContent += "</b>";
-    }
-
-    // resolving italic
-    start_tag = 0;
-    end_tag = 0;
-    start_sym_tag = 0;
-
-    while (start_sym_tag < cleanedMessageContent.length()){
-      start_sym_tag = cleanedMessageContent.indexOf("<i>", start_sym_tag);
-      if (start_sym_tag == -1){
-        break;
-      }
-      start_tag++;
-      start_sym_tag++;
-    }
-
-    end_sym_tag = 0;
-    while (end_sym_tag < cleanedMessageContent.length()){
-      end_sym_tag = cleanedMessageContent.indexOf("</i>", end_sym_tag);
-      if (end_sym_tag == -1){
-        break;
-      }
-      end_tag++;
-      end_sym_tag++;
-    }
-
-    difference = start_tag - end_tag;
-
-    // if there's a end tag before a start tag, add one more to the difference
-    start_sym_tag = cleanedMessageContent.indexOf("<i>", 0);
-    end_sym_tag = cleanedMessageContent.indexOf("</i>", 0);
-    if (end_sym_tag < start_sym_tag && end_sym_tag != -1){
-      difference++;
-    }
-    
-
-    for (int i = 0; i < difference; i++) {
-      cleanedMessageContent += "</i>";
-    }
-
-    // resolving underline
-    start_tag = 0;
-    end_tag = 0;
-    start_sym_tag = 0;
-
-    while (start_sym_tag < cleanedMessageContent.length()){
-      start_sym_tag = cleanedMessageContent.indexOf("<u>", start_sym_tag);
-      if (start_sym_tag == -1){
-        break;
-      }
-      start_tag++;
-      start_sym_tag++;
-    }
-
-    end_sym_tag = 0;
-    while (end_sym_tag < cleanedMessageContent.length()){
-      end_sym_tag = cleanedMessageContent.indexOf("</u>", end_sym_tag);
-      if (end_sym_tag == -1){
-        break;
-      }
-      end_tag++;
-      end_sym_tag++;
-    }
-
-    difference = start_tag - end_tag;
-
-    // if there's a end tag before a start tag, add one more to the difference
-    start_sym_tag = cleanedMessageContent.indexOf("<u>", 0);
-    end_sym_tag = cleanedMessageContent.indexOf("</u>", 0);
-    if (end_sym_tag < start_sym_tag && end_sym_tag != -1){
-      difference++;
-    }
-  
-
-    for (int i = 0; i < difference; i++) {
-      cleanedMessageContent += "</u>";
     }
 
     Message message =

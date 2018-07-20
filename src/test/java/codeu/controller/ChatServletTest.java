@@ -1194,4 +1194,35 @@ public class ChatServletTest {
     Mockito.verify(mockResponse).sendRedirect("/chat/test_conversation");
   }
 
+  @Test
+  public void testDoPost_MissingBoldEndMiddle() throws IOException, ServletException {
+    Mockito.when(mockRequest.getRequestURI()).thenReturn("/chat/test_conversation");
+    Mockito.when(mockSession.getAttribute("user")).thenReturn("test_username");
+
+    User fakeUser =
+        new User(
+            UUID.randomUUID(),
+            "test_username",
+            "$2a$10$eDhncK/2cMZ45E.GH4VPEeL0/68znXBHwANmzBBwEMOJI/TKL/ZH2",
+            Instant.now(),
+            "test_aboutMe");
+    Mockito.when(mockUserStore.getUser("test_username")).thenReturn(fakeUser);
+
+    Conversation fakeConversation =
+        new Conversation(UUID.randomUUID(), UUID.randomUUID(), "test_conversation", Instant.now());
+    Mockito.when(mockConversationStore.getConversationWithTitle("test_conversation"))
+        .thenReturn(fakeConversation);
+
+    Mockito.when(mockRequest.getParameter("message")).thenReturn("[/b] [u] [b] [/b] [/b] [b] [u] D: D: D: blegh");
+
+    chatServlet.doPost(mockRequest, mockResponse);
+
+    ArgumentCaptor<Message> messageArgumentCaptor = ArgumentCaptor.forClass(Message.class);
+    Mockito.verify(mockMessageStore).addMessage(messageArgumentCaptor.capture());
+    Assert.assertEquals("</b> <u> <b> </b> </b> <b> <u> &#x1F629; &#x1F629; &#x1F629; blegh</b></u></u>",
+        messageArgumentCaptor.getValue().getContent());
+
+    Mockito.verify(mockResponse).sendRedirect("/chat/test_conversation");
+  }
+
 }
