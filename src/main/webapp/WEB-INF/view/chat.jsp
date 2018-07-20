@@ -122,6 +122,8 @@ List<Message> messages = (List<Message>) request.getAttribute("messages");
             </tr>
         </table>
       </div>
+      <input type="text" name="link" placeholder="URL">
+      <button type="button" onclick="addLink()">Add Link</button>
     <br/>
     <form action="/chat/<%= conversation.getTitle() %>" method="POST">
         <input type="text" name="message" oninput= "setButtonsInset()" onselect="setButtonsInset()" onkeydown="setButtonsInset()" onclick="setButtonsInset()">
