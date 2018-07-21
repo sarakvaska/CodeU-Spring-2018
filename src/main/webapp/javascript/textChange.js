@@ -577,3 +577,17 @@ function underlineFunction(){
 	  document.getElementById('underline').style.borderStyle = "inset";
 	}
 }
+
+function addLink() {
+	var message = document.getElementsByName('message')[0].value;
+	var link = document.getElementsByName('link')[0].value;
+	if (link != ""){
+		if (message == ""){
+			message += "[url]" + link + "[/url]"; 
+		}
+		else {
+			message += " [url]" + link + "[/url]"; 
+		}
+	}
+	document.getElementsByName('message')[0].value = message;
+}
