@@ -126,7 +126,7 @@ List<Message> messages = (List<Message>) request.getAttribute("messages");
       <button type="button" onclick="addLink()">Add Link</button>
     <br/>
     <form action="/chat/<%= conversation.getTitle() %>" method="POST">
-        <input type="text" name="message" oninput= "setButtonsInset()" onselect="setButtonsInset()" onkeydown="setButtonsInset()" onclick="setButtonsInset()">
+        <textarea rows="4" cols="40" type="text" style="font-size: 14pt" name="message" oninput= "setButtonsInset()" onselect="setButtonsInset()" onkeydown="setButtonsInset()" onclick="setButtonsInset()"> </textarea>
         <br/>
         <button type="submit">Send</button>
     </form>
