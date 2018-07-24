@@ -132,7 +132,7 @@ List<Message> messages = (List<Message>) request.getAttribute("messages");
           oninput= "setButtonsInset()" 
           onselect="setButtonsInset()" 
           onkeydown="setButtonsInset()" 
-          onclick="setButtonsInset()"></textarea>
+          onclick="setButtonsInset()" required></textarea>
         <br/>
         <button type="submit">Send</button>
     </form>
