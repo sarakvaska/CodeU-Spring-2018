@@ -196,7 +196,7 @@ public class ChatServlet extends HttpServlet {
       }
       String newString = cleanedMessageContent.substring (0, startTag) + "<a href='" ; 
       newString += cleanedMessageContent.substring (startTag + 5, endTag);
-      newString += "'>";
+      newString += "' target='_blank'>";
       newString += cleanedMessageContent.substring (startTag + 5, endTag);
       newString += "</a>";
       newString += cleanedMessageContent.substring (endTag + 6);
@@ -213,7 +213,7 @@ public class ChatServlet extends HttpServlet {
       }
       String newString = cleanedMessageContent.substring (0, startTag) + "<a href='" ; 
       newString += cleanedMessageContent.substring (startTag + 5, closingTag);
-      newString += "'>";
+      newString += "' target='_blank'>";
       newString += cleanedMessageContent.substring (closingTag + 1, endTag);
       newString += "</a>";
       newString += cleanedMessageContent.substring (endTag + 6);
