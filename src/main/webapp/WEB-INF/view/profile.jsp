@@ -41,58 +41,59 @@ Map<UUID, List<Friendship>> friendships =
   <h1> <%= getProfile.getName() %>'s Profile Page</h1>
 
   <%
-  if (!request.getSession().getAttribute("user").equals(getProfile.getName())) {
-    UserStore userStore = UserStore.getInstance();
-    String username = (String) request.getSession().getAttribute("user");
-    User user = userStore.getUser(username);
+  if (request.getSession().getAttribute("user") != null &&
+  !request.getSession().getAttribute("user").equals(getProfile.getName())) {
+        UserStore userStore = UserStore.getInstance();
+        String username = (String) request.getSession().getAttribute("user");
+        User user = userStore.getUser(username);
 
-    UUID userId = user.getId();
-    List<Friendship> userFriendsList = friendships.get(userId);
+        UUID userId = user.getId();
+        List<Friendship> userFriendsList = friendships.get(userId);
 
-    UUID friendId = getProfile.getId();
-    boolean isFriend = false;
-    boolean pending = false;
+        UUID friendId = getProfile.getId();
+        boolean isFriend = false;
+        boolean pending = false;
 
-    if (userFriendsList != null) {
-      for (Friendship friendship : userFriendsList) {
+        if (userFriendsList != null) {
+          for (Friendship friendship : userFriendsList) {
 
-        if (friendship.getFriendId().equals(friendId)) {
-          if (friendship.getStatus() == Status.PENDING) {
-            pending = true;
-          } else {
-            isFriend = true;
+            if (friendship.getFriendId().equals(friendId)) {
+              if (friendship.getStatus() == Status.PENDING) {
+                pending = true;
+              } else {
+                isFriend = true;
+              }
+
+              break;
+            } else if (friendship.getUserId().equals(friendId)) {
+              /* This condition is true if the friendship is pending because FriendshipStore
+              adds the same friendship twice to the two users in the map who are involved
+              in this friendship. */
+              pending = true;
+              break;
+            }
+
           }
-
-          break;
-        } else if (friendship.getUserId().equals(friendId)) {
-          /* This condition is true if the friendship is pending because FriendshipStore
-          adds the same friendship twice to the two users in the map who are involved
-          in this friendship. */
-          pending = true;
-          break;
         }
 
+
+        if (isFriend) {
+      %>
+          <p>Friends</p>
+      <%
+        } else if (pending) {
+      %>
+          <p>Friend request pending.</p>
+      <%
+        } else {
+      %>
+          <form action="/user/<%= getProfile.getName() %>" method="POST">
+            <input type="submit" name="addFriend" value="Add Friend" />
+          </form>
+      <%
+        }
       }
-    }
-
-
-    if (isFriend) {
-  %>
-      <p>Friends</p>
-  <%
-    } else if (pending) {
-  %>
-      <p>Friend request pending.</p>
-  <%
-    } else {
-  %>
-      <form action="/user/<%= getProfile.getName() %>" method="POST">
-        <input type="submit" name="addFriend" value="Add Friend" />
-      </form>
-  <%
-    }
-  }
-  %>
+      %>
 
     <hr/>
     <h3> About <%= getProfile.getName() %> </h3>
@@ -101,19 +102,20 @@ Map<UUID, List<Friendship>> friendships =
     <% } else {%>
       <p> This user has no description </p>
     <% } %>
-      <% if(request.getSession().getAttribute("user") != null) {%>
+      <% if(request.getSession().getAttribute("user") != null) { %>
           <% if(request.getSession().getAttribute("user").equals(getProfile.getName())) { %>
             <h4> Edit your About Me (only you can see this) </h4>
             <form action="/user/<%= request.getAttribute("user") %>" method="POST">
-            <% if(getProfile.getAboutMe() == null) {%>
+            <% if(getProfile.getAboutMe().equals("This user has no description")) {%>
               <div class="form-group">
-                <textarea id = "box" font-size: "25px" type ="text" name="aboutMe"
+                <textarea id = "box" type ="text" name="aboutMe"
                   placeholder = "Write about yourself!"></textarea>
               </div>
             <hr/>
             <% } else { %>
               <div class="form-group">
-              <textarea id = "box" type ="text" name="aboutMe" placeholder = "<%=getProfile.getAboutMe()%>"></textarea>
+                <textarea id = "box" type ="text" name="aboutMe"
+                    placeholder = "<%=getProfile.getAboutMe()%>"></textarea>
               </div>
               <hr/>
               <% } %>
