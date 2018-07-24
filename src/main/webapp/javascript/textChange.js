@@ -1,12 +1,12 @@
-function boldRangeButton(){
+function rangeButton(startTag, endTag, id){
 	var string = document.getElementsByName('message')[0].value;
 	var start = 0;
 	var end = 0;
-	while (string.includes("[b]")){
-		start = string.indexOf("[b]", start);
-		end = string.indexOf("[/b]", start);
+	while (start < string.length){
+		start = string.indexOf(startTag, start);
+		end = string.indexOf(endTag, start);
 		if (start == -1 || end == -1){
-			document.getElementById('bold').style.borderStyle = "outset";
+			document.getElementById(id).style.borderStyle = "outset";
 			break;
 		}
 		var x = 0;
@@ -27,94 +27,18 @@ function boldRangeButton(){
 			sel_start <= end &&
 			sel_end >= start + 3 &&
 			sel_end <= end) {
-			document.getElementById('bold').style.borderStyle = "inset";
+			document.getElementById(id).style.borderStyle = "inset";
 			break;
 		}
-		start = end + 1;
+		start = start + 1;
 	}
 }
-
-function italicRangeButton(){
-	var string = document.getElementsByName('message')[0].value;
-	var start = 0;
-	var end = 0;
-	while (string.includes("[i]")){
-		start = string.indexOf("[i]", start);
-		end = string.indexOf("[/i]", start);
-		if (start == -1 || end == -1){
-			document.getElementById('italic').style.borderStyle = "outset";
-			break;
-		}
-		var x = 0;
-		x = event.which || event.keyCode;
-		console.log(start, end);
-		console.log (document.getElementsByName('message')[0].selectionStart, document.getElementsByName('message')[0].selectionEnd);
-		
-		var sel_start = document.getElementsByName('message')[0].selectionStart;
-		var sel_end = document.getElementsByName('message')[0].selectionEnd;
-
-		if (x == 37){
-			sel_start -= 1;
-			sel_end -= 1;
-		}
-		else if (x == 39){
-			sel_start += 1;
-			sel_end += 1;
-		}
-		if (sel_start >= start + 3  && 
-			sel_start <= end &&
-			sel_end >= start + 3 &&
-			sel_end <= end) {
-			document.getElementById('italic').style.borderStyle = "inset";
-			break;
-		}
-		start = end + 1;
-	}
-}
-
-function underlineRangeButton(){
-	var string = document.getElementsByName('message')[0].value;
-	var start = 0;
-	var end = 0;
-	while (string.includes("[u]")){
-		start = string.indexOf("[u]", start);
-		end = string.indexOf("[/u]", start);
-		if (start == -1 || end == -1){
-			document.getElementById('underline').style.borderStyle = "outset";
-			break;
-		}
-		var x = 0;
-		x = event.which || event.keyCode;
-		console.log(start, end);
-		console.log (document.getElementsByName('message')[0].selectionStart, document.getElementsByName('message')[0].selectionEnd);
-		
-		var sel_start = document.getElementsByName('message')[0].selectionStart;
-		var sel_end = document.getElementsByName('message')[0].selectionEnd;
-
-		if (x == 37){
-			sel_start -= 1;
-			sel_end -= 1;
-		}
-		else if (x == 39){
-			sel_start += 1;
-			sel_end += 1;
-		}
-		if (sel_start >= start + 3  && 
-			sel_start <= end &&
-			sel_end >= start + 3 &&
-			sel_end <= end) {
-			document.getElementById('underline').style.borderStyle = "inset";
-			break;
-		}
-		start = end + 1;
-	}
-}
-
 
 function setButtonsInset(){
-	boldRangeButton();
-	italicRangeButton();
-	underlineRangeButton();
+	rangeButton("[b]", "[/b]", "bold");
+	rangeButton("[i]", "[/i]", "italic");
+	rangeButton("[u]", "[/u]", "underline");
+	rangeButton("[s]", "[/s]", "strike");
 }
 
 function smileEmoji(){
@@ -501,122 +425,83 @@ function heartEmoji(){
 	}
 }
 
+function styleFunction(startTag, endTag, id){
+	// locate if the user highlighted text
+	// selectionStart of the message is the beginning of the highlighted text
+	// seclectionEnd is the end of the message 
+	if (document.getElementsByName('message')[0].selectionStart != 
+		document.getElementsByName('message')[0].selectionEnd){
+		if (document.getElementById(id).style.borderStyle == "inset"){
+			var string = document.getElementsByName('message')[0].value;
+			var start = document.getElementsByName('message')[0].selectionStart;
+			var end = document.getElementsByName('message')[0].selectionEnd;
+			if (string.substring(start - 3, start) == startTag && string.substring(end, end + 4) == endTag){
+				document.getElementsByName('message')[0].value = 
+				string.substring(0, start - 3) + string.substring(start, end) + string.substring(end + 4);
+			} 
+			else {
+				document.getElementsByName('message')[0].value = 
+				string.substring(0, start) + endTag + string.substring(start, end) + 
+				startTag + string.substring(end);
+			}
+		}
+		else {
+			var string = document.getElementsByName('message')[0].value;
+			var start = document.getElementsByName('message')[0].selectionStart;
+			var end = document.getElementsByName('message')[0].selectionEnd;
+			if (string.substring(start - 4, start) == endTag && string.substring(end, end + 3) == startTag){
+				document.getElementsByName('message')[0].value = 
+				string.substring(0, start - 4) + string.substring(start, end) + string.substring(end + 3);
+			}
+			else {
+				document.getElementsByName('message')[0].value = 
+				string.substring(0, start) + startTag + string.substring(start, end) + 
+				endTag + string.substring(end);
+			}
+		}
+	}
+
+	else{
+		var start = document.getElementsByName('message')[0].selectionStart;
+		var string = document.getElementsByName('message')[0].value;
+		if (document.getElementById(id).style.borderStyle == "inset"){
+			console.log (string.substring(start - 3, start));
+			if (string.substring(start - 3, start) == startTag && string.substring(start, start + 4) == endTag){
+				document.getElementsByName('message')[0].value = 
+				string.substring(0, start - 3) + string.substring(start + 4);
+			}
+			else {
+				document.getElementsByName('message')[0].value = 
+				string.substring(0, start) + endTag + startTag + string.substring(start);
+			}
+		}
+		else {
+			if (string.substring(start - 4, start) == endTag && string.substring(start, start + 3) == startTag){
+				document.getElementsByName('message')[0].value = 
+				string.substring(0, start - 4) + string.substring(start + 3);
+			}
+			else {
+				document.getElementsByName('message')[0].value =
+				string.substring(0, start) + startTag + endTag + string.substring(start);
+			}
+		}
+	}
+}
 
 function boldFunction(){
-
-	// locate if the user highlighted text
-	// selectionStart of the message is the beginning of the highlighted text
-	// seclectionEnd is the end of the message 
-	if (document.getElementsByName('message')[0].selectionStart != 
-		document.getElementsByName('message')[0].selectionEnd){
-		if (document.getElementById('bold').style.borderStyle == "inset"){
-			var string = document.getElementsByName('message')[0].value;
-			var start = document.getElementsByName('message')[0].selectionStart;
-			var end = document.getElementsByName('message')[0].selectionEnd;
-			document.getElementsByName('message')[0].value = 
-			string.substring(0, start) + "[/b]" + string.substring(start, end) + 
-			"[b]" + string.substring(end);
-		}
-		else {
-			var string = document.getElementsByName('message')[0].value;
-			var start = document.getElementsByName('message')[0].selectionStart;
-			var end = document.getElementsByName('message')[0].selectionEnd;
-			document.getElementsByName('message')[0].value = 
-			string.substring(0, start) + "[b]" + string.substring(start, end) + 
-			"[/b]" + string.substring(end);
-		}
-	}
-
-	else{
-		var start = document.getElementsByName('message')[0].selectionStart;
-		var string = document.getElementsByName('message')[0].value;
-		console.log(start, end);
-		if (document.getElementById('bold').style.borderStyle == "inset"){
-			document.getElementsByName('message')[0].value = 
-			string.substring(0, start) + "[/b][b]" + string.substring(start);
-		}
-		else {
-			document.getElementsByName('message')[0].value =
-			string.substring(0, start) + "[b][/b]" + string.substring(start);
-		}
-	}
+	styleFunction("[b]", "[/b]", "bold");
 }
-function italicFunction (){
-	// locate if the user highlighted text
-	// selectionStart of the message is the beginning of the highlighted text
-	// seclectionEnd is the end of the message 
-	if (document.getElementsByName('message')[0].selectionStart != 
-		document.getElementsByName('message')[0].selectionEnd){
-		if (document.getElementById('italic').style.borderStyle == "inset"){
-			var string = document.getElementsByName('message')[0].value;
-			var start = document.getElementsByName('message')[0].selectionStart;
-			var end = document.getElementsByName('message')[0].selectionEnd;
-			document.getElementsByName('message')[0].value = 
-			string.substring(0, start) + "[/i]" + string.substring(start, end) + 
-			"[i]" + string.substring(end);
-		}
-		else {
-			var string = document.getElementsByName('message')[0].value;
-			var start = document.getElementsByName('message')[0].selectionStart;
-			var end = document.getElementsByName('message')[0].selectionEnd;
-			document.getElementsByName('message')[0].value = 
-			string.substring(0, start) + "[i]" + string.substring(start, end) + 
-			"[/i]" + string.substring(end);
-		}
-	}
 
-
-	else{
-		var start = document.getElementsByName('message')[0].selectionStart;
-		var string = document.getElementsByName('message')[0].value;
-		console.log(start, end);
-		if (document.getElementById('italic').style.borderStyle == "inset"){
-			document.getElementsByName('message')[0].value = 
-			string.substring(0, start) + "[/i][i]" + string.substring(start);
-		}
-		else {
-			document.getElementsByName('message')[0].value =
-			string.substring(0, start) + "[i][/i]" + string.substring(start);
-		}
-	}
+function italicFunction(){
+	styleFunction("[i]", "[/i]", "italic");
 }
+
 function underlineFunction(){
-	// locate if the user highlighted text
-	// selectionStart of the message is the beginning of the highlighted text
-	// seclectionEnd is the end of the message 
-	if (document.getElementsByName('message')[0].selectionStart != 
-		document.getElementsByName('message')[0].selectionEnd){
-		if (document.getElementById('underline').style.borderStyle == "inset"){
-			var string = document.getElementsByName('message')[0].value;
-			var start = document.getElementsByName('message')[0].selectionStart;
-			var end = document.getElementsByName('message')[0].selectionEnd;
-			document.getElementsByName('message')[0].value = 
-			string.substring(0, start) + "[/u]" + string.substring(start, end) + 
-			"[u]" + string.substring(end);
-		}
-		else {
-			var string = document.getElementsByName('message')[0].value;
-			var start = document.getElementsByName('message')[0].selectionStart;
-			var end = document.getElementsByName('message')[0].selectionEnd;
-			document.getElementsByName('message')[0].value = 
-			string.substring(0, start) + "[u]" + string.substring(start, end) + 
-			"[/u]" + string.substring(end);
-		}
-	}
+	styleFunction("[u]", "[/u]", "underline");
+}
 
-	else{
-		var start = document.getElementsByName('message')[0].selectionStart;
-		var string = document.getElementsByName('message')[0].value;
-		console.log(start, end);
-		if (document.getElementById('underline').style.borderStyle == "inset"){
-			document.getElementsByName('message')[0].value = 
-			string.substring(0, start) + "[/u][u]" + string.substring(start);
-		}
-		else {
-			document.getElementsByName('message')[0].value =
-			string.substring(0, start) + "[u][/u]" + string.substring(start);
-		}
-	}
+function strikeFunction(){
+	styleFunction("[s]", "[/s]", "strike");
 }
 
 function addLink() {
