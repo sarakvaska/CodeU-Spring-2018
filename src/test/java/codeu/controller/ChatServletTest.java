@@ -453,7 +453,7 @@ public class ChatServletTest {
 
     ArgumentCaptor<Message> messageArgumentCaptor = ArgumentCaptor.forClass(Message.class);
     Mockito.verify(mockMessageStore).addMessage(messageArgumentCaptor.capture());
-    Assert.assertEquals("Contains <a href='https://www.google.com/'>https://www.google.com/</a>.", messageArgumentCaptor.getValue().getContent());
+    Assert.assertEquals("Contains <a href='https://www.google.com/' target='_blank'>https://www.google.com/</a>.", messageArgumentCaptor.getValue().getContent());
 
     Mockito.verify(mockResponse).sendRedirect("/chat/test_conversation");
   }
@@ -483,7 +483,7 @@ public class ChatServletTest {
 
     ArgumentCaptor<Message> messageArgumentCaptor = ArgumentCaptor.forClass(Message.class);
     Mockito.verify(mockMessageStore).addMessage(messageArgumentCaptor.capture());
-    Assert.assertEquals("Contains <a href='https://www.google.com/'>Google</a>.", messageArgumentCaptor.getValue().getContent());
+    Assert.assertEquals("Contains <a href='https://www.google.com/' target='_blank'>Google</a>.", messageArgumentCaptor.getValue().getContent());
 
     Mockito.verify(mockResponse).sendRedirect("/chat/test_conversation");
   }

@@ -80,9 +80,10 @@ List<Message> messages = (List<Message>) request.getAttribute("messages");
     <hr/>
 
     <% if (request.getSession().getAttribute("user") != null) { %>
-      <button type="button" id ="bold" style="border-style:outset;" onclick="boldFunction()"><b>Bold</b></button>
-      <button type="button" id ="italic" style="border-style:outset;" onclick="italicFunction()"><i>Italic</i></button>
-      <button type="button" id ="underline" style="border-style:outset;" onclick="underlineFunction()"><u>Underline</u></button> 
+      <button type="button" id ="bold" style="border-style:outset;" onclick="boldFunction()"><b>B</b></button>
+      <button type="button" id ="italic" style="border-style:outset;" onclick="italicFunction()"><i>I</i></button>
+      <button type="button" id ="underline" style="border-style:outset;" onclick="underlineFunction()"><u>U</u></button> 
+      <button type="button" id ="strike" style="border-style:outset;" onclick="strikeFunction()"><s>S</s></button> 
       <button class = "collapsible"> Emojis </button>
       <div class="content">
         <table>
@@ -126,7 +127,12 @@ List<Message> messages = (List<Message>) request.getAttribute("messages");
       <button type="button" onclick="addLink()">Add Link</button>
     <br/>
     <form action="/chat/<%= conversation.getTitle() %>" method="POST">
-        <textarea rows="4" cols="40" type="text" style="font-size: 14pt" name="message" oninput= "setButtonsInset()" onselect="setButtonsInset()" onkeydown="setButtonsInset()" onclick="setButtonsInset()"> </textarea>
+        <textarea rows="4" cols="40" type="text" style="font-size: 14pt" name="message" 
+          onchange="setButtonsInset()"
+          oninput= "setButtonsInset()" 
+          onselect="setButtonsInset()" 
+          onkeydown="setButtonsInset()" 
+          onclick="setButtonsInset()" required></textarea>
         <br/>
         <button type="submit">Send</button>
     </form>

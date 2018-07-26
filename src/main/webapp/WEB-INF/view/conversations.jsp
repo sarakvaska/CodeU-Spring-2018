@@ -49,7 +49,7 @@
       <form action="/conversations" method="POST">
           <div class="form-group">
             <label class="form-control-label">Title:</label>
-          <input type="text" name="conversationTitle">
+          <input type="text" name="conversationTitle" required>
         </div>
 
         <button type="submit">Create</button>
