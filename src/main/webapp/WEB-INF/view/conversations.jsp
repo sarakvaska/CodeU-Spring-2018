@@ -21,6 +21,23 @@
 <head>
   <title>Conversations</title>
   <link rel="stylesheet" href="/css/main.css">
+  <script>
+  function newNotif() {
+    chatName = document.getElementById('conversation').value;
+    testName = new RegExp("^[A-z0-9]+$");
+    res = testName.test(chatName);
+      if (res == true) {
+          var notify = new Notification('CodeU Chat App', {
+              'body': 'New chat created!',
+              'icon': 'https://greggarcia.org/img/exp/10-1-1-exp.png'
+            });
+            notify.onclick = function() {
+              chatName = document.getElementById('conversation').value;
+              window.open('https://the-salvatorians.appspot.com/chat/' + chatName);
+            };
+          }
+       }
+  </script>
 </head>
 <body>
 
@@ -48,15 +65,13 @@
       <h1>New Conversation</h1>
       <form action="/conversations" method="POST">
           <div class="form-group">
-            <label class="form-control-label">Title:</label>
-          <input type="text" name="conversationTitle" required>
-        </div>
-
-        <button type="submit">Create</button>
+          <label class="form-control-label">Title:</label>
+          <input id="conversation" type="text" name="conversationTitle" required>
+          </div>
+          <button onclick="newNotif()"type="submit">Create</button>
+          <% } %>
       </form>
-
       <hr/>
-    <% } %>
 
     <h1>Conversations</h1>
 
