@@ -99,4 +99,20 @@ public class RegisterServletTest {
     Mockito.verify(mockRequest).setAttribute("error", "That username is already taken.");
     Mockito.verify(mockRequestDispatcher).forward(mockRequest, mockResponse);
   }
+
+  @Test
+  public void testDoPost_BadPassword() throws IOException, ServletException {
+    Mockito.when(mockRequest.getParameter("username")).thenReturn("test username");
+    Mockito.when(mockRequest.getParameter("password")).thenReturn("test");
+
+    UserStore mockUserStore = Mockito.mock(UserStore.class);
+    Mockito.when(mockUserStore.isUserRegistered("test username")).thenReturn(false);
+    registerServlet.setUserStore(mockUserStore);
+
+    registerServlet.doPost(mockRequest, mockResponse);
+
+    Mockito.verify(mockRequest)
+        .setAttribute("error", "Password needs to be at least 6 characters.");
+    Mockito.verify(mockRequestDispatcher).forward(mockRequest, mockResponse);
+  }
 }
