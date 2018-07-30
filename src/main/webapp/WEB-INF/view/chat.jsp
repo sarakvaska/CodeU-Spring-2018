@@ -80,11 +80,11 @@ List<Message> messages = (List<Message>) request.getAttribute("messages");
     <hr/>
 
     <% if (request.getSession().getAttribute("user") != null) { %>
-      <button type="button" id ="bold" style="border-style:outset;" onclick="boldFunction()"><b>B</b></button>
-      <button type="button" id ="italic" style="border-style:outset;" onclick="italicFunction()"><i>I</i></button>
-      <button type="button" id ="underline" style="border-style:outset;" onclick="underlineFunction()"><u>U</u></button> 
-      <button type="button" id ="strike" style="border-style:outset;" onclick="strikeFunction()"><s>S</s></button> 
-      <button class = "collapsible"> Emojis </button>
+      <button type="button" id ="bold" style="border-style:outset; border-width:2px;" onclick="boldFunction()"><b>B</b></button>
+      <button type="button" id ="italic" style="border-style:outset; border-width:2px;" onclick="italicFunction()"><i>I</i></button>
+      <button type="button" id ="underline" style="border-style:outset; border-width:2px;" onclick="underlineFunction()"><u>U</u></button> 
+      <button type="button" id ="strike" style="border-style:outset; border-width:2px;" onclick="strikeFunction()"><s>S</s></button> 
+      <button class = "collapsible" style="border-style:outset; border-width:2px;"> Emojis </button>
       <div class="content">
         <table>
             <tr>
@@ -139,6 +139,12 @@ List<Message> messages = (List<Message>) request.getAttribute("messages");
     <script>
     var coll = document.getElementsByClassName("collapsible");
       coll[0].addEventListener("click", function() {
+        if (this.style.borderStyle == "outset") {
+          this.style.borderStyle = "inset";
+        }
+        else {
+          this.style.borderStyle = "outset";
+        }
         this.classList.toggle("active");
         var content = this.nextElementSibling;
         if (content.style.maxHeight){
