@@ -40,7 +40,7 @@ List<Message> messages = (List<Message>) request.getAttribute("messages");
         'icon': 'https://greggarcia.org/img/exp/10-1-1-exp.png'
       });
         notify.onclick = function() {
-          chatName = conversation.getTitle();
+          chatName = document.getElementsByTagName('h1').value;
           window.open("https://the-salvatorians.appspot.com/chat/" + chatName);
         }
       }
