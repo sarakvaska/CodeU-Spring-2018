@@ -84,6 +84,17 @@ public class RegisterServlet extends HttpServlet {
       return;
     }
 
+    boolean containLower = !password.equals(password.toUpperCase());
+    boolean containUpper = !password.equals(password.toLowerCase());
+    boolean containDigit = password.matches(".*\\d.*");
+    boolean containSpecial = password.matches(".*[!@#$%^&*'].*");
+
+    if (!(containLower && containUpper && containDigit && containSpecial)){
+      request.setAttribute("error", "Password needs a lowercase, uppercase, digit, and special character.");
+      request.getRequestDispatcher("/WEB-INF/view/register.jsp").forward(request, response);
+      return;
+    }
+
     String hashedPassword = BCrypt.hashpw(password, BCrypt.gensalt());
     String about = "This user has no description";
 
