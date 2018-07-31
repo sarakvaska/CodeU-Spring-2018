@@ -34,12 +34,26 @@ List<Message> messages = (List<Message>) request.getAttribute("messages");
   <script type="text/javascript" src="http://code.jquery.com/jquery-latest.min.js"></script>
   <script src="/javascript/textChange.js"></script>
   <script>
+  // Notifications for when messages are received
+  function newNotif() {
+    var notify = new Notification('CodeU Chat App', {
+        'body': "New message received!",
+        'icon': 'https://greggarcia.org/img/exp/10-1-1-exp.png'
+      });
+        notify.onclick = function() {
+          chatName = document.getElementsByTagName('h1').value;
+          window.open("https://the-salvatorians.appspot.com/chat/" + chatName);
+        }
+      }
+  </script>
+  <script>
     // scroll the chat div to the bottom
     function scrollChat() {
       var chatDiv = document.getElementById('chat');
       chatDiv.scrollTop = chatDiv.scrollHeight;
     };
   </script>
+
 </head>
 <body onload="scrollChat()">
 
@@ -82,8 +96,8 @@ List<Message> messages = (List<Message>) request.getAttribute("messages");
     <% if (request.getSession().getAttribute("user") != null) { %>
       <button type="button" id ="bold" style="border-style:outset;" onclick="boldFunction()"><b>B</b></button>
       <button type="button" id ="italic" style="border-style:outset;" onclick="italicFunction()"><i>I</i></button>
-      <button type="button" id ="underline" style="border-style:outset;" onclick="underlineFunction()"><u>U</u></button> 
-      <button type="button" id ="strike" style="border-style:outset;" onclick="strikeFunction()"><s>S</s></button> 
+      <button type="button" id ="underline" style="border-style:outset;" onclick="underlineFunction()"><u>U</u></button>
+      <button type="button" id ="strike" style="border-style:outset;" onclick="strikeFunction()"><s>S</s></button>
       <button class = "collapsible"> Emojis </button>
       <div class="content">
         <table>
@@ -127,14 +141,14 @@ List<Message> messages = (List<Message>) request.getAttribute("messages");
       <button type="button" onclick="addLink()">Add Link</button>
     <br/>
     <form action="/chat/<%= conversation.getTitle() %>" method="POST">
-        <textarea rows="4" cols="40" type="text" style="font-size: 14pt" name="message" 
+        <textarea rows="4" cols="40" type="text" style="font-size: 14pt" name="message"
           onchange="setButtonsInset()"
-          oninput= "setButtonsInset()" 
-          onselect="setButtonsInset()" 
-          onkeydown="setButtonsInset()" 
+          oninput= "setButtonsInset()"
+          onselect="setButtonsInset()"
+          onkeydown="setButtonsInset()"
           onclick="setButtonsInset()" required></textarea>
         <br/>
-        <button type="submit">Send</button>
+        <button onclick="newNotif()" type="submit">Send</button>
     </form>
     <script>
     var coll = document.getElementsByClassName("collapsible");
@@ -145,11 +159,9 @@ List<Message> messages = (List<Message>) request.getAttribute("messages");
           content.style.maxHeight = null;
         } else {
           content.style.maxHeight = content.scrollHeight + "px";
-        } 
+        }
       });
     </script>
-
-
 
     <% } else { %>
       <p><a href="/login">Login</a> to send a message.</p>
