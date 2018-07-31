@@ -84,8 +84,8 @@ public class RegisterServlet extends HttpServlet {
       return;
     }
 
-    boolean containLower = !password.equals(password.toUpperCase());
-    boolean containUpper = !password.equals(password.toLowerCase());
+    boolean containLower = password.matches(".*[a-z].*");
+    boolean containUpper = password.matches(".*[A-Z].*");
     boolean containDigit = password.matches(".*\\d.*");
     boolean containSpecial = password.matches(".*[!@#$%^&*'].*");
 
