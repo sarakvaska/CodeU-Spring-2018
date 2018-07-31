@@ -22,6 +22,7 @@
   <title>Conversations</title>
   <link rel="stylesheet" href="/css/main.css">
   <script>
+  // Notifications for when new chats are created
   function newNotif() {
     chatName = document.getElementById('conversation').value;
     testName = new RegExp("^[A-z0-9]+$");

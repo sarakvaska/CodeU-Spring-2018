@@ -34,6 +34,7 @@ List<Message> messages = (List<Message>) request.getAttribute("messages");
   <script type="text/javascript" src="http://code.jquery.com/jquery-latest.min.js"></script>
   <script src="/javascript/textChange.js"></script>
   <script>
+  // Notifications for when messages are received
   function newNotif() {
     var notify = new Notification('CodeU Chat App', {
         'body': "New message received!",
