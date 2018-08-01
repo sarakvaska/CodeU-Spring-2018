@@ -517,3 +517,27 @@ function addLink() {
 	}
 	document.getElementsByName('message')[0].value = message;
 }
+
+function hidePreview(){
+	document.getElementById('preview').style.display = "none";
+}
+
+function splitAndJoinOnBB(string, code){
+	if (string.indexOf(code) != -1){
+		var lst = string.split(code);
+		var html_code = "<" + code.substring(1, code.length - 1) + ">";
+		string = lst.join(html_code);
+	}
+	return string;
+}
+
+function loadPreview(){
+	document.getElementById('preview').style.display = "block";
+	var string = document.getElementsByName('message')[0].value;
+	var bbcode = ["[b]", "[/b]", "[i]", "[/i]", "[u]", "[/u]", "[s]", "[/s]"];
+	for (var i = 0; i < bbcode.length; i++){
+		string = splitAndJoinOnBB(string, bbcode[i]);
+	}
+
+	document.getElementById('preview').innerHTML = string;
+}
