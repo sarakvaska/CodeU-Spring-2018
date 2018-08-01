@@ -10,6 +10,7 @@
 <html>
 <head>
   <title>Friends List</title>
+  <link rel="icon" href="https://greggarcia.org/img/exp/10-1-1-exp.png">
   <link rel="stylesheet" href="/css/main.css">
 </head>
 <body>

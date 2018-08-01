@@ -23,6 +23,7 @@ List<Message> messages = (List<Message>) request.getAttribute("messages");
 <html>
 <head>
   <title><%= conversation.getTitle() %></title>
+  <link rel="icon" href="https://greggarcia.org/img/exp/10-1-1-exp.png">
   <link rel="stylesheet" href="/css/main.css" type="text/css">
   <style>
     #chat {
