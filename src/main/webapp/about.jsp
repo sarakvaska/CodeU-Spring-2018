@@ -82,7 +82,7 @@
           who can go on their friends list to either accept or reject the request.</li>
         <li><strong>Style Text Bar:</strong> Above the message text area are a set
           of buttons that you can use to style your text. You can bold, italicize,
-          underline, and add links to your text.</li>
+          underline, strikethrough, and add links to your text.</li>
         <li><strong>Emoji:</strong> In addition to styling, you can also chat with
           emoji by clicking on the Emojis button, which brings up a collapsible
           emoji box. You can also type in symbols that would represent emoji, and
