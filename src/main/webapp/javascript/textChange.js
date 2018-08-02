@@ -526,7 +526,7 @@ function styleFunction(startTag, endTag, id){
 			}
 			else if (string.substring(start, start + 3) == startTag){
 			}
-			
+
 			else {
 				document.getElementsByName('message')[0].value =
 				string.substring(0, start) + startTag + endTag + string.substring(start);
@@ -560,6 +560,20 @@ function addLink() {
 		}
 		else {
 			message += " [url]" + link + "[/url]"; 
+		}
+	}
+	document.getElementsByName('message')[0].value = message;
+}
+
+function addImageLink() {
+	var message = document.getElementsByName('message')[0].value;
+	var link = document.getElementsByName('imagery')[0].value;
+	if (link != ""){
+		if (message == ""){
+			message += "[img]" + link + "[/img]"; 
+		}
+		else {
+			message += " [img]" + link + "[/img]"; 
 		}
 	}
 	document.getElementsByName('message')[0].value = message;
