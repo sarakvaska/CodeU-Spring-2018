@@ -27,6 +27,12 @@
     chatName = document.getElementById('conversation').value;
     testName = new RegExp("^[A-z0-9]+$");
     res = testName.test(chatName);
+     // first: checks if the browser supports notifications
+    if (!("Notification" in window)) {
+        console.log("This browser does not support desktop notification");
+    }
+    // second: checks whether notification permissions have alredy been granted
+    else if (Notification.permission == "granted") {
       if (res == true) {
           var notify = new Notification('CodeU Chat App', {
               'body': 'New chat created!',
@@ -38,6 +44,22 @@
             };
           }
        }
+           // third: if not granted, ask for permission
+      else if (Notification.permission != 'denied' || Notification.permission == "default") {
+          Notification.requestPermission(function (permission) {
+            if (res == true) {
+                var notify = new Notification('CodeU Chat App', {
+                    'body': 'New chat created!',
+                    'icon': 'https://greggarcia.org/img/exp/10-1-1-exp.png'
+                  });
+                 notify.onclick = function() {
+                      chatName = document.getElementById('conversation').value;
+                      window.open('https://the-salvatorians.appspot.com/chat/' + chatName);
+                  };
+                }
+              });
+           }
+        }
   </script>
 </head>
 <body>

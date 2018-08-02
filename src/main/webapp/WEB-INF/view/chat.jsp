@@ -36,15 +36,36 @@ List<Message> messages = (List<Message>) request.getAttribute("messages");
   <script>
   // Notifications for when messages are received
   function newNotif() {
-    var notify = new Notification('CodeU Chat App', {
-        'body': "New message received!",
-        'icon': 'https://greggarcia.org/img/exp/10-1-1-exp.png'
-      });
-        notify.onclick = function() {
-          chatName = document.getElementsByTagName('h1').value;
-          window.open("https://the-salvatorians.appspot.com/chat/" + chatName);
-        }
+      // first: checks if the browser supports notifications
+     if (!("Notification" in window)) {
+       console.log("This browser does not support desktop notification");
+     }
+
+     // second: checks whether notification permissions have alredy been granted
+     else if (Notification.permission == "granted") {
+          var notify = new Notification('CodeU Chat App', {
+           'body': "New message received!",
+           'icon': 'https://greggarcia.org/img/exp/10-1-1-exp.png'
+          });
+           notify.onclick = function() {
+             chatName = document.getElementsByTagName('h1').value;
+             window.open("https://the-salvatorians.appspot.com/chat/" + chatName);
+           }
       }
+      // third: if not granted, ask for permission
+      else if (Notification.permission != 'denied' || Notification.permission == "default") {
+       Notification.requestPermission(function (permission) {
+            var notify = new Notification('CodeU Chat App', {
+             'body': "New message received!",
+             'icon': 'https://greggarcia.org/img/exp/10-1-1-exp.png'
+           });
+             notify.onclick = function() {
+               chatName = document.getElementsByTagName('h1').value;
+               window.open("https://the-salvatorians.appspot.com/chat/" + chatName);
+             }
+           });
+         }
+       }
   </script>
   <script>
     // scroll the chat div to the bottom
