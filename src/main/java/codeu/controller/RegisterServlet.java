@@ -77,6 +77,24 @@ public class RegisterServlet extends HttpServlet {
     }
 
     String password = request.getParameter("password");
+
+    if (password.length() < 6){
+      request.setAttribute("error", "Password needs to be at least 6 characters.");
+      request.getRequestDispatcher("/WEB-INF/view/register.jsp").forward(request, response);
+      return;
+    }
+
+    boolean containLower = password.matches(".*[a-z].*");
+    boolean containUpper = password.matches(".*[A-Z].*");
+    boolean containDigit = password.matches(".*\\d.*");
+    boolean containSpecial = password.matches(".*[!@#$%^&*'].*");
+
+    if (!(containLower && containUpper && containDigit && containSpecial)){
+      request.setAttribute("error", "Password needs a lowercase, uppercase, digit, and special character.");
+      request.getRequestDispatcher("/WEB-INF/view/register.jsp").forward(request, response);
+      return;
+    }
+
     String hashedPassword = BCrypt.hashpw(password, BCrypt.gensalt());
     String about = "This user has no description";
 
