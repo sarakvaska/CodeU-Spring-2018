@@ -136,9 +136,14 @@ List<Message> messages = (List<Message>) request.getAttribute("messages");
           oninput= "setButtonsInset()" 
           onselect="setButtonsInset()" 
           onkeydown="setButtonsInset()" 
-          onclick="setButtonsInset()" required></textarea>
+          onclick="setButtonsInset()" 
+          onfocus="hidePreview()" required></textarea>
         <br/>
+        <div id = "preview" style="border-width: 1px; border-color: gray; border-style: solid; background-color: white; height: 90px; width: 420px; overflow:auto; display:none">
+        </div>
+        <button type="button" onclick="loadPreview()">Preview</button>
         <button type="submit" id="sendData">Send</button>
+        <br/>
     </form>
     <script>
     var coll = document.getElementsByClassName("collapsible");
@@ -158,9 +163,6 @@ List<Message> messages = (List<Message>) request.getAttribute("messages");
         } 
       });
     </script>
-
-
-
     <% } else { %>
       <p><a href="/login">Login</a> to send a message.</p>
     <% } %>
