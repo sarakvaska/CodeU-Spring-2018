@@ -19,6 +19,7 @@ Map<UUID, List<Friendship>> friendships =
 <html>
 <head>
   <title>Profile Page</title>
+  <link rel="icon" href="https://greggarcia.org/img/exp/10-1-1-exp.png">
   <link rel="stylesheet" href="/css/main.css" type="text/css">
   <script src="/javascript/search.js"></script>
   </head>

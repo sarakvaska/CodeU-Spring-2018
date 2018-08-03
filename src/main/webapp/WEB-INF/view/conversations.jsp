@@ -20,6 +20,7 @@
 <html>
 <head>
   <title>Conversations</title>
+  <link rel="icon" href="https://greggarcia.org/img/exp/10-1-1-exp.png">
   <link rel="stylesheet" href="/css/main.css">
   <script>
   // Notifications for when new chats are created
