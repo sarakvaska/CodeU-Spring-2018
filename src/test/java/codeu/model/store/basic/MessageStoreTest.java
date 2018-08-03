@@ -100,4 +100,21 @@ public class MessageStoreTest {
     Assert.assertEquals(expectedMessage.getContent(), actualMessage.getContent());
     Assert.assertEquals(expectedMessage.getCreationTime(), actualMessage.getCreationTime());
   }
+
+  @Test
+  public void testDeleteMessage() {
+    UUID messageId = UUID.randomUUID();
+    Message inputMessage =
+        new Message(
+            messageId,
+            UUID.randomUUID(),
+            UUID.randomUUID(),
+            "test message",
+            Instant.now());
+
+    messageStore.addMessage(inputMessage);
+    messageStore.deleteMessage(inputMessage);
+    Assert.assertEquals(null, messageStore.getMessageById(messageId));
+    Mockito.verify(mockPersistentStorageAgent).deleteMessageThrough(inputMessage);
+  }
 }

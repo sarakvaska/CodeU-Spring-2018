@@ -29,6 +29,8 @@ import com.google.appengine.api.datastore.Entity;
 import com.google.appengine.api.datastore.PreparedQuery;
 import com.google.appengine.api.datastore.Query;
 import com.google.appengine.api.datastore.Query.SortDirection;
+import com.google.appengine.api.datastore.Key;
+import com.google.appengine.api.datastore.KeyFactory;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -305,5 +307,33 @@ public class PersistentDataStore {
 
     friendshipEntity.setProperty("creation_time", friendship.getCreationTime().toString());
     datastore.put(friendshipEntity);
+  }
+
+  /** Delete a Message object from the Datastore service. */
+  public void deleteMessageThrough(Message messageDelete) {
+    // Retrieve all messages from the datastore.
+    Query query = new Query("chat-messages").addSort("creation_time", SortDirection.ASCENDING);
+    PreparedQuery results = datastore.prepare(query);
+
+    for (Entity entity : results.asIterable()) {
+      String uuid = (String) entity.getProperty("uuid");
+      if (uuid.equals(messageDelete.getId().toString())) {
+          datastore.delete(entity.getKey());
+      }
+    }
+  }
+
+   /** Delete an Activity object from the Datastore service. */
+  public void deleteActivityThrough(Activity activity) {
+    // Retrieve all messages from the datastore.
+    Query query = new Query("chat-activities").addSort("creation_time", SortDirection.DESCENDING);
+    PreparedQuery results = datastore.prepare(query);
+
+    for (Entity entity : results.asIterable()) {
+      String uuid = (String) entity.getProperty("uuid");
+      if (uuid.equals(activity.getId().toString())) {
+          datastore.delete(entity.getKey());
+      }
+    }
   }
 }
