@@ -21,6 +21,7 @@
 <head>
   <title>Conversations</title>
   <link rel="icon" href="https://greggarcia.org/img/exp/10-1-1-exp.png">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
   <link rel="stylesheet" href="/css/main.css">
   <script>
   // Notifications for when new chats are created
@@ -66,7 +67,7 @@
 <body>
 
   <nav>
-    <a id="navTitle" href="/">CodeU Chat App</a>
+    <a id="navTitle" href="/"><i class="fa fa-home"></i></a>
     <a href="/conversations">Conversations</a>
     <% if(request.getSession().getAttribute("user") != null){ %>
       <a href="/user/<%= request.getSession().getAttribute("user") %>"><%= request.getSession().getAttribute("user") %>'s Profile</a>
