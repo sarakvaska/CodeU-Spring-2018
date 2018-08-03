@@ -125,7 +125,10 @@ List<Message> messages = (List<Message>) request.getAttribute("messages");
         </table>
       </div>
       <input type="text" name="link" placeholder="URL">
-      <button type="button" onclick="addLink()">Add Link</button>
+      <button type="button" onclick="addLink()">Add Link to Message</button>
+      <br/>
+      <input type="text" name="imagery" placeholder="URL">
+      <button type="button" onclick="addImageLink()">Add Image Link to Message</button>
     <br/>
     <form action="/chat/<%= conversation.getTitle() %>" method="POST">
         <textarea rows="4" cols="40" type="text" style="font-size: 14pt" name="message" 
@@ -135,7 +138,7 @@ List<Message> messages = (List<Message>) request.getAttribute("messages");
           onkeydown="setButtonsInset()" 
           onclick="setButtonsInset()" required></textarea>
         <br/>
-        <button type="submit">Send</button>
+        <button type="submit" id="sendData">Send</button>
     </form>
     <script>
     var coll = document.getElementsByClassName("collapsible");
