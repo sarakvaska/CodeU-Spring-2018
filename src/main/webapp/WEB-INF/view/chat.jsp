@@ -23,6 +23,7 @@ List<Message> messages = (List<Message>) request.getAttribute("messages");
 <html>
 <head>
   <title><%= conversation.getTitle() %></title>
+  <link rel="icon" href="https://greggarcia.org/img/exp/10-1-1-exp.png">
   <link rel="stylesheet" href="/css/main.css" type="text/css">
   <style>
     #chat {
@@ -80,11 +81,11 @@ List<Message> messages = (List<Message>) request.getAttribute("messages");
     <hr/>
 
     <% if (request.getSession().getAttribute("user") != null) { %>
-      <button type="button" id ="bold" style="border-style:outset;" onclick="boldFunction()"><b>B</b></button>
-      <button type="button" id ="italic" style="border-style:outset;" onclick="italicFunction()"><i>I</i></button>
-      <button type="button" id ="underline" style="border-style:outset;" onclick="underlineFunction()"><u>U</u></button> 
-      <button type="button" id ="strike" style="border-style:outset;" onclick="strikeFunction()"><s>S</s></button> 
-      <button class = "collapsible"> Emojis </button>
+      <button type="button" id ="bold" style="border-style:outset; border-width:2px;" onclick="boldFunction()"><b>B</b></button>
+      <button type="button" id ="italic" style="border-style:outset; border-width:2px;" onclick="italicFunction()"><i>I</i></button>
+      <button type="button" id ="underline" style="border-style:outset; border-width:2px;" onclick="underlineFunction()"><u>U</u></button> 
+      <button type="button" id ="strike" style="border-style:outset; border-width:2px;" onclick="strikeFunction()"><s>S</s></button> 
+      <button class = "collapsible" style="border-style:outset; border-width:2px;"> Emojis </button>
       <div class="content">
         <table>
             <tr>
@@ -124,7 +125,10 @@ List<Message> messages = (List<Message>) request.getAttribute("messages");
         </table>
       </div>
       <input type="text" name="link" placeholder="URL">
-      <button type="button" onclick="addLink()">Add Link</button>
+      <button type="button" onclick="addLink()">Add Link to Message</button>
+      <br/>
+      <input type="text" name="imagery" placeholder="URL">
+      <button type="button" onclick="addImageLink()">Add Image Link to Message</button>
     <br/>
     <form action="/chat/<%= conversation.getTitle() %>" method="POST">
         <textarea rows="4" cols="40" type="text" style="font-size: 14pt" name="message" 
@@ -134,15 +138,22 @@ List<Message> messages = (List<Message>) request.getAttribute("messages");
           onkeydown="setButtonsInset()" 
           onclick="setButtonsInset()" 
           onfocus="hidePreview()" required></textarea>
-        <br>
+        <br/>
         <div id = "preview" style="border-width: 1px; border-color: gray; border-style: solid; background-color: white; height: 90px; width: 420px; overflow:auto; display:none">
         </div>
         <button type="button" onclick="loadPreview()">Preview</button>
-        <button type="submit">Send</button>
+        <button type="submit" id="sendData">Send</button>
+        <br/>
     </form>
     <script>
     var coll = document.getElementsByClassName("collapsible");
       coll[0].addEventListener("click", function() {
+        if (this.style.borderStyle == "outset") {
+          this.style.borderStyle = "inset";
+        }
+        else {
+          this.style.borderStyle = "outset";
+        }
         this.classList.toggle("active");
         var content = this.nextElementSibling;
         if (content.style.maxHeight){

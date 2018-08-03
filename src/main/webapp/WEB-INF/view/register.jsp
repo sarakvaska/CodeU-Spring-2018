@@ -17,6 +17,7 @@
 <html>
 <head>
   <title>Register</title>
+  <link rel="icon" href="https://greggarcia.org/img/exp/10-1-1-exp.png">
   <link rel="stylesheet" href="/css/main.css">
 </head>
 <body>
@@ -49,8 +50,56 @@
       <br/>
       <label for="password">Password: </label>
       <br/>
-      <input type="password" name="password" id="password">
-      <br/><br/>
+      <input type="password" name="password" id="password" oninput="checkReq()">
+      <font size="2"><ul id="passCheck">
+        <li>At least 6 characters long</li>
+        <li>Has an uppercase character</li>
+        <li>Has a lowercase character</li>
+        <li>Has a digit</li>
+        <li>Has a special character</li>
+      </ul></font>
+      <script>
+        function checkReq(){
+          var passVal = document.getElementById("password").value;
+          var len = (passVal.length >= 6);
+          var upper = new RegExp("[A-Z]").test(passVal);
+          var lower = new RegExp("[a-z]").test(passVal);
+          var digit = new RegExp("\\d").test(passVal);
+          var special = new RegExp("[!@#$%^&*']").test(passVal);
+
+          var list = document.getElementsByTagName("UL")[0];
+          if (len){
+            list.getElementsByTagName("LI")[0].innerHTML = "At least 6 characters long &#x2713";
+          }
+          else{
+            list.getElementsByTagName("LI")[0].innerHTML = "At least 6 characters long";
+          }
+          if (upper){
+            list.getElementsByTagName("LI")[1].innerHTML = "Has an uppercase character &#x2713";
+          }
+          else{
+            list.getElementsByTagName("LI")[1].innerHTML = "Has an uppercase character";
+          }
+          if (lower){
+            list.getElementsByTagName("LI")[2].innerHTML = "Has a lowercase character &#x2713";
+          }
+          else{
+            list.getElementsByTagName("LI")[2].innerHTML = "Has a lowercase character";
+          }
+          if (digit){
+            list.getElementsByTagName("LI")[3].innerHTML = "Has a digit &#x2713";
+          }
+          else{
+            list.getElementsByTagName("LI")[3].innerHTML = "Has a digit";
+          }
+          if (special){
+            list.getElementsByTagName("LI")[4].innerHTML = "Has a special character &#x2713";
+          }
+          else{
+            list.getElementsByTagName("LI")[4].innerHTML = "Has a special character";
+          }
+        }
+      </script>
       <button type="submit">Submit</button>
     </form>
   </div>

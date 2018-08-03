@@ -398,6 +398,25 @@ public class ChatServlet extends HttpServlet {
 
     cleanedMessageContent = String.join(" ", messageArray);
 
+    //split again to search for tagging usernames
+    messageArray = cleanedMessageContent.split("\\s");
+    for (int i = 0; i < messageArray.length; i++) {
+      // if you see the tagging username character 
+      if (messageArray[i].length() > 0) {
+        if (messageArray[i].substring(0,1).equals("@")){
+          String name = messageArray[i].substring(1);
+          // not allowed to tag yourself 
+          if (!username.equals(name)) {
+            User tagged = userStore.getUser(name);
+            if (tagged != null) {
+              // user found, create link to profile of user
+              messageArray[i] = "<a href='/user/" + name + "'>@" + name + "</a>";
+            }
+          }
+        }
+      }
+    }
+    cleanedMessageContent = String.join(" ", messageArray);
 
     // Debugging - checking for missing bold, italic, or underline tags
 
