@@ -565,7 +565,6 @@ function addLink() {
 	document.getElementsByName('message')[0].value = message;
 }
 
-<<<<<<< HEAD
 function hidePreview(){
 	document.getElementById('preview').style.display = "none";
 }
@@ -672,7 +671,8 @@ function loadPreview(){
 	}
 	string = emojiSplit.join(" ");
 	document.getElementById('preview').innerHTML = string;
-=======
+}
+
 function addImageLink() {
 	var message = document.getElementsByName('message')[0].value;
 	var link = document.getElementsByName('imagery')[0].value;
@@ -685,5 +685,4 @@ function addImageLink() {
 		}
 	}
 	document.getElementsByName('message')[0].value = message;
->>>>>>> master
 }
