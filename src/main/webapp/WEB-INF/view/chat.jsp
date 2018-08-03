@@ -46,7 +46,7 @@ List<Message> messages = (List<Message>) request.getAttribute("messages");
 <body onload="scrollChat()">
 
   <nav>
-    <a id="navTitle" href="/">CodeU Chat App</a>
+    <a id="navTitle" href="/"><i class="fa fa-home"></i></a>
     <a href="/conversations">Conversations</a>
     <% if(request.getSession().getAttribute("user") != null){ %>
         <a href="/user/<%= request.getSession().getAttribute("user") %>"><%= request.getSession().getAttribute("user") %>'s Profile</a>
