@@ -435,10 +435,26 @@ function styleFunction(startTag, endTag, id){
 			var string = document.getElementsByName('message')[0].value;
 			var start = document.getElementsByName('message')[0].selectionStart;
 			var end = document.getElementsByName('message')[0].selectionEnd;
+
+			// deals with: [b][/b] Hiiii [b][/b]
 			if (string.substring(start - 3, start) == startTag && string.substring(end, end + 4) == endTag){
 				document.getElementsByName('message')[0].value = 
 				string.substring(0, start - 3) + string.substring(start, end) + string.substring(end + 4);
 			} 
+
+			// deals with: [b][/b] Hi [b]iii [/b]
+			else if (string.substring(start - 3, start) == startTag){
+				document.getElementsByName('message')[0].value = 
+				string.substring(0, start - 3) + string.substring(start, end) + startTag + string.substring(end);
+			}
+
+			// deals with: [b] Hii[/b]ii [b][/b] 
+			else if (string.substring(end, end + 4) == endTag){
+				document.getElementsByName('message')[0].value = 
+				string.substring(0, start) + endTag + string.substring(start, end) + string.substring(end + 4);
+			}
+
+			// deals with: [b] Hi[/b]i[b]ii [/b]
 			else {
 				document.getElementsByName('message')[0].value = 
 				string.substring(0, start) + endTag + string.substring(start, end) + 
@@ -449,9 +465,23 @@ function styleFunction(startTag, endTag, id){
 			var string = document.getElementsByName('message')[0].value;
 			var start = document.getElementsByName('message')[0].selectionStart;
 			var end = document.getElementsByName('message')[0].selectionEnd;
+
+			// deals with: [/b][b] Hiiiiiiii [/b][b]
 			if (string.substring(start - 4, start) == endTag && string.substring(end, end + 3) == startTag){
 				document.getElementsByName('message')[0].value = 
 				string.substring(0, start - 4) + string.substring(start, end) + string.substring(end + 3);
+			}
+
+			// deals with: [/b][b] Hii[/b]iiiiii [b]
+			else if (string.substring(start - 4, start) == endTag){
+				document.getElementsByName('message')[0].value = 
+				string.substring(0, start - 4) + string.substring(start, end) + endTag +  string.substring(end);
+			}
+
+			// deals with: [/b] Hiii[b]iiiii [/b][b]
+			else if (string.substring(end, end + 3) == startTag){
+				document.getElementsByName('message')[0].value = 
+				string.substring(0, start) + startTag + string.substring(start, end) + string.substring(end + 3);
 			}
 			else {
 				document.getElementsByName('message')[0].value = 
@@ -466,10 +496,19 @@ function styleFunction(startTag, endTag, id){
 		var string = document.getElementsByName('message')[0].value;
 		if (document.getElementById(id).style.borderStyle == "inset"){
 			console.log (string.substring(start - 3, start));
+
 			if (string.substring(start - 3, start) == startTag && string.substring(start, start + 4) == endTag){
 				document.getElementsByName('message')[0].value = 
 				string.substring(0, start - 3) + string.substring(start + 4);
 			}
+
+			// do nothing if cursor before or after a tag 
+			// don't want chain of tags if user decides to press the bold button a lot of times
+			else if (string.substring(start - 3, start) == startTag){
+			}
+			else if (string.substring(start, start + 4) == endTag){
+			}
+
 			else {
 				document.getElementsByName('message')[0].value = 
 				string.substring(0, start) + endTag + startTag + string.substring(start);
@@ -480,6 +519,14 @@ function styleFunction(startTag, endTag, id){
 				document.getElementsByName('message')[0].value = 
 				string.substring(0, start - 4) + string.substring(start + 3);
 			}
+
+			// do nothing if cursor before or after a tag 
+			// don't want chain of tags if user decides to press the bold button a lot of times
+			else if (string.substring(start - 4, start) == endTag){
+			}
+			else if (string.substring(start, start + 3) == startTag){
+			}
+
 			else {
 				document.getElementsByName('message')[0].value =
 				string.substring(0, start) + startTag + endTag + string.substring(start);
@@ -513,6 +560,20 @@ function addLink() {
 		}
 		else {
 			message += " [url]" + link + "[/url]"; 
+		}
+	}
+	document.getElementsByName('message')[0].value = message;
+}
+
+function addImageLink() {
+	var message = document.getElementsByName('message')[0].value;
+	var link = document.getElementsByName('imagery')[0].value;
+	if (link != ""){
+		if (message == ""){
+			message += "[img]" + link + "[/img]"; 
+		}
+		else {
+			message += " [img]" + link + "[/img]"; 
 		}
 	}
 	document.getElementsByName('message')[0].value = message;
