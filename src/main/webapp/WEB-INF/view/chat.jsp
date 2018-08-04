@@ -36,12 +36,47 @@ List<Message> messages = (List<Message>) request.getAttribute("messages");
   <script type="text/javascript" src="http://code.jquery.com/jquery-latest.min.js"></script>
   <script src="/javascript/textChange.js"></script>
   <script>
+  // Notifications for when messages are received
+  function newNotif() {
+      // first: checks if the browser supports notifications
+     if (!("Notification" in window)) {
+       console.log("This browser does not support desktop notification");
+     }
+
+     // second: checks whether notification permissions have alredy been granted
+     else if (Notification.permission == "granted") {
+          var notify = new Notification('CodeU Chat App', {
+           'body': "New message received!",
+           'icon': 'https://greggarcia.org/img/exp/10-1-1-exp.png'
+          });
+           notify.onclick = function() {
+             chatName = document.getElementsByTagName('h1').value;
+             window.open("https://the-salvatorians.appspot.com/chat/" + chatName);
+           }
+      }
+      // third: if not granted, ask for permission
+      else if (Notification.permission != 'denied' || Notification.permission == "default") {
+       Notification.requestPermission(function (permission) {
+            var notify = new Notification('CodeU Chat App', {
+             'body': "New message received!",
+             'icon': 'https://greggarcia.org/img/exp/10-1-1-exp.png'
+           });
+             notify.onclick = function() {
+               chatName = document.getElementsByTagName('h1').value;
+               window.open("https://the-salvatorians.appspot.com/chat/" + chatName);
+             }
+           });
+         }
+       }
+  </script>
+  <script>
     // scroll the chat div to the bottom
     function scrollChat() {
       var chatDiv = document.getElementById('chat');
       chatDiv.scrollTop = chatDiv.scrollHeight;
     };
   </script>
+
 </head>
 <body onload="scrollChat()">
 
@@ -132,13 +167,14 @@ List<Message> messages = (List<Message>) request.getAttribute("messages");
       <button type="button" onclick="addImageLink()">Add Image Link to Message</button>
     <br/>
     <form action="/chat/<%= conversation.getTitle() %>" method="POST">
-        <textarea rows="4" cols="40" type="text" style="font-size: 14pt" name="message" 
+        <textarea rows="4" cols="40" type="text" style="font-size: 14pt" name="message"
           onchange="setButtonsInset()"
-          oninput= "setButtonsInset()" 
-          onselect="setButtonsInset()" 
-          onkeydown="setButtonsInset()" 
-          onclick="setButtonsInset()" 
-          onfocus="hidePreview()" required></textarea>
+          oninput= "setButtonsInset()"
+          onselect="setButtonsInset()"
+          onkeydown="setButtonsInset()"
+          onclick="setButtonsInset()" required></textarea>
+        <br/>
+        <button type="submit" id="sendData" onclick="newNotif()">Send</button>
         <br/>
         <div id = "preview" style="border-width: 1px; border-color: gray; border-style: solid; background-color: white; height: 90px; width: 420px; overflow:auto; display:none">
         </div>
@@ -161,9 +197,10 @@ List<Message> messages = (List<Message>) request.getAttribute("messages");
           content.style.maxHeight = null;
         } else {
           content.style.maxHeight = content.scrollHeight + "px";
-        } 
+        }
       });
     </script>
+
     <% } else { %>
       <p><a href="/login">Login</a> to send a message.</p>
     <% } %>

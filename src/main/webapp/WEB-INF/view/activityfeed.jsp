@@ -75,7 +75,7 @@ private String formatCreationTime(Instant time) {
           <li><b><%= formatCreationTime(activity.getCreationTime()) %>:</b>
             <a href="/user/<%= user.getName() %>"><%= user.getName() %></a> joined.</li>
         <%
-            } else if (activity.getType() == ActivityType.NEW_CONVERSATION) {
+        } else if (activity.getType() == ActivityType.NEW_CONVERSATION) {
               Conversation conversation =
                   conversationStore.getConversationById(activity.getId());
               if (conversation == null) {
@@ -100,7 +100,7 @@ private String formatCreationTime(Instant time) {
                 User user =
                     userStore.getUser(message.getAuthorId());
         %>
-          <li><b><%= formatCreationTime(activity.getCreationTime()) %>:</b>
+          <li id="myMessFunct"><b><%= formatCreationTime(activity.getCreationTime()) %>:</b>
             <a href="/user/<%= user.getName() %>"><%= user.getName() %></a> sent a message in
             <a href="/chat/<%= conversation.getTitle() %>">
               <%= conversation.getTitle() %></a>:
