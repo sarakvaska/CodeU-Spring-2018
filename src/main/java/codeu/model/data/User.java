@@ -24,6 +24,7 @@ public class User {
   private final String passwordHash;
   private final Instant creation;
   private String aboutMe;
+  private Boolean admin;
 
   /**
    * Constructs a new User.
@@ -33,9 +34,11 @@ public class User {
    * @param passwordHash the password hash of this User
    * @param creation the creation time of this User
    * @param aboutMe the text that the user uses to describe themself
+   * @param will set whether the user is an admin or not
    */
-  public User(UUID id, String name, String passwordHash, Instant creation, String aboutMe) {
+  public User(UUID id, String name, String passwordHash, Instant creation, String aboutMe, Boolean admin) {
     this.id = id;
+    this.admin = admin;
     this.name = name;
     this.passwordHash = passwordHash;
     this.creation = creation;
@@ -68,5 +71,14 @@ public class User {
 
   public String getAboutMe() {
     return aboutMe;
+
+  /** Returns if user is admin*/
+  public Boolean isAdmin() {
+      return admin;
+  }
+
+  /** Set admin attribute */
+  public void setAdmin(Boolean admin) {
+      this.admin = admin;
   }
 }
