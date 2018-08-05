@@ -48,7 +48,16 @@ private String formatCreationTime(Instant time) {
       <% } %>
       <a href="/about.jsp">About</a>
       <a href="/activityfeed">Activity Feed</a>
-      <a href="/admin">Admin</a>
+      <% if(request.getSession().getAttribute("user") != null){
+        String username = (String) request.getSession().getAttribute("user");
+        UserStore userStore = UserStore.getInstance();
+        User user = userStore.getUser(username);
+        if (user.isAdmin()){
+        %>
+          <a href="/admin">Admin</a>
+        <%
+        }
+      }%>
     </nav>
 
   <div id="container">

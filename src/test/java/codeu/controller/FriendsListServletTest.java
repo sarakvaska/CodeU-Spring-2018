@@ -81,7 +81,8 @@ public class FriendsListServletTest {
             "test_username",
             "$2a$10$eDhncK/4cNH2KE.Y51AWpeL8/5znNBQLuAFlyJpSYNODR/SJQ/Fg6",
             Instant.now(),
-            "test_aboutMe");
+            "test_aboutMe",
+            false);
     Mockito.when(mockUserStore.getUser("test_username")).thenReturn(fakeUser);
 
     User fakeFriend =
@@ -90,7 +91,8 @@ public class FriendsListServletTest {
             "test_friend",
             "$2a$10$eDhncK/4cNH2KE.Y51AWpeL8/5znNBQLuAFlyJpSYNODR/SJQ/Fg7",
             Instant.now(),
-            "test_aboutMe");
+            "test_aboutMe",
+            false);
     UUID fakeFriendId = fakeFriend.getId();
     Mockito.when(mockRequest.getParameter("friendId")).thenReturn(fakeFriendId.toString());
 
@@ -134,7 +136,8 @@ public class FriendsListServletTest {
             "test_username",
             "$2a$10$eDhncK/4cNH2KE.Y51AWpeL8/5znNBQLuAFlyJpSYNODR/SJQ/Fg6",
             Instant.now(),
-            "test_aboutMe");
+            "test_aboutMe",
+            false);
     Mockito.when(mockUserStore.getUser("test_username")).thenReturn(fakeUser);
 
     User fakeFriend =
@@ -143,7 +146,8 @@ public class FriendsListServletTest {
             "test_friend",
             "$2a$10$eDhncK/4cNH2KE.Y51AWpeL8/5znNBQLuAFlyJpSYNODR/SJQ/Fg7",
             Instant.now(),
-            "test_aboutMe");
+            "test_aboutMe",
+            false);
     UUID fakeFriendId = fakeFriend.getId();
     Mockito.when(mockRequest.getParameter("friendId")).thenReturn(fakeFriendId.toString());
 

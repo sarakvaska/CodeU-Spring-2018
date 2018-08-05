@@ -28,28 +28,32 @@ public class FriendshipStoreTest {
           "test_username_one",
           "$2a$10$/zf4WlT2Z6tB5sULB9Wec.QQdawmF0f1SbqBw5EeJg5uoVpKFFXAa",
           Instant.ofEpochMilli(1000),
-          "test_aboutMe_one");
+          "test_aboutMe_one",
+          false);
   private final User USER_TWO =
       new User(
           UUID.randomUUID(),
           "test_username_two",
           "$2a$10$lgZSbmcYyyC7bETcMo/O1uUltWYDK3DW1lrEjCumOE1u8QPMlzNVy",
           Instant.ofEpochMilli(2000),
-          "test_aboutMe_two");
+          "test_aboutMe_two",
+          false);
   private final User USER_THREE =
       new User(
           UUID.randomUUID(),
           "test_username_three",
           "$2a$10$htXz4E48iPprTexGsEeBFurXyCwW6F6aoiSBqotL4m0NBg/VSkB9.",
           Instant.ofEpochMilli(3000),
-          "test_aboutMe_three");
+          "test_aboutMe_three",
+          false);
   private final User USER_FOUR =
       new User(
           UUID.randomUUID(),
           "test_username_four",
           "random_password",
           Instant.ofEpochMilli(4000),
-          "test_aboutMe_four");
+          "test_aboutMe_four",
+          false);
 
   private final Friendship FRIENDSHIP_ONE =
       new Friendship(

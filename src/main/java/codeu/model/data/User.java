@@ -71,14 +71,15 @@ public class User {
 
   public String getAboutMe() {
     return aboutMe;
+  }
 
   /** Returns if user is admin*/
   public Boolean isAdmin() {
-      return admin;
+    return admin;
   }
 
   /** Set admin attribute */
   public void setAdmin(Boolean admin) {
-      this.admin = admin;
+    this.admin = admin;
   }
 }

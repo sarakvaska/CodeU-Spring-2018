@@ -38,7 +38,11 @@
 
   <div id="container">
     <h1>Admin</h1>
-    <p>Hello admins! This is the admin page</p>
+    <p> Hi there</p>
+  </div>
+</body>
+</html>
+
   </div>
 </body>
 </html>
