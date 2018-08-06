@@ -146,11 +146,12 @@ public class UserStore {
     this.users = users;
   }
 
-  /** Returns the number of Messages stored by this MessageStore. */
+  /** Returns the number of Messages stored by this UserStore. */
   public int countTotalUsers(){
     return users.size();
   }
 
+  /** Returns the last user added to UserStore. */
   public User getLastUserIndex(){
     if (users.size() == 0){
       return null;

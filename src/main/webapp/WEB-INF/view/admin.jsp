@@ -44,11 +44,23 @@
           (Map<String, String>) request.getAttribute("adminStatsMap");
        String userName = adminStatsMap.get("lastUserName");
        String userTime = adminStatsMap.get("lastUserTime");
+       String convName = adminStatsMap.get("lastConversationName");
+       String convTime = adminStatsMap.get("lastConversationTime");
+       String messageName = adminStatsMap.get("lastMessageContent");
+       String messageTime = adminStatsMap.get("lastMessageTime");
+       String messageUser = adminStatsMap.get("lastMessageUser");
           %>
     <p> <b>Total users: </b> <%= adminStatsMap.get("userSize")%></p>
     <p> <b>Total conversations: </b> <%= adminStatsMap.get("convSize")%></p>
     <p> <b>Total messages: </b> <%= adminStatsMap.get("messageSize")%></p>
     <p> <b>Last user created: </b> <a href="/users/<%= userName %>"><%= userName %></a> at <%= userTime %></p>
+    <p> <b>Last conversation created: </b> <a href="/chat/<%= convName %>"><%= convName %></a> at <%= convTime %></p>
+    <p> <b>Last message sent: </b> "<%= messageName %>" by <a href="/users/<%= messageUser %>"> <%= messageUser %></a> at <%= messageTime %></p>
+    
+  </div>
+</body>
+</html>
+
   </div>
 </body>
 </html>

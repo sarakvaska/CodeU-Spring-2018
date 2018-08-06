@@ -90,50 +90,53 @@ public class AdminServlet extends HttpServlet {
         map.put("userSize", Integer.toString(userSize));
         map.put("messageSize", Integer.toString(messageSize));
         map.put("convSize", Integer.toString(convSize));
- //         // Adds latest Message
- //        Message lastMessage = messageStore.getLastMessageIndex();
 
- //        if(lastMessage == null) {
- //          //If there's no latestMessage send empty attributes
- //          map.put("lastMessageContent", "");
- //          map.put("lastMessageTime", "");
- //          map.put("lastMessageUser", "");
- //        } 
- //        else {
-	// 		//else set body and time of creation
-	// 		String lastMessageContent = lastMessage.getContent();
-	// 		String lastMessageTime = lastMessage.getTime();
-	// 		String lastMessageUser = userStore.getUser(lastMessage.getAuthorId()).getName();
-	// 		map.put("lastMessageContent", lastMessageContent);
-	// 		map.put("lastMessageTime", lastMessageTime);
-	// 		map.put("lastMessageUser", lastMessageUser);
-	// 		System.out.println(lastMessageContent);
-	// 		System.out.println(lastMessageTime);
-	// 		System.out.println(lastMessageUser);
-	// 	}
+        // Instant converter to string
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("EEE MM/dd/yy hh:mm a")
+                       .withZone(ZoneId.systemDefault());
 
-	// 	// Adds latest Conversation
- //        Conversation lastConversation = conversationStore.getLastConversationIndex();
- //        if(lastConversation == null) {
-	// 		//If there's no lastConversation send empty attributes
-	// 		map.put("lastConversationName", "");
-	// 		map.put("lastConversationTime", "");
- //        } 
- //        else { 
-	// 		//else set body and time of creation
-	// 		String lastConversationTitle= lastConversation.getTitle();
-	// 		String lastConversationTime = lastConversation.getTime();
-	// 		map.put("lastConversationName", lastConversationTitle);
-	// 		map.put("lastConversationTime", lastConversationTime);
-	// 		System.out.println(lastConversationTitle);
-	// 		System.out.println(lastConversationTime);
- //        }
+         // Adds latest Message
+        Message lastMessage = messageStore.getLastMessageIndex();
+
+        if(lastMessage == null) {
+          //If there's no latestMessage send empty attributes
+          map.put("lastMessageContent", "");
+          map.put("lastMessageTime", "");
+          map.put("lastMessageUser", "");
+        } 
+        else {
+			//else set body and time of creation
+			String lastMessageContent = lastMessage.getContent();
+			Instant lastMessageTime = lastMessage.getCreationTime();
+			String lastMessageTimeString = formatter.format(lastMessageTime);
+			String lastMessageUser = userStore.getUser(lastMessage.getAuthorId()).getName();
+			map.put("lastMessageContent", lastMessageContent);
+			map.put("lastMessageTime", lastMessageTimeString);
+			map.put("lastMessageUser", lastMessageUser);
+		}
+
+		// Adds latest Conversation
+        Conversation lastConversation = conversationStore.getLastConversationIndex();
+        if(lastConversation == null) {
+			//If there's no lastConversation send empty attributes
+			map.put("lastConversationName", "");
+			map.put("lastConversationTime", "");
+        } 
+        else { 
+			//else set body and time of creation
+			String lastConversationTitle = lastConversation.getTitle();
+			Instant lastConversationTime = lastConversation.getCreationTime();
+			String lastConversationTimeString = formatter.format(lastConversationTime);
+			map.put("lastConversationName", lastConversationTitle);
+			map.put("lastConversationTime", lastConversationTimeString);
+        }
+
          // Adds latest User
         User lastUser = userStore.getLastUserIndex();
         if(lastUser == null) {
 			//If there's no latestUser send empty attributes
-			map.put("lastUserName", "N/A");
-			map.put("lastUserTime", "N/A");
+			map.put("lastUserName", "");
+			map.put("lastUserTime", "");
         } 
         else {
 			//else set name and time of creation
@@ -141,8 +144,6 @@ public class AdminServlet extends HttpServlet {
 
 			// convert creation time to string
 			Instant lastUserTime = lastUser.getCreationTime();
-			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("EEE MM/dd/yy hh:mm a")
-                       .withZone(ZoneId.systemDefault());
             String lastUserTimeString = formatter.format(lastUserTime);
 
 			map.put("lastUserName", lastUserName);
