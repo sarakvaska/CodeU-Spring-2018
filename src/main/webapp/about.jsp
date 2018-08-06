@@ -12,18 +12,20 @@
   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
   See the License for the specific language governing permissions and
   limitations under the License.
+  
 --%>
 <!DOCTYPE html>
 <html>
 <head>
   <title>CodeU Chat App</title>
   <link rel="icon" href="https://greggarcia.org/img/exp/10-1-1-exp.png">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
   <link rel="stylesheet" href="/css/main.css">
 </head>
 <body>
 
   <nav>
-    <a id="navTitle" href="/">CodeU Chat App</a>
+    <a id="navTitle" href="/"><i class="fa fa-home"></i></a>
     <a href="/conversations">Conversations</a>
     <% if(request.getSession().getAttribute("user") != null){ %>
       <a href="/user/<%= request.getSession().getAttribute("user") %>"><%= request.getSession().getAttribute("user") %>'s Profile</a>
@@ -52,11 +54,9 @@
 
       <h3>Cindy Lee</h3>
       <p>
-        Hi, I'm Cindy. I'm from NYC and a rising junior from NYU. I am a
-        Computer Science major and a Game Engineering minor. I love Marvel
-        (have yet to watch Infinity Wars though due to finals). I am also an
-        avid anime fan and would love to hear recommendations! Though I don't
-        watch TV often, I would totally recommend the show Once Upon A Time!
+        Hi, I'm Cindy. I'm from NYC and a rising junior at NYU. I am a
+        Computer Science major and a Game Engineering minor. I am an avid 
+        Marvel and anime fan! 
       </p>
 
       <h3>Esmeralda Nava</h3>
@@ -71,39 +71,35 @@
         Hello! My name is Aljon Pineda. I just finished my freshman year
         at Georgia Tech. I'm majoring in Computer Science and I'm considering
         having a minor in Linguistics. I was born in Staten Island, NY, then
-        moved to GA when I was turning 10. I enjoy playing the piano,
-        reading murder mystery novels, watching anime (currently obsessed
-        with Detective Conan), and playing video games.
+        moved to GA when I turned 10. I enjoy playing the piano,
+        reading murder mystery novels, and playing D&D and video games.
       </p>
 
       <h2>Features</h2>
-      <p>
-        This is an example chat application designed to be a starting point
-        for your CodeU project team work. Here's some stuff to think about:
-      </p>
-
       <ul>
-        <li><strong>Algorithms and data structures:</strong> We've made the app
-            and the code as simple as possible. You will have to extend the
-            existing data structures to support your enhancements to the app,
-            and also make changes for performance and scalability as your app
-            increases in complexity.</li>
-        <li><strong>Look and feel:</strong> The focus of CodeU is on the Java
-          side of things, but if you're particularly interested you might use
-          HTML, CSS, and JavaScript to make the chat app prettier.</li>
-        <li><strong>Customization:</strong> Think about a group you care about.
-          What needs do they have? How could you help? Think about technical
-          requirements, privacy concerns, and accessibility and
-          internationalization.</li>
+        <li><strong>Friends List:</strong> Each user has their own friends list.
+          To add a friend, simply click on another user's profile, then click
+          the Add Friend button. This will send a friend request to the other user,
+          who can go on their friends list to either accept or reject the request.</li>
+        <li><strong>Style Text Bar:</strong> Above the message text area are a set
+          of buttons that you can use to style your text. You can bold, italicize,
+          underline, strikethrough, and add links to your text.</li>
+        <li><strong>Emoji:</strong> In addition to styling, you can also chat with
+          emoji by clicking on the Emojis button, which brings up a collapsible
+          emoji box. You can also type in symbols that would represent emoji, and
+          the app will automatically convert the symbols into emoji.</li>
+        <li><strong>Search Through Messages:</strong> On your profile page, there
+          is a box containing a list of all messages you have sent in the chat app.
+          You can search through this list for a particular message by using the
+          search box above the list.</li>
+        <li><strong>Notifications:</strong> Users are notified of when new messages
+          are sent and when new conversations are made.</li>
+        <li><strong>Sending Your Location:</strong> Users can also send their current
+          location through their message.</li>
+        <li><strong>Logout:</strong> Once you have finished chatting, make sure
+          to log out by clicking the Logout button at the bottom of your profile
+          page.</li>
       </ul>
-
-      <p>
-        This is your code now. Get familiar with it and get comfortable
-        working with your team to plan and make changes. Start by updating the
-        homepage and this about page to tell your users more about your team.
-        This page should also be used to describe the features and improvements
-        you've added.
-      </p>
     </div>
   </div>
 </body>

@@ -51,7 +51,7 @@
       <artifactId>jsoup</artifactId>
       <version>1.8.3</version>
     </dependency>
-    
+
     <dependency>
       <groupId>org.mindrot</groupId>
       <artifactId>jbcrypt</artifactId>
@@ -100,6 +100,12 @@
       <scope>test</scope>
     </dependency>
 
+    <dependency>
+      <groupId>com.google.firebase</groupId>
+      <artifactId>firebase-admin</artifactId>
+      <version>6.3.0</version>
+    </dependency>
+    
   </dependencies>
 
   <build>
@@ -113,4 +119,3 @@
   </build>
 
 </project>
-
