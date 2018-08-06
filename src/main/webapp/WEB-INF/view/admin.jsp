@@ -12,6 +12,16 @@
 --%>
 
 <!DOCTYPE html>
+
+<% Map<String, String> adminStatsMap = (Map<String, String>) request.getAttribute("adminStatsMap");
+   String userName = adminStatsMap.get("lastUserName");
+   String userTime = adminStatsMap.get("lastUserTime");
+   String convName = adminStatsMap.get("lastConversationName");
+   String convTime = adminStatsMap.get("lastConversationTime");
+   String messageName = adminStatsMap.get("lastMessageContent");
+   String messageTime = adminStatsMap.get("lastMessageTime");
+   String messageUser = adminStatsMap.get("lastMessageUser"); %>
+
 <html>
 <head>
   <title>Admin</title>
@@ -39,6 +49,14 @@
   <div id="container">
     <h1>Admin</h1>
     <p>Hello admins! This is the admin page</p>
+      <p> <b>Total users: </b> <%= adminStatsMap.get("userSize")%></p>
+      <p> <b>Total conversations: </b> <%= adminStatsMap.get("convSize")%></p>
+      <p> <b>Total messages: </b> <%= adminStatsMap.get("messageSize")%></p>
+
+      <p> <b>Last User created: </b> <a href="/users/<%= userName %>"><%= userName %></a> at <%= userTime %></p>
+      <p> <b>Last Conversation created: </b> <a href="/chat/<%= convName %>"><%= convName %></a> at <%= convTime %></p>
+      <p> <b>Last Message sent: </b> "<%= messageName %>" by <a href="/users/<%= messageUser %>"> <%= messageUser %></a> at <%= messageTime %></p>
+
   </div>
 </body>
 </html>
