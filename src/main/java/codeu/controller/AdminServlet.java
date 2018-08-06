@@ -13,6 +13,10 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.time.Instant;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
+import java.time.format.FormatStyle;
 
 /** Servlet class for admin */
 public class AdminServlet extends HttpServlet {	
@@ -124,23 +128,25 @@ public class AdminServlet extends HttpServlet {
 	// 		System.out.println(lastConversationTitle);
 	// 		System.out.println(lastConversationTime);
  //        }
- //         // Adds latest User
- //        User lastUser = userStore.getLastUserIndex();
- //        if(lastUser == null) {
-	// 		//If there's no latestUser send empty attributes
-	// 		map.put("lastUserName", "");
-	// 		map.put("lastUserTime", "");
- //        } 
- //        else {
-	// 		//else set name and time of creation
-	// 		String lastUserName = lastUser.getName();
-	// 		String lastUserTime = lastUser.getTime();
-	// 		map.put("lastUserName", lastUserName);
-	// 		map.put("lastUserTime", lastUserTime);
-	// 		System.out.println(lastUserName);
-	// 		System.out.println(lastUserTime);
- //        }
- //        // user isn't in admin list, redirect him to root
- //      	response.sendRedirect("/");
+         // Adds latest User
+        User lastUser = userStore.getLastUserIndex();
+        if(lastUser == null) {
+			//If there's no latestUser send empty attributes
+			map.put("lastUserName", "N/A");
+			map.put("lastUserTime", "N/A");
+        } 
+        else {
+			//else set name and time of creation
+			String lastUserName = lastUser.getName();
+
+			// convert creation time to string
+			Instant lastUserTime = lastUser.getCreationTime();
+			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("EEE MM/dd/yy hh:mm a")
+                       .withZone(ZoneId.systemDefault());
+            String lastUserTimeString = formatter.format(lastUserTime);
+
+			map.put("lastUserName", lastUserName);
+			map.put("lastUserTime", lastUserTimeString);
+        }
 	}
 }

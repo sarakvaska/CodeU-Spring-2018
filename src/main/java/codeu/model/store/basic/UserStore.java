@@ -150,4 +150,13 @@ public class UserStore {
   public int countTotalUsers(){
     return users.size();
   }
+
+  public User getLastUserIndex(){
+    if (users.size() == 0){
+      return null;
+    }
+    else {
+      return users.get(users.size() - 1);
+    }
+  }
 }

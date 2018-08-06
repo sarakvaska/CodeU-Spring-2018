@@ -42,10 +42,13 @@
     <h1>Admin</h1>
     <% Map<String, String> adminStatsMap =
           (Map<String, String>) request.getAttribute("adminStatsMap");
+       String userName = adminStatsMap.get("lastUserName");
+       String userTime = adminStatsMap.get("lastUserTime");
           %>
     <p> <b>Total users: </b> <%= adminStatsMap.get("userSize")%></p>
     <p> <b>Total conversations: </b> <%= adminStatsMap.get("convSize")%></p>
     <p> <b>Total messages: </b> <%= adminStatsMap.get("messageSize")%></p>
+    <p> <b>Last user created: </b> <a href="/users/<%= userName %>"><%= userName %></a> at <%= userTime %></p>
   </div>
 </body>
 </html>
