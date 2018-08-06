@@ -100,6 +100,21 @@ public class UserStoreTest {
   }
 
   @Test
+  public void testCountUsers(){
+    User inputUser =
+        new User(
+            UUID.randomUUID(),
+            "test_username",
+            "$2a$10$eDhncK/4cNH2KE.Y51AWpeL8/5znNBQLuAFlyJpSYNODR/SJQ/Fg6",
+            Instant.now(),
+            "test_aboutMe",
+            false);
+
+    userStore.addUser(inputUser);
+    Assert.assertEquals(4, userStore.countTotalUsers());
+  }
+
+  @Test
   public void testIsUserRegistered_true() {
     Assert.assertTrue(userStore.isUserRegistered(USER_ONE.getName()));
   }

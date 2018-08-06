@@ -146,6 +146,7 @@ public class UserStore {
     this.users = users;
   }
 
+  /** Returns the number of Messages stored by this MessageStore. */
   public int countTotalUsers(){
     return users.size();
   }

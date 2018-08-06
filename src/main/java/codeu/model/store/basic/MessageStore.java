@@ -116,6 +116,7 @@ public class MessageStore {
     this.messages = messages;
   }
 
+  /** Returns the number of Messages stored by this MessageStore. */
   public int countTotalMessages(){
     return messages.size();
   }

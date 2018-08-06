@@ -116,6 +116,7 @@ public class ConversationStore {
     this.conversations = conversations;
   }
 
+  /** Returns the number of Conversations stored by this MessageStore. */
   public int countTotalConversations(){
     return conversations.size();
   }
