@@ -24,10 +24,13 @@ public class AdminServletTest {
   private HttpServletResponse mockResponse;
   private RequestDispatcher mockRequestDispatcher;
   private HttpSession mockSession;
+  private UserStore mockUserStore;
 
   @Before
   public void setup() {
     adminServlet = new AdminServlet();
+    mockUserStore = Mockito.mock(UserStore.class);
+    adminServlet.setUserStore(mockUserStore);
     mockRequest = Mockito.mock(HttpServletRequest.class);
     mockResponse = Mockito.mock(HttpServletResponse.class);
     mockRequestDispatcher = Mockito.mock(RequestDispatcher.class);
@@ -45,12 +48,9 @@ public class AdminServletTest {
                               Instant.now(),
                               "test_aboutMe",
                               true);
-    UserStore mockUserStore = Mockito.mock(UserStore.class);
     mockUserStore.addUser(adminUser);
-
     Mockito.when(mockSession.getAttribute("user")).thenReturn("cindy");
     Mockito.when(mockUserStore.getUser("cindy")).thenReturn(adminUser);
-    adminServlet.setUserStore(mockUserStore);
     adminServlet.doGet(mockRequest, mockResponse);
     Mockito.verify(mockRequestDispatcher).forward(mockRequest, mockResponse);
   }
@@ -63,12 +63,9 @@ public class AdminServletTest {
                               Instant.now(),
                               "test_aboutMe",
                               true);
-    UserStore mockUserStore = Mockito.mock(UserStore.class);
     mockUserStore.addUser(adminUser);
-
     Mockito.when(mockSession.getAttribute("user")).thenReturn("aljon");
     Mockito.when(mockUserStore.getUser("aljon")).thenReturn(adminUser);
-    adminServlet.setUserStore(mockUserStore);
     adminServlet.doGet(mockRequest, mockResponse);
     Mockito.verify(mockRequestDispatcher).forward(mockRequest, mockResponse);
   }
@@ -81,12 +78,9 @@ public class AdminServletTest {
                               Instant.now(),
                               "test_aboutMe",
                               true);
-    UserStore mockUserStore = Mockito.mock(UserStore.class);
     mockUserStore.addUser(adminUser);
-
     Mockito.when(mockSession.getAttribute("user")).thenReturn("sara");
     Mockito.when(mockUserStore.getUser("sara")).thenReturn(adminUser);
-    adminServlet.setUserStore(mockUserStore);
     adminServlet.doGet(mockRequest, mockResponse);
     Mockito.verify(mockRequestDispatcher).forward(mockRequest, mockResponse);
   }
@@ -99,12 +93,9 @@ public class AdminServletTest {
                               Instant.now(),
                               "test_aboutMe",
                               true);
-    UserStore mockUserStore = Mockito.mock(UserStore.class);
     mockUserStore.addUser(adminUser);
-
     Mockito.when(mockSession.getAttribute("user")).thenReturn("esme");
     Mockito.when(mockUserStore.getUser("esme")).thenReturn(adminUser);
-    adminServlet.setUserStore(mockUserStore);
     adminServlet.doGet(mockRequest, mockResponse);
     Mockito.verify(mockRequestDispatcher).forward(mockRequest, mockResponse);
   }
@@ -117,13 +108,25 @@ public class AdminServletTest {
                               Instant.now(),
                               "test_aboutMe",
                               false);
-    UserStore mockUserStore = Mockito.mock(UserStore.class);
     mockUserStore.addUser(notadminUser);
-
     Mockito.when(mockSession.getAttribute("user")).thenReturn("test_user");
     Mockito.when(mockUserStore.getUser("test_user")).thenReturn(notadminUser);
-    adminServlet.setUserStore(mockUserStore);
     adminServlet.doGet(mockRequest, mockResponse);
     Mockito.verify(mockResponse).sendRedirect("/");
+  }
+
+  @Test
+  public void testDoGetNotAdminNullUser() throws IOException, ServletException {
+    Mockito.when(mockSession.getAttribute("user")).thenReturn(null);
+    adminServlet.doGet(mockRequest, mockResponse);
+    Mockito.verify(mockResponse).sendRedirect("/login");
+  }
+
+  @Test
+  public void testDoGetNotRegisteredUser() throws IOException, ServletException {
+    Mockito.when(mockSession.getAttribute("user")).thenReturn("test_user");
+    Mockito.when(mockUserStore.getUser("test_user")).thenReturn(null);
+    adminServlet.doGet(mockRequest, mockResponse);
+    Mockito.verify(mockResponse).sendRedirect("/login");
   }
 }
