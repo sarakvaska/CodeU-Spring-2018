@@ -35,10 +35,18 @@ function rangeButton(startTag, endTag, id){
 }
 
 function setButtonsInset(){
+	cleanHtmlScripts();
 	rangeButton("[b]", "[/b]", "bold");
 	rangeButton("[i]", "[/i]", "italic");
 	rangeButton("[u]", "[/u]", "underline");
 	rangeButton("[s]", "[/s]", "strike");
+}
+
+function cleanHtmlScripts(){
+	var string = document.getElementsByName('message')[0].value;
+	string = string.replace(/<script>/g,'');
+	string = string.replace(/<\/script>/g,'');
+	document.getElementsByName('message')[0].value = string;
 }
 
 function smileEmoji(){
