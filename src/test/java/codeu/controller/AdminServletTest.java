@@ -16,6 +16,8 @@ import org.junit.Assert;
 
 import codeu.model.data.User;
 import codeu.model.store.basic.UserStore;
+import codeu.model.store.basic.MessageStore;
+import codeu.model.store.basic.ConversationStore;
 
 public class AdminServletTest {
 
@@ -25,12 +27,18 @@ public class AdminServletTest {
   private RequestDispatcher mockRequestDispatcher;
   private HttpSession mockSession;
   private UserStore mockUserStore;
+  private MessageStore mockMessageStore;
+  private ConversationStore mockConversationStore;
 
   @Before
   public void setup() {
     adminServlet = new AdminServlet();
     mockUserStore = Mockito.mock(UserStore.class);
     adminServlet.setUserStore(mockUserStore);
+    mockMessageStore = Mockito.mock(MessageStore.class);
+    adminServlet.setMessageStore(mockMessageStore);
+    mockConversationStore = Mockito.mock(ConversationStore.class);
+    adminServlet.setConversationStore(mockConversationStore);
     mockRequest = Mockito.mock(HttpServletRequest.class);
     mockResponse = Mockito.mock(HttpServletResponse.class);
     mockRequestDispatcher = Mockito.mock(RequestDispatcher.class);

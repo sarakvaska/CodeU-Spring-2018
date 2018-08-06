@@ -52,7 +52,6 @@ public class AdminServlet extends HttpServlet {
 	@Override
 	public void doGet(HttpServletRequest request, HttpServletResponse response)
 	  throws IOException, ServletException {
-		// Map<String, String> adminStatsMap = new HashMap<>();
 		String username = (String) request.getSession().getAttribute("user");
 		if (username == null) {
 			// user is not logged in, don't give them access
@@ -65,32 +64,28 @@ public class AdminServlet extends HttpServlet {
 			response.sendRedirect("/login");
 			return;
 		}
-		// if(user.isAdmin()){
-		// 	// user is in admin list, give access to admin site, and send map as attribute
-		// 	addStats(adminStatsMap);
-		// 	request.setAttribute("adminStatsMap", adminStatsMap);
-		// 	adminStatsMap.forEach((key,value) -> System.out.println(key + " = " + value));
-		// 	request.getRequestDispatcher("/WEB-INF/view/admin.jsp").forward(request, response);
-		// return;
-		if (user.isAdmin()){
-			request.getRequestDispatcher("/WEB-INF/view/admin.jsp")
-	           .forward(request, response);
-	    }
+		if(user.isAdmin()){
+			// user is in admin list, give access to admin site, and send map as attribute
+			Map<String, String> adminStatsMap = new HashMap<>();
+			addStats(adminStatsMap);
+			request.setAttribute("adminStatsMap", adminStatsMap);
+			request.getRequestDispatcher("/WEB-INF/view/admin.jsp").forward(request, response);
+		}
 	    else {
 	    	response.sendRedirect("/");
 	    }
 	}
 
-	// /** This method will gets the correct stats from datastore and store them in a map */
-	// public void addStats(Map<String, String> map) {
-	// 	// Retrieve sizes of each Datastore
-	// 	Integer userSize = userStore.countTotalUsers();
-	// 	Integer messageSize = messageStore.countTotalMessages();
-	// 	Integer convSize = conversationStore.countTotalConversations();
-	// 	// Adds them to the map
- //        map.put("userSize", userSize.toString());
- //        map.put("messageSize", messageSize.toString());
- //        map.put("convSize", convSize.toString());
+	/** This method will gets the correct stats from datastore and store them in a map */
+	public void addStats(Map<String, String> map) {
+		// Retrieve sizes of each Datastore
+		int userSize = userStore.countTotalUsers();
+		int messageSize = messageStore.countTotalMessages();
+		int convSize = conversationStore.countTotalConversations();
+		// Adds them to the map
+        map.put("userSize", Integer.toString(userSize));
+        map.put("messageSize", Integer.toString(messageSize));
+        map.put("convSize", Integer.toString(convSize));
  //         // Adds latest Message
  //        Message lastMessage = messageStore.getLastMessageIndex();
 
@@ -147,5 +142,5 @@ public class AdminServlet extends HttpServlet {
  //        }
  //        // user isn't in admin list, redirect him to root
  //      	response.sendRedirect("/");
-	// }
+	}
 }

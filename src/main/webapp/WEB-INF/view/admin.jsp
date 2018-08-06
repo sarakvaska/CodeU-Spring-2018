@@ -10,6 +10,8 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 --%>
+<%@ page import="java.util.HashMap" %>
+<%@ page import="java.util.Map" %>
 
 <!DOCTYPE html>
 <html>
@@ -38,7 +40,12 @@
 
   <div id="container">
     <h1>Admin</h1>
-    <p> Hi there</p>
+    <% Map<String, String> adminStatsMap =
+          (Map<String, String>) request.getAttribute("adminStatsMap");
+          %>
+    <p> <b>Total users: </b> <%= adminStatsMap.get("userSize")%></p>
+    <p> <b>Total conversations: </b> <%= adminStatsMap.get("convSize")%></p>
+    <p> <b>Total messages: </b> <%= adminStatsMap.get("messageSize")%></p>
   </div>
 </body>
 </html>
