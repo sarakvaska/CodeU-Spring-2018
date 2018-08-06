@@ -109,6 +109,11 @@ public class MessageStoreTest {
     Assert.assertEquals(4, messageStore.countTotalMessages());
   }
 
+  @Test
+  public void testLastMessage(){
+    assertEquals(MESSAGE_THREE, messageStore.getLastMessageIndex());
+  }
+
   private void assertEquals(Message expectedMessage, Message actualMessage) {
     Assert.assertEquals(expectedMessage.getId(), actualMessage.getId());
     Assert.assertEquals(expectedMessage.getConversationId(), actualMessage.getConversationId());

@@ -98,6 +98,11 @@ public class ConversationStoreTest {
     Assert.assertEquals(2, conversationStore.countTotalConversations());
   }
 
+  @Test
+  public void testLastConversation(){
+    assertEquals(CONVERSATION_ONE, conversationStore.getLastConversationIndex());
+  }
+  
   private void assertEquals(Conversation expectedConversation, Conversation actualConversation) {
     Assert.assertEquals(expectedConversation.getId(), actualConversation.getId());
     Assert.assertEquals(expectedConversation.getOwnerId(), actualConversation.getOwnerId());
