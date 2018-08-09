@@ -174,12 +174,10 @@ List<Message> messages = (List<Message>) request.getAttribute("messages");
           onkeydown="setButtonsInset()"
           onclick="setButtonsInset()" required></textarea>
         <br/>
-        <button type="submit" id="sendData" onclick="newNotif()">Send</button>
-        <br/>
         <div id = "preview" style="border-width: 1px; border-color: gray; border-style: solid; background-color: white; height: 90px; width: 420px; overflow:auto; display:none">
         </div>
         <button type="button" onclick="loadPreview()">Preview</button>
-        <button type="submit" id="sendData">Send</button>
+        <button type="submit" id="sendData" onclick="newNotif()">Send</button>
         <br/>
     </form>
     <script>
