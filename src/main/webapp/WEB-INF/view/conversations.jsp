@@ -15,6 +15,8 @@
 --%>
 <%@ page import="java.util.List" %>
 <%@ page import="codeu.model.data.Conversation" %>
+<%@ page import="codeu.model.data.User" %>
+<%@ page import="codeu.model.store.basic.UserStore" %>
 
 <!DOCTYPE html>
 <html>
@@ -77,7 +79,16 @@
     <% } %>
     <a href="/about.jsp">About</a>
     <a href="/activityfeed">Activity Feed</a>
-    <a href="/admin">Admin</a>
+    <% if(request.getSession().getAttribute("user") != null){
+        String username = (String) request.getSession().getAttribute("user");
+        UserStore userStore = UserStore.getInstance();
+        User user = userStore.getUser(username);
+        if (user.isAdmin()){
+        %>
+          <a href="/admin">Admin</a>
+        <%
+        }
+      }%>
   </nav>
 
   <div id="container">

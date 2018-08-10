@@ -145,4 +145,19 @@ public class UserStore {
   public void setUsers(List<User> users) {
     this.users = users;
   }
+
+  /** Returns the number of Messages stored by this UserStore. */
+  public int countTotalUsers(){
+    return users.size();
+  }
+
+  /** Returns the last user added to UserStore. */
+  public User getLastUserIndex(){
+    if (users.size() == 0){
+      return null;
+    }
+    else {
+      return users.get(users.size() - 1);
+    }
+  }
 }

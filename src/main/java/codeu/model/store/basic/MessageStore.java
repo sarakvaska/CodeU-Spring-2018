@@ -121,4 +121,19 @@ public class MessageStore {
   public void setMessages(List<Message> messages) {
     this.messages = messages;
   }
+
+  /** Returns the number of Messages stored by this MessageStore. */
+  public int countTotalMessages(){
+    return messages.size();
+  }
+
+  /** Returns the last message added to the MessageStore. */
+  public Message getLastMessageIndex(){
+    if (messages.size() == 0){
+      return null;
+    }
+    else {
+      return messages.get(messages.size() - 1);
+    }
+  }
 }

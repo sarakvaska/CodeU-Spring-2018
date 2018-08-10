@@ -48,14 +48,16 @@ public class PersistentDataStoreTest {
     String passwordHashOne = "$2a$10$BNte6sC.qoL4AVjO3Rk8ouY6uFaMnsW8B9NjtHWaDNe8GlQRPRT1S";
     Instant creationOne = Instant.ofEpochMilli(1000);
     String aboutMeOne = "test_aboutMe_one";
-    User inputUserOne = new User(idOne, nameOne, passwordHashOne, creationOne, aboutMeOne);
+    Boolean adminOne = false;
+    User inputUserOne = new User(idOne, nameOne, passwordHashOne, creationOne, aboutMeOne, adminOne);
 
     UUID idTwo = UUID.fromString("10000001-2222-3333-4444-555555555555");
     String nameTwo = "test_username_two";
     String passwordHashTwo = "$2a$10$ttaMOMMGLKxBBuTN06VPvu.jVKif.IczxZcXfLcqEcFi1lq.sLb6i";
     Instant creationTwo = Instant.ofEpochMilli(2000);
     String aboutMeTwo = "test_aboutMe_two";
-    User inputUserTwo = new User(idTwo, nameTwo, passwordHashTwo, creationTwo, aboutMeTwo);
+    Boolean adminTwo = false;
+    User inputUserTwo = new User(idTwo, nameTwo, passwordHashTwo, creationTwo, aboutMeTwo, adminTwo);
 
     // save
     persistentDataStore.writeThrough(inputUserOne);
@@ -71,6 +73,7 @@ public class PersistentDataStoreTest {
     Assert.assertEquals(passwordHashOne, resultUserOne.getPasswordHash());
     Assert.assertEquals(creationOne, resultUserOne.getCreationTime());
     Assert.assertEquals(aboutMeOne, resultUserOne.getAboutMe());
+    Assert.assertEquals(adminOne, resultUserOne.isAdmin());
 
     User resultUserTwo = resultUsers.get(1);
     Assert.assertEquals(idTwo, resultUserTwo.getId());
@@ -78,6 +81,7 @@ public class PersistentDataStoreTest {
     Assert.assertEquals(passwordHashTwo, resultUserTwo.getPasswordHash());
     Assert.assertEquals(creationTwo, resultUserTwo.getCreationTime());
     Assert.assertEquals(aboutMeTwo, resultUserTwo.getAboutMe());
+    Assert.assertEquals(adminTwo, resultUserTwo.isAdmin());
   }
 
   @Test
@@ -205,14 +209,16 @@ public class PersistentDataStoreTest {
     String userPasswordHash = "$2a$10$BNte6sC.qoL4AVjO3Rk8ouY6uFaMnsW8B9NjtHWaDNe8GlQRPRT1S";
     Instant userCreation = Instant.ofEpochMilli(1000);
     String userAboutMe = "test_aboutMe";
-    User inputUser = new User(userId, userName, userPasswordHash, userCreation, userAboutMe);
+    Boolean userAdmin = false;
+    User inputUser = new User(userId, userName, userPasswordHash, userCreation, userAboutMe, userAdmin);
 
     UUID friendId = UUID.fromString("10000001-2222-3333-4444-555555555555");
     String friendName = "test_friend";
     String friendPasswordHash = "$2a$10$ttaMOMMGLKxBBuTN06VPvu.jVKif.IczxZcXfLcqEcFi1lq.sLb6i";
     Instant friendCreation = Instant.ofEpochMilli(2000);
     String friendAboutMe = "test_aboutMe";
-    User inputFriend = new User(friendId, friendName, friendPasswordHash, friendCreation, friendAboutMe);
+    Boolean friendAdmin = false;
+    User inputFriend = new User(friendId, friendName, friendPasswordHash, friendCreation, friendAboutMe, friendAdmin);
 
     UUID friendshipId = UUID.fromString("10000002-2222-3333-4444-555555555555");
     Status inputStatus = Status.PENDING;

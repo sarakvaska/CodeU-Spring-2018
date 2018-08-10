@@ -115,4 +115,18 @@ public class ConversationStore {
   public void setConversations(List<Conversation> conversations) {
     this.conversations = conversations;
   }
+
+  /** Returns the number of Conversations stored by this ConversationStore. */
+  public int countTotalConversations(){
+    return conversations.size();
+  }
+
+  public Conversation getLastConversationIndex(){
+    if (conversations.size() == 0){
+      return null;
+    }
+    else {
+      return conversations.get(conversations.size() - 1);
+    }
+  }
 }

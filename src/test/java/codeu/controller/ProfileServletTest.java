@@ -85,7 +85,8 @@ public class ProfileServletTest {
             "test_username",
             "$2a$10$Ajfzp.s.7EFhdKL10QvRtwdDTRihl5U656Pyx87wterbBBMIplcgFL",
             Instant.now(),
-            "test_aboutMe");
+            "test_aboutMe",
+            false);
 
     Mockito.when(mockUserStore.getUser("test_username")).thenReturn(fakeUser);
 
@@ -150,7 +151,8 @@ public class ProfileServletTest {
             "test_username",
             "$2a$10$Ajfzp.s.7EFhdKL10QvRtwdDTRihl5U656Pyx87wterbBBMIplcgFL",
             Instant.now(),
-            "test_aboutMe");
+            "test_aboutMe",
+            false);
     Mockito.when(mockUserStore.getUser("test_username")).thenReturn(fakeUser);
 
     Mockito.when(mockRequest.getParameter("user")).thenReturn("test_username");
