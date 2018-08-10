@@ -137,4 +137,14 @@ public class PersistentStorageAgent {
   public void writeThrough(Friendship friendship) {
     persistentDataStore.writeThrough(friendship);
   }
+
+  /** Delete a Message object from the Datastore service. */
+  public void deleteMessageThrough(Message messageDelete){
+    persistentDataStore.deleteMessageThrough(messageDelete);
+  }
+
+   /** Delete an Activity object from the Datastore service. */
+  public void deleteActivityThrough(Activity activity){
+    persistentDataStore.deleteActivityThrough(activity);
+  }
 }

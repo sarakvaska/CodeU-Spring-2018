@@ -179,6 +179,7 @@ public class ChatServletTest {
     Mockito.when(mockConversationStore.getConversationWithTitle("test_conversation"))
         .thenReturn(fakeConversation);
 
+    Mockito.when(mockRequest.getParameter("indexMessage")).thenReturn("");
     Mockito.when(mockRequest.getParameter("message")).thenReturn("Test message.");
 
     chatServlet.doPost(mockRequest, mockResponse);
@@ -190,6 +191,41 @@ public class ChatServletTest {
     ArgumentCaptor<Activity> activityArgumentCaptor = ArgumentCaptor.forClass(Activity.class);
     Mockito.verify(mockActivityStore).addActivity(activityArgumentCaptor.capture());
     Assert.assertEquals(ActivityType.NEW_MESSAGE, activityArgumentCaptor.getValue().getType());
+
+    Mockito.verify(mockResponse).sendRedirect("/chat/test_conversation");
+  }
+
+  @Test
+  public void testDoPost_DeletesMessage() throws IOException, ServletException {
+    Mockito.when(mockRequest.getRequestURI()).thenReturn("/chat/test_conversation");
+    Mockito.when(mockSession.getAttribute("user")).thenReturn("test_username");
+
+    User fakeUser =
+        new User(
+            UUID.randomUUID(),
+            "test_username",
+            "$2a$10$eDhncK/4cNH2KE.Y51AWpeL8/5znNBQLuAFlyJpSYNODR/SJQ/Fg6",
+            Instant.now(),
+            "test_aboutMe");
+    Mockito.when(mockUserStore.getUser("test_username")).thenReturn(fakeUser);
+
+    Conversation fakeConversation =
+        new Conversation(UUID.randomUUID(), UUID.randomUUID(), "test_conversation", Instant.now());
+    Mockito.when(mockConversationStore.getConversationWithTitle("test_conversation"))
+        .thenReturn(fakeConversation);
+
+    String messageId = UUID.randomUUID().toString();
+    Mockito.when(mockRequest.getParameter("indexMessage")).thenReturn(messageId);
+
+    chatServlet.doPost(mockRequest, mockResponse);
+
+    ArgumentCaptor<Message> messageArgumentCaptor = ArgumentCaptor.forClass(Message.class);
+    Mockito.verify(mockMessageStore).deleteMessage(messageArgumentCaptor.capture());
+    Assert.assertEquals(null, messageArgumentCaptor.getValue());
+
+    ArgumentCaptor<Activity> activityArgumentCaptor = ArgumentCaptor.forClass(Activity.class);
+    Mockito.verify(mockActivityStore).deleteActivity(activityArgumentCaptor.capture());
+    Assert.assertEquals(null, activityArgumentCaptor.getValue());
 
     Mockito.verify(mockResponse).sendRedirect("/chat/test_conversation");
   }
@@ -213,6 +249,7 @@ public class ChatServletTest {
     Mockito.when(mockConversationStore.getConversationWithTitle("test_conversation"))
         .thenReturn(fakeConversation);
 
+    Mockito.when(mockRequest.getParameter("indexMessage")).thenReturn("");
     Mockito.when(mockRequest.getParameter("message"))
         .thenReturn("Contains <b>html</b> and <script>JavaScript</script> content.");
 
@@ -249,6 +286,7 @@ public class ChatServletTest {
     Mockito.when(mockConversationStore.getConversationWithTitle("test_conversation"))
         .thenReturn(fakeConversation);
 
+    Mockito.when(mockRequest.getParameter("indexMessage")).thenReturn("");
     Mockito.when(mockRequest.getParameter("message")).thenReturn("Contains [b]BBCode[/b].");
 
     chatServlet.doPost(mockRequest, mockResponse);
@@ -284,6 +322,7 @@ public class ChatServletTest {
     Mockito.when(mockConversationStore.getConversationWithTitle("test_conversation"))
         .thenReturn(fakeConversation);
 
+    Mockito.when(mockRequest.getParameter("indexMessage")).thenReturn("");
     Mockito.when(mockRequest.getParameter("message")).thenReturn("Contains [i]BBCode[/i].");
 
     chatServlet.doPost(mockRequest, mockResponse);
@@ -319,6 +358,7 @@ public class ChatServletTest {
     Mockito.when(mockConversationStore.getConversationWithTitle("test_conversation"))
         .thenReturn(fakeConversation);
 
+    Mockito.when(mockRequest.getParameter("indexMessage")).thenReturn("");
     Mockito.when(mockRequest.getParameter("message")).thenReturn("Contains [u]BBCode[/u].");
 
     chatServlet.doPost(mockRequest, mockResponse);
@@ -354,6 +394,7 @@ public class ChatServletTest {
     Mockito.when(mockConversationStore.getConversationWithTitle("test_conversation"))
         .thenReturn(fakeConversation);
 
+    Mockito.when(mockRequest.getParameter("indexMessage")).thenReturn("");
     Mockito.when(mockRequest.getParameter("message")).thenReturn("Contains [s]BBCode[/s].");
 
     chatServlet.doPost(mockRequest, mockResponse);
@@ -386,6 +427,7 @@ public class ChatServletTest {
     Mockito.when(mockConversationStore.getConversationWithTitle("test_conversation"))
         .thenReturn(fakeConversation);
 
+    Mockito.when(mockRequest.getParameter("indexMessage")).thenReturn("");
     Mockito.when(mockRequest.getParameter("message")).thenReturn("Contains [br] a line break.");
 
     chatServlet.doPost(mockRequest, mockResponse);
@@ -417,6 +459,7 @@ public class ChatServletTest {
     Mockito.when(mockConversationStore.getConversationWithTitle("test_conversation"))
         .thenReturn(fakeConversation);
 
+    Mockito.when(mockRequest.getParameter("indexMessage")).thenReturn("");
     Mockito.when(mockRequest.getParameter("message")).thenReturn("Contains [table][tr][td]table 1[/td][td]table 2[/td][/tr][tr][td]table 3[/td][td]table 4[/td][/tr][/table].");
 
     chatServlet.doPost(mockRequest, mockResponse);
@@ -447,6 +490,7 @@ public class ChatServletTest {
     Mockito.when(mockConversationStore.getConversationWithTitle("test_conversation"))
         .thenReturn(fakeConversation);
 
+    Mockito.when(mockRequest.getParameter("indexMessage")).thenReturn("");
     Mockito.when(mockRequest.getParameter("message")).thenReturn("Contains [url]https://www.google.com/[/url].");
 
     chatServlet.doPost(mockRequest, mockResponse);
@@ -477,6 +521,7 @@ public class ChatServletTest {
     Mockito.when(mockConversationStore.getConversationWithTitle("test_conversation"))
         .thenReturn(fakeConversation);
 
+    Mockito.when(mockRequest.getParameter("indexMessage")).thenReturn("");
     Mockito.when(mockRequest.getParameter("message")).thenReturn("Contains [url=https://www.google.com/]Google[/url].");
 
     chatServlet.doPost(mockRequest, mockResponse);
@@ -507,6 +552,7 @@ public class ChatServletTest {
     Mockito.when(mockConversationStore.getConversationWithTitle("test_conversation"))
         .thenReturn(fakeConversation);
 
+    Mockito.when(mockRequest.getParameter("indexMessage")).thenReturn("");
     Mockito.when(mockRequest.getParameter("message")).thenReturn("Contains [img]https://upload.wikimedia.org/wikipedia/commons/thumb/4/47/Go-home-2.svg/100px-Go-home-2.svg.png[/img].");
 
     chatServlet.doPost(mockRequest, mockResponse);
@@ -537,6 +583,7 @@ public class ChatServletTest {
     Mockito.when(mockConversationStore.getConversationWithTitle("test_conversation"))
         .thenReturn(fakeConversation);
 
+    Mockito.when(mockRequest.getParameter("indexMessage")).thenReturn("");
     Mockito.when(mockRequest.getParameter("message")).thenReturn("Contains [quote]Quoted Text[/quote].");
 
     chatServlet.doPost(mockRequest, mockResponse);
@@ -567,6 +614,7 @@ public class ChatServletTest {
     Mockito.when(mockConversationStore.getConversationWithTitle("test_conversation"))
         .thenReturn(fakeConversation);
 
+    Mockito.when(mockRequest.getParameter("indexMessage")).thenReturn("");
     Mockito.when(mockRequest.getParameter("message")).thenReturn("Contains [quote='https://en.wikipedia.org/wiki/BBCode']Quoted Text[/quote].");
 
     chatServlet.doPost(mockRequest, mockResponse);
@@ -597,6 +645,7 @@ public class ChatServletTest {
     Mockito.when(mockConversationStore.getConversationWithTitle("test_conversation"))
         .thenReturn(fakeConversation);
 
+    Mockito.when(mockRequest.getParameter("indexMessage")).thenReturn("");
     Mockito.when(mockRequest.getParameter("message")).thenReturn("Contains [code] Monospaced Text [/code].");
 
     chatServlet.doPost(mockRequest, mockResponse);
@@ -627,6 +676,7 @@ public class ChatServletTest {
     Mockito.when(mockConversationStore.getConversationWithTitle("test_conversation"))
         .thenReturn(fakeConversation);
 
+    Mockito.when(mockRequest.getParameter("indexMessage")).thenReturn("");
     Mockito.when(mockRequest.getParameter("message")).thenReturn("Contains [ol][li]Homework[/li][li]Chores[/li][/ol].");
 
     chatServlet.doPost(mockRequest, mockResponse);
@@ -657,6 +707,7 @@ public class ChatServletTest {
     Mockito.when(mockConversationStore.getConversationWithTitle("test_conversation"))
         .thenReturn(fakeConversation);
 
+    Mockito.when(mockRequest.getParameter("indexMessage")).thenReturn("");
     Mockito.when(mockRequest.getParameter("message")).thenReturn("Contains [ul][li]Homework[/li][li]Chores[/li][/ul].");
 
     chatServlet.doPost(mockRequest, mockResponse);
@@ -687,6 +738,7 @@ public class ChatServletTest {
     Mockito.when(mockConversationStore.getConversationWithTitle("test_conversation"))
         .thenReturn(fakeConversation);
 
+    Mockito.when(mockRequest.getParameter("indexMessage")).thenReturn("");
     Mockito.when(mockRequest.getParameter("message")).thenReturn("Changing [style size='15px'] Size [/style].");
 
     chatServlet.doPost(mockRequest, mockResponse);
@@ -718,6 +770,7 @@ public class ChatServletTest {
     Mockito.when(mockConversationStore.getConversationWithTitle("test_conversation"))
         .thenReturn(fakeConversation);
 
+    Mockito.when(mockRequest.getParameter("indexMessage")).thenReturn("");
     Mockito.when(mockRequest.getParameter("message")).thenReturn("Changing [style color='red'] Color [/style].");
 
     chatServlet.doPost(mockRequest, mockResponse);
@@ -749,6 +802,7 @@ public class ChatServletTest {
     Mockito.when(mockConversationStore.getConversationWithTitle("test_conversation"))
         .thenReturn(fakeConversation);
 
+    Mockito.when(mockRequest.getParameter("indexMessage")).thenReturn("");
     Mockito.when(mockRequest.getParameter("message")).thenReturn("Changing [style color=#FF0000] Color [/style].");
 
     chatServlet.doPost(mockRequest, mockResponse);
@@ -780,6 +834,7 @@ public class ChatServletTest {
     Mockito.when(mockConversationStore.getConversationWithTitle("test_conversation"))
         .thenReturn(fakeConversation);
 
+    Mockito.when(mockRequest.getParameter("indexMessage")).thenReturn("");
     Mockito.when(mockRequest.getParameter("message")).thenReturn("Changing [style size='15px'; color=#FF0000] Chaining [/style].");
 
     chatServlet.doPost(mockRequest, mockResponse);
@@ -811,6 +866,7 @@ public class ChatServletTest {
     Mockito.when(mockConversationStore.getConversationWithTitle("test_conversation"))
         .thenReturn(fakeConversation);
 
+    Mockito.when(mockRequest.getParameter("indexMessage")).thenReturn("");
     Mockito.when(mockRequest.getParameter("message")).thenReturn("Changing [style size='15px'; color= 'red'] Chaining [/style].");
 
     chatServlet.doPost(mockRequest, mockResponse);
@@ -842,6 +898,7 @@ public class ChatServletTest {
     Mockito.when(mockConversationStore.getConversationWithTitle("test_conversation"))
         .thenReturn(fakeConversation);
 
+    Mockito.when(mockRequest.getParameter("indexMessage")).thenReturn("");
     Mockito.when(mockRequest.getParameter("message")).thenReturn("Changing [style color= 'red'; size = '15px'] Chaining [/style].");
 
     chatServlet.doPost(mockRequest, mockResponse);
@@ -873,6 +930,7 @@ public class ChatServletTest {
     Mockito.when(mockConversationStore.getConversationWithTitle("test_conversation"))
         .thenReturn(fakeConversation);
 
+    Mockito.when(mockRequest.getParameter("indexMessage")).thenReturn("");
     Mockito.when(mockRequest.getParameter("message")).thenReturn("Changing [style color= #FF0000; size = '15px'] Chaining [/style].");
 
     chatServlet.doPost(mockRequest, mockResponse);
@@ -903,6 +961,7 @@ public class ChatServletTest {
     Mockito.when(mockConversationStore.getConversationWithTitle("test_conversation"))
         .thenReturn(fakeConversation);
 
+    Mockito.when(mockRequest.getParameter("indexMessage")).thenReturn("");
     Mockito.when(mockRequest.getParameter("message")).thenReturn("0:-) 0:) >:) >:-) :) :-) :D :-D :'D :'-D");
 
     chatServlet.doPost(mockRequest, mockResponse);
@@ -934,6 +993,7 @@ public class ChatServletTest {
     Mockito.when(mockConversationStore.getConversationWithTitle("test_conversation"))
         .thenReturn(fakeConversation);
 
+    Mockito.when(mockRequest.getParameter("indexMessage")).thenReturn("");
     Mockito.when(mockRequest.getParameter("message")).thenReturn(">:( >:-( :( :-( :'-( :'( :-| :| :-\\ :\\ :-/ :/");
 
     chatServlet.doPost(mockRequest, mockResponse);
@@ -965,6 +1025,7 @@ public class ChatServletTest {
     Mockito.when(mockConversationStore.getConversationWithTitle("test_conversation"))
         .thenReturn(fakeConversation);
 
+    Mockito.when(mockRequest.getParameter("indexMessage")).thenReturn("");
     Mockito.when(mockRequest.getParameter("message")).thenReturn("B-) B) 8-) 8) :* :-* :-O :O :-o :o");
 
     chatServlet.doPost(mockRequest, mockResponse);
@@ -996,6 +1057,7 @@ public class ChatServletTest {
     Mockito.when(mockConversationStore.getConversationWithTitle("test_conversation"))
         .thenReturn(fakeConversation);
 
+    Mockito.when(mockRequest.getParameter("indexMessage")).thenReturn("");
     Mockito.when(mockRequest.getParameter("message")).thenReturn(":-P :P x-P xP X-P XP ;) ;-) >_< -_- T_T ^_^");
 
     chatServlet.doPost(mockRequest, mockResponse);
@@ -1027,6 +1089,7 @@ public class ChatServletTest {
     Mockito.when(mockConversationStore.getConversationWithTitle("test_conversation"))
         .thenReturn(fakeConversation);
 
+    Mockito.when(mockRequest.getParameter("indexMessage")).thenReturn("");
     Mockito.when(mockRequest.getParameter("message")).thenReturn("D: D-: :X :x :@");
 
     chatServlet.doPost(mockRequest, mockResponse);
@@ -1058,6 +1121,7 @@ public class ChatServletTest {
     Mockito.when(mockConversationStore.getConversationWithTitle("test_conversation"))
         .thenReturn(fakeConversation);
 
+    Mockito.when(mockRequest.getParameter("indexMessage")).thenReturn("");
     Mockito.when(mockRequest.getParameter("message")).thenReturn("D: D: D: D:");
 
     chatServlet.doPost(mockRequest, mockResponse);
@@ -1089,6 +1153,7 @@ public class ChatServletTest {
     Mockito.when(mockConversationStore.getConversationWithTitle("test_conversation"))
         .thenReturn(fakeConversation);
 
+    Mockito.when(mockRequest.getParameter("indexMessage")).thenReturn("");
     Mockito.when(mockRequest.getParameter("message")).thenReturn("[b] D: D: D: blegh");
 
     chatServlet.doPost(mockRequest, mockResponse);
@@ -1120,6 +1185,7 @@ public class ChatServletTest {
     Mockito.when(mockConversationStore.getConversationWithTitle("test_conversation"))
         .thenReturn(fakeConversation);
 
+    Mockito.when(mockRequest.getParameter("indexMessage")).thenReturn("");
     Mockito.when(mockRequest.getParameter("message")).thenReturn("[i] [i] D: D: D: blegh");
 
     chatServlet.doPost(mockRequest, mockResponse);
@@ -1151,6 +1217,7 @@ public class ChatServletTest {
     Mockito.when(mockConversationStore.getConversationWithTitle("test_conversation"))
         .thenReturn(fakeConversation);
 
+    Mockito.when(mockRequest.getParameter("indexMessage")).thenReturn("");
     Mockito.when(mockRequest.getParameter("message")).thenReturn("[u] [b] [u] D: D: D: blegh");
 
     chatServlet.doPost(mockRequest, mockResponse);
@@ -1182,6 +1249,7 @@ public class ChatServletTest {
     Mockito.when(mockConversationStore.getConversationWithTitle("test_conversation"))
         .thenReturn(fakeConversation);
 
+    Mockito.when(mockRequest.getParameter("indexMessage")).thenReturn("");
     Mockito.when(mockRequest.getParameter("message")).thenReturn("[/b] [u] [b] [u] D: D: D: blegh");
 
     chatServlet.doPost(mockRequest, mockResponse);
@@ -1213,6 +1281,7 @@ public class ChatServletTest {
     Mockito.when(mockConversationStore.getConversationWithTitle("test_conversation"))
         .thenReturn(fakeConversation);
 
+    Mockito.when(mockRequest.getParameter("indexMessage")).thenReturn("");
     Mockito.when(mockRequest.getParameter("message")).thenReturn("[/b] [u] [b] [/b] [/b] [b] [u] D: D: D: blegh");
 
     chatServlet.doPost(mockRequest, mockResponse);
@@ -1244,6 +1313,7 @@ public class ChatServletTest {
     Mockito.when(mockConversationStore.getConversationWithTitle("test_conversation"))
         .thenReturn(fakeConversation);
 
+    Mockito.when(mockRequest.getParameter("indexMessage")).thenReturn("");
     Mockito.when(mockRequest.getParameter("message")).thenReturn("[/b] [u] [i] [/i] [i] [/i] [/b] [/b] [u] D: D: D: blegh");
 
     chatServlet.doPost(mockRequest, mockResponse);
@@ -1285,6 +1355,7 @@ public class ChatServletTest {
     Mockito.when(mockConversationStore.getConversationWithTitle("test_conversation"))
         .thenReturn(fakeConversation);
 
+    Mockito.when(mockRequest.getParameter("indexMessage")).thenReturn("");
     Mockito.when(mockRequest.getParameter("message")).thenReturn("Hi @test_otherusername");
 
     chatServlet.doPost(mockRequest, mockResponse);
@@ -1320,6 +1391,7 @@ public class ChatServletTest {
     Mockito.when(mockConversationStore.getConversationWithTitle("test_conversation"))
         .thenReturn(fakeConversation);
 
+    Mockito.when(mockRequest.getParameter("indexMessage")).thenReturn("");
     Mockito.when(mockRequest.getParameter("message")).thenReturn("Hi @test_otherusername");
 
     chatServlet.doPost(mockRequest, mockResponse);
@@ -1352,6 +1424,7 @@ public class ChatServletTest {
     Mockito.when(mockConversationStore.getConversationWithTitle("test_conversation"))
         .thenReturn(fakeConversation);
 
+    Mockito.when(mockRequest.getParameter("indexMessage")).thenReturn("");
     Mockito.when(mockRequest.getParameter("message")).thenReturn("Hi @test_username");
 
     chatServlet.doPost(mockRequest, mockResponse);

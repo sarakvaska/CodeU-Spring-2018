@@ -63,6 +63,20 @@ public class ActivityStoreTest {
   }
 
   @Test
+  public void testDeleteActivity() {
+    UUID messageId = UUID.randomUUID();
+    Activity newMessage =
+        new Activity(ActivityType.NEW_MESSAGE, messageId, Instant.now());
+    activityStore.addActivity(newMessage);
+
+    activityStore.deleteActivity(newMessage);
+    Activity resultDeletedMessage = activityStore.getActivityById(messageId);
+
+    Assert.assertEquals(null, resultDeletedMessage);
+    Mockito.verify(mockPersistentStorageAgent).deleteActivityThrough(newMessage);
+  }
+
+  @Test
   public void testGetActivityById_found() {
     Activity resultActivityOne = activityStore.getActivityById(ACTIVITY_ONE.getId());
 

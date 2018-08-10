@@ -152,340 +152,347 @@ public class ChatServlet extends HttpServlet {
       response.sendRedirect("/conversations");
       return;
     }
-
-    String messageContent = request.getParameter("message");
-
-    // this removes any HTML from the message content
-    String cleanedMessageContent = Jsoup.clean(messageContent, Whitelist.none());
-
-    // replaces BBcode with HTML tags
-
-    // bolded text
-    cleanedMessageContent = cleanedMessageContent.replace ("[b]", "<b>");
-    cleanedMessageContent = cleanedMessageContent.replace ("[/b]", "</b>");
-
-    // italic text
-    cleanedMessageContent = cleanedMessageContent.replace ("[i]", "<i>");
-    cleanedMessageContent = cleanedMessageContent.replace ("[/i]", "</i>");
-
-    // underlined text
-    cleanedMessageContent = cleanedMessageContent.replace ("[u]", "<u>");
-    cleanedMessageContent = cleanedMessageContent.replace ("[/u]", "</u>");
-
-    // strikethrough text
-    cleanedMessageContent = cleanedMessageContent.replace ("[s]", "<s>");
-    cleanedMessageContent = cleanedMessageContent.replace ("[/s]", "</s>");
-
-    // line break
-    cleanedMessageContent = cleanedMessageContent.replace ("[br]", "<br>");
-
-    // creating a table with rows and data
-    cleanedMessageContent = cleanedMessageContent.replace ("[table]", "<table>");
-    cleanedMessageContent = cleanedMessageContent.replace ("[/table]", "</table>");
-    cleanedMessageContent = cleanedMessageContent.replace ("[tr]", "<tr>");
-    cleanedMessageContent = cleanedMessageContent.replace ("[/tr]", "</tr>");
-    cleanedMessageContent = cleanedMessageContent.replace ("[td]", "<td>");
-    cleanedMessageContent = cleanedMessageContent.replace ("[/td]", "</td>");
-
-    // hyperlinks for just [url] 
-    while (cleanedMessageContent.contains ("[url]")) {
-      int startTag = cleanedMessageContent.indexOf ("[url]");
-      int endTag = cleanedMessageContent.indexOf ("[/url]", startTag);
-      if (endTag == -1){
-        break;
-      }
-      String newString = cleanedMessageContent.substring (0, startTag) + "<a href='" ; 
-      newString += cleanedMessageContent.substring (startTag + 5, endTag);
-      newString += "' target='_blank'>";
-      newString += cleanedMessageContent.substring (startTag + 5, endTag);
-      newString += "</a>";
-      newString += cleanedMessageContent.substring (endTag + 6);
-      cleanedMessageContent = newString;
+    String messageId = request.getParameter("indexMessage");
+    if (!messageId.equals("")) {
+      Message messageDelete = messageStore.getMessageById(UUID.fromString(messageId));
+      messageStore.deleteMessage(messageDelete);
+      activityStore.deleteActivity(activityStore.getActivityById(UUID.fromString(messageId)));
     }
+    else {
+      String messageContent = request.getParameter("message");
 
-    // hyperlinks for [url = website] 
-    while (cleanedMessageContent.contains ("[url=")) {
-      int startTag = cleanedMessageContent.indexOf ("[url=");
-      int closingTag = cleanedMessageContent.indexOf ("]", startTag);
-      int endTag = cleanedMessageContent.indexOf ("[/url]", closingTag);
-      if (closingTag == -1 || endTag == -1) {
-        break;
-      }
-      String newString = cleanedMessageContent.substring (0, startTag) + "<a href='" ; 
-      newString += cleanedMessageContent.substring (startTag + 5, closingTag);
-      newString += "' target='_blank'>";
-      newString += cleanedMessageContent.substring (closingTag + 1, endTag);
-      newString += "</a>";
-      newString += cleanedMessageContent.substring (endTag + 6);
-      cleanedMessageContent = newString;
-    }
+      // this removes any HTML from the message content
+      String cleanedMessageContent = Jsoup.clean(messageContent, Whitelist.none());
 
-    // images
-    cleanedMessageContent = cleanedMessageContent.replace ("[img]", "<img src='");
-    cleanedMessageContent = cleanedMessageContent.replace ("[/img]", "' alt=''>");
+      // replaces BBcode with HTML tags
 
-    // quotes
-    while (cleanedMessageContent.contains ("[quote")) {
-      int startTag = cleanedMessageContent.indexOf ("[quote");
-      int closingTag = cleanedMessageContent.indexOf ("]", startTag);
-      int endTag = cleanedMessageContent.indexOf ("[/quote]", closingTag);
-      if (closingTag == -1 || endTag == -1){
-        break;
-      }
-      String newString = cleanedMessageContent.substring (0, startTag) + "<blockquote";
+      // bolded text
+      cleanedMessageContent = cleanedMessageContent.replace ("[b]", "<b>");
+      cleanedMessageContent = cleanedMessageContent.replace ("[/b]", "</b>");
 
-      // if this is [quote = "author"]
-      if (closingTag != startTag + 6) {
-        newString += " cite" + cleanedMessageContent.substring (startTag + 6, closingTag);
-      }
+      // italic text
+      cleanedMessageContent = cleanedMessageContent.replace ("[i]", "<i>");
+      cleanedMessageContent = cleanedMessageContent.replace ("[/i]", "</i>");
 
-      newString += "><p>";
-      newString += cleanedMessageContent.substring (closingTag + 1, endTag) + "</p></blockquote>";
-      newString += cleanedMessageContent.substring (endTag + 8);
-      cleanedMessageContent = newString;
-    }
+      // underlined text
+      cleanedMessageContent = cleanedMessageContent.replace ("[u]", "<u>");
+      cleanedMessageContent = cleanedMessageContent.replace ("[/u]", "</u>");
 
-    // monospaced text
-    cleanedMessageContent = cleanedMessageContent.replace ("[code]", "<pre>");
-    cleanedMessageContent = cleanedMessageContent.replace ("[/code]", "</pre>");
+      // strikethrough text
+      cleanedMessageContent = cleanedMessageContent.replace ("[s]", "<s>");
+      cleanedMessageContent = cleanedMessageContent.replace ("[/s]", "</s>");
 
-    // lists 
-    cleanedMessageContent = cleanedMessageContent.replace ("[ul]", "<ul>");
-    cleanedMessageContent = cleanedMessageContent.replace ("[/ul]", "</ul>");
-    cleanedMessageContent = cleanedMessageContent.replace ("[ol]", "<ol>");
-    cleanedMessageContent = cleanedMessageContent.replace ("[/ol]", "</ol>");
-    cleanedMessageContent = cleanedMessageContent.replace ("[li]", "<li>");
-    cleanedMessageContent = cleanedMessageContent.replace ("[/li]", "</li>");
+      // line break
+      cleanedMessageContent = cleanedMessageContent.replace ("[br]", "<br>");
 
-    // styling font 
-    while (cleanedMessageContent.contains ("[style")) {
-      int startTag = cleanedMessageContent.indexOf ("[style");
-      int closingTag = cleanedMessageContent.indexOf ("]", startTag);
-      int endTag = cleanedMessageContent.indexOf ("[/style]", closingTag);
-      int dividerColon = cleanedMessageContent.indexOf (";", startTag);
-      if (closingTag == -1 || endTag == -1) {
-        break;
-      }
-      String newString = cleanedMessageContent.substring (0, startTag) + "<span style='";
+      // creating a table with rows and data
+      cleanedMessageContent = cleanedMessageContent.replace ("[table]", "<table>");
+      cleanedMessageContent = cleanedMessageContent.replace ("[/table]", "</table>");
+      cleanedMessageContent = cleanedMessageContent.replace ("[tr]", "<tr>");
+      cleanedMessageContent = cleanedMessageContent.replace ("[/tr]", "</tr>");
+      cleanedMessageContent = cleanedMessageContent.replace ("[td]", "<td>");
+      cleanedMessageContent = cleanedMessageContent.replace ("[/td]", "</td>");
 
-      if (cleanedMessageContent.substring (startTag + 6, closingTag).contains ("size")) {
-        int sizeLocation = cleanedMessageContent.indexOf ("size", startTag);
-        int equalSign = cleanedMessageContent.indexOf ("=", sizeLocation);
-        if (equalSign == -1 || equalSign > closingTag){
+      // hyperlinks for just [url] 
+      while (cleanedMessageContent.contains ("[url]")) {
+        int startTag = cleanedMessageContent.indexOf ("[url]");
+        int endTag = cleanedMessageContent.indexOf ("[/url]", startTag);
+        if (endTag == -1){
           break;
         }
-        String fontSize = cleanedMessageContent.substring (equalSign + 1, closingTag);
-        if (dividerColon != -1 && dividerColon < closingTag && sizeLocation < dividerColon) {
-          fontSize = cleanedMessageContent.substring (equalSign + 1, dividerColon);
-        }
-        fontSize = fontSize.trim ();
-        fontSize = fontSize.substring (1, fontSize.length () - 1);
-        newString += "font-size:" + fontSize + ";";
+        String newString = cleanedMessageContent.substring (0, startTag) + "<a href='" ; 
+        newString += cleanedMessageContent.substring (startTag + 5, endTag);
+        newString += "' target='_blank'>";
+        newString += cleanedMessageContent.substring (startTag + 5, endTag);
+        newString += "</a>";
+        newString += cleanedMessageContent.substring (endTag + 6);
+        cleanedMessageContent = newString;
       }
 
-      if (cleanedMessageContent.substring (startTag + 6, closingTag).contains ("color")){
-        int colorLocation = cleanedMessageContent.indexOf ("color", startTag);
-        int equalSign = cleanedMessageContent.indexOf ("=", colorLocation);
-        if (equalSign == -1 || equalSign > closingTag) {
+      // hyperlinks for [url = website] 
+      while (cleanedMessageContent.contains ("[url=")) {
+        int startTag = cleanedMessageContent.indexOf ("[url=");
+        int closingTag = cleanedMessageContent.indexOf ("]", startTag);
+        int endTag = cleanedMessageContent.indexOf ("[/url]", closingTag);
+        if (closingTag == -1 || endTag == -1) {
           break;
         }
-        String colorName = cleanedMessageContent.substring (equalSign + 1, closingTag);
-        if (dividerColon != -1 && dividerColon < closingTag && colorLocation < dividerColon) {
-          colorName = cleanedMessageContent.substring (equalSign + 1, dividerColon);
+        String newString = cleanedMessageContent.substring (0, startTag) + "<a href='" ; 
+        newString += cleanedMessageContent.substring (startTag + 5, closingTag);
+        newString += "' target='_blank'>";
+        newString += cleanedMessageContent.substring (closingTag + 1, endTag);
+        newString += "</a>";
+        newString += cleanedMessageContent.substring (endTag + 6);
+        cleanedMessageContent = newString;
+      }
+
+      // images
+      cleanedMessageContent = cleanedMessageContent.replace ("[img]", "<img src='");
+      cleanedMessageContent = cleanedMessageContent.replace ("[/img]", "' alt=''>");
+
+      // quotes
+      while (cleanedMessageContent.contains ("[quote")) {
+        int startTag = cleanedMessageContent.indexOf ("[quote");
+        int closingTag = cleanedMessageContent.indexOf ("]", startTag);
+        int endTag = cleanedMessageContent.indexOf ("[/quote]", closingTag);
+        if (closingTag == -1 || endTag == -1){
+          break;
         }
-        newString += "color:";
-        colorName = colorName.trim ();
+        String newString = cleanedMessageContent.substring (0, startTag) + "<blockquote";
 
-        // Hex form
-        if (colorName.contains ("#")) {
-          newString += colorName;
+        // if this is [quote = "author"]
+        if (closingTag != startTag + 6) {
+          newString += " cite" + cleanedMessageContent.substring (startTag + 6, closingTag);
         }
 
-        // Word form
-        else {
-          colorName = colorName.substring (1, colorName.length () - 1);
-          newString += colorName;
+        newString += "><p>";
+        newString += cleanedMessageContent.substring (closingTag + 1, endTag) + "</p></blockquote>";
+        newString += cleanedMessageContent.substring (endTag + 8);
+        cleanedMessageContent = newString;
+      }
+
+      // monospaced text
+      cleanedMessageContent = cleanedMessageContent.replace ("[code]", "<pre>");
+      cleanedMessageContent = cleanedMessageContent.replace ("[/code]", "</pre>");
+
+      // lists 
+      cleanedMessageContent = cleanedMessageContent.replace ("[ul]", "<ul>");
+      cleanedMessageContent = cleanedMessageContent.replace ("[/ul]", "</ul>");
+      cleanedMessageContent = cleanedMessageContent.replace ("[ol]", "<ol>");
+      cleanedMessageContent = cleanedMessageContent.replace ("[/ol]", "</ol>");
+      cleanedMessageContent = cleanedMessageContent.replace ("[li]", "<li>");
+      cleanedMessageContent = cleanedMessageContent.replace ("[/li]", "</li>");
+
+      // styling font 
+      while (cleanedMessageContent.contains ("[style")) {
+        int startTag = cleanedMessageContent.indexOf ("[style");
+        int closingTag = cleanedMessageContent.indexOf ("]", startTag);
+        int endTag = cleanedMessageContent.indexOf ("[/style]", closingTag);
+        int dividerColon = cleanedMessageContent.indexOf (";", startTag);
+        if (closingTag == -1 || endTag == -1) {
+          break;
         }
-        newString += ";";
-      }
+        String newString = cleanedMessageContent.substring (0, startTag) + "<span style='";
 
-      newString += "'>" + cleanedMessageContent.substring (closingTag + 1, endTag) + "</span>";
-      newString += cleanedMessageContent.substring (endTag + 8);
-      cleanedMessageContent = newString;
-    }
-
-    // emojis
-    String[] messageArray = cleanedMessageContent.split("\\s");
-    for (int i = 0; i < messageArray.length; i++) {
-      // replace emojis with hex code
-      if (messageArray[i].equals("0:-)") || messageArray[i].equals("0:)")){
-        messageArray[i] = "&#x1F607;";
-      }
-      else if (messageArray[i].equals("&gt;:-)") || messageArray[i].equals("&gt;:)")){
-        messageArray[i] = "&#x1F608;";
-      }
-      else if (messageArray[i].equals(":-)") || messageArray[i].equals(":)")){
-        messageArray[i] = "&#x1F642;";
-      }
-      else if (messageArray[i].equals(":-D") || messageArray[i].equals(":D")){
-        messageArray[i] = "&#x1F601;";
-      }
-      else if (messageArray[i].equals(":'-D") || messageArray[i].equals(":'D")){
-        messageArray[i] = "&#x1F602;";
-      }
-      else if (messageArray[i].equals("&gt;:(") || messageArray[i].equals("&gt;:-(")){
-        messageArray[i] = "&#x1F620;";
-      }
-      else if (messageArray[i].equals(":-(") || messageArray[i].equals(":(")){
-        messageArray[i] = "&#x1F641;";
-      }
-      else if (messageArray[i].equals(":'-(") || messageArray[i].equals(":'(")){
-        messageArray[i] = "&#x1F622;";
-      }
-      else if (messageArray[i].equals(":-|") || messageArray[i].equals(":|")){
-        messageArray[i] = "&#x1F610;";
-      }
-      else if (messageArray[i].equals(":-\\") || messageArray[i].equals(":\\") || 
-               messageArray[i].equals(":-/") || messageArray[i].equals(":/")){
-        messageArray[i] = "&#x1F615;";
-      }
-      else if (messageArray[i].equals("B-)") || messageArray[i].equals("B)") ||
-               messageArray[i].equals("8-)") || messageArray[i].equals("8)")){
-        messageArray[i] = "&#x1F60E;";
-      }
-      else if (messageArray[i].equals(":-O") || messageArray[i].equals(":O") ||
-               messageArray[i].equals(":-o") || messageArray[i].equals(":o")){
-        messageArray[i] = "&#x1F62E;";
-      }
-      else if (messageArray[i].equals(":-*") || messageArray[i].equals(":*")){
-        messageArray[i] = "&#x1F617;";
-      }
-      else if (messageArray[i].equals(":-P") || messageArray[i].equals(":P")){
-        messageArray[i] = "&#x1F61B;";
-      }
-      else if (messageArray[i].equals("x-P") || messageArray[i].equals("xP") ||
-               messageArray[i].equals("X-P") || messageArray[i].equals("XP")){
-        messageArray[i] = "&#x1F61D;";
-      }
-      else if (messageArray[i].equals(";-)") || messageArray[i].equals(";)")){
-        messageArray[i] = "&#x1F609;";
-      }
-      else if (messageArray[i].equals("&gt;_&lt;")){
-        messageArray[i] = "&#x1F616;";
-      }
-      else if (messageArray[i].equals("-_-")){
-        messageArray[i] = "&#x1F611;";
-      }
-      else if (messageArray[i].equals("^_^")){
-        messageArray[i] = "&#x1F60A;";
-      }
-      else if (messageArray[i].equals("T_T")){
-        messageArray[i] = "&#x1F62D;";
-      }
-      else if (messageArray[i].equals("D-:") || messageArray[i].equals("D:")){
-        messageArray[i] = "&#x1F629;";
-      }
-      else if (messageArray[i].equals(":X") || messageArray[i].equals(":x")){
-        messageArray[i] = "&#x1F636;";
-      }
-      else if (messageArray[i].equals(":@")){
-        messageArray[i] = "&#x1F637;";
-      }
-      else if (messageArray[i].equals("&lt;3")){
-        messageArray[i] = "&#x1F499;";
-      }
-    }
-
-    cleanedMessageContent = String.join(" ", messageArray);
-
-    //split again to search for tagging usernames
-    messageArray = cleanedMessageContent.split("\\s");
-    for (int i = 0; i < messageArray.length; i++) {
-      // if you see the tagging username character 
-      if (messageArray[i].length() > 0) {
-        if (messageArray[i].substring(0,1).equals("@")){
-          String name = messageArray[i].substring(1);
-          // not allowed to tag yourself 
-          if (!username.equals(name)) {
-            User tagged = userStore.getUser(name);
-            if (tagged != null) {
-              // user found, create link to profile of user
-              messageArray[i] = "<a href='/user/" + name + "'>@" + name + "</a>";
-            }
-          }
-        }
-      }
-    }
-    cleanedMessageContent = String.join(" ", messageArray);
-
-    // Debugging - checking for missing bold, italic, or underline tags
-
-    String[] tagArray = {"b", "i", "u"};
-
-    for (int tag = 0; tag < tagArray.length; tag++) {
-      String tagStart = "<" + tagArray[tag] + ">";
-      String tagEnd = "</" + tagArray[tag] + ">";
-
-      int start_tag = 0;
-      int prev_index = 0;
-      while (prev_index < cleanedMessageContent.length()){
-        int start_sym_tag = cleanedMessageContent.indexOf(tagStart, prev_index);
-        int end_sym_tag = cleanedMessageContent.indexOf(tagEnd, prev_index);
-
-        // if no more end or no start tags 
-        if (start_sym_tag == -1 && end_sym_tag == -1){
+        if (cleanedMessageContent.substring (startTag + 6, closingTag).contains ("size")) {
+          int sizeLocation = cleanedMessageContent.indexOf ("size", startTag);
+          int equalSign = cleanedMessageContent.indexOf ("=", sizeLocation);
+          if (equalSign == -1 || equalSign > closingTag){
             break;
-        }
-        
-        // if no start but it's a leftover end
-        // check to see if the end cancel out
-        else if (start_sym_tag == -1){
-          if (start_tag > 0){
-              start_tag--;
-            }
-            prev_index = end_sym_tag + 1;
-        }
-
-        // if it's a start tag, but no end
-        else if (end_sym_tag == -1){
-            start_tag++;
-            prev_index = start_sym_tag + 1;
-        }
-
-        // otherwise, compare who comes first
-        // if start tag comes first - add 1, then search from current start tag
-        // if end tag comes first, check if it cancels out a start tag, then search from end tag
-        else {
-          if (start_sym_tag < end_sym_tag) {
-            start_tag++;
-            prev_index = start_sym_tag + 1;
           }
+          String fontSize = cleanedMessageContent.substring (equalSign + 1, closingTag);
+          if (dividerColon != -1 && dividerColon < closingTag && sizeLocation < dividerColon) {
+            fontSize = cleanedMessageContent.substring (equalSign + 1, dividerColon);
+          }
+          fontSize = fontSize.trim ();
+          fontSize = fontSize.substring (1, fontSize.length () - 1);
+          newString += "font-size:" + fontSize + ";";
+        }
+
+        if (cleanedMessageContent.substring (startTag + 6, closingTag).contains ("color")){
+          int colorLocation = cleanedMessageContent.indexOf ("color", startTag);
+          int equalSign = cleanedMessageContent.indexOf ("=", colorLocation);
+          if (equalSign == -1 || equalSign > closingTag) {
+            break;
+          }
+          String colorName = cleanedMessageContent.substring (equalSign + 1, closingTag);
+          if (dividerColon != -1 && dividerColon < closingTag && colorLocation < dividerColon) {
+            colorName = cleanedMessageContent.substring (equalSign + 1, dividerColon);
+          }
+          newString += "color:";
+          colorName = colorName.trim ();
+
+          // Hex form
+          if (colorName.contains ("#")) {
+            newString += colorName;
+          }
+
+          // Word form
           else {
-            if (start_tag > 0){
-              start_tag--;
+            colorName = colorName.substring (1, colorName.length () - 1);
+            newString += colorName;
+          }
+          newString += ";";
+        }
+
+        newString += "'>" + cleanedMessageContent.substring (closingTag + 1, endTag) + "</span>";
+        newString += cleanedMessageContent.substring (endTag + 8);
+        cleanedMessageContent = newString;
+      }
+
+      // emojis
+      String[] messageArray = cleanedMessageContent.split("\\s");
+      for (int i = 0; i < messageArray.length; i++) {
+        // replace emojis with hex code
+        if (messageArray[i].equals("0:-)") || messageArray[i].equals("0:)")){
+          messageArray[i] = "&#x1F607;";
+        }
+        else if (messageArray[i].equals("&gt;:-)") || messageArray[i].equals("&gt;:)")){
+          messageArray[i] = "&#x1F608;";
+        }
+        else if (messageArray[i].equals(":-)") || messageArray[i].equals(":)")){
+          messageArray[i] = "&#x1F642;";
+        }
+        else if (messageArray[i].equals(":-D") || messageArray[i].equals(":D")){
+          messageArray[i] = "&#x1F601;";
+        }
+        else if (messageArray[i].equals(":'-D") || messageArray[i].equals(":'D")){
+          messageArray[i] = "&#x1F602;";
+        }
+        else if (messageArray[i].equals("&gt;:(") || messageArray[i].equals("&gt;:-(")){
+          messageArray[i] = "&#x1F620;";
+        }
+        else if (messageArray[i].equals(":-(") || messageArray[i].equals(":(")){
+          messageArray[i] = "&#x1F641;";
+        }
+        else if (messageArray[i].equals(":'-(") || messageArray[i].equals(":'(")){
+          messageArray[i] = "&#x1F622;";
+        }
+        else if (messageArray[i].equals(":-|") || messageArray[i].equals(":|")){
+          messageArray[i] = "&#x1F610;";
+        }
+        else if (messageArray[i].equals(":-\\") || messageArray[i].equals(":\\") || 
+                 messageArray[i].equals(":-/") || messageArray[i].equals(":/")){
+          messageArray[i] = "&#x1F615;";
+        }
+        else if (messageArray[i].equals("B-)") || messageArray[i].equals("B)") ||
+                 messageArray[i].equals("8-)") || messageArray[i].equals("8)")){
+          messageArray[i] = "&#x1F60E;";
+        }
+        else if (messageArray[i].equals(":-O") || messageArray[i].equals(":O") ||
+                 messageArray[i].equals(":-o") || messageArray[i].equals(":o")){
+          messageArray[i] = "&#x1F62E;";
+        }
+        else if (messageArray[i].equals(":-*") || messageArray[i].equals(":*")){
+          messageArray[i] = "&#x1F617;";
+        }
+        else if (messageArray[i].equals(":-P") || messageArray[i].equals(":P")){
+          messageArray[i] = "&#x1F61B;";
+        }
+        else if (messageArray[i].equals("x-P") || messageArray[i].equals("xP") ||
+                 messageArray[i].equals("X-P") || messageArray[i].equals("XP")){
+          messageArray[i] = "&#x1F61D;";
+        }
+        else if (messageArray[i].equals(";-)") || messageArray[i].equals(";)")){
+          messageArray[i] = "&#x1F609;";
+        }
+        else if (messageArray[i].equals("&gt;_&lt;")){
+          messageArray[i] = "&#x1F616;";
+        }
+        else if (messageArray[i].equals("-_-")){
+          messageArray[i] = "&#x1F611;";
+        }
+        else if (messageArray[i].equals("^_^")){
+          messageArray[i] = "&#x1F60A;";
+        }
+        else if (messageArray[i].equals("T_T")){
+          messageArray[i] = "&#x1F62D;";
+        }
+        else if (messageArray[i].equals("D-:") || messageArray[i].equals("D:")){
+          messageArray[i] = "&#x1F629;";
+        }
+        else if (messageArray[i].equals(":X") || messageArray[i].equals(":x")){
+          messageArray[i] = "&#x1F636;";
+        }
+        else if (messageArray[i].equals(":@")){
+          messageArray[i] = "&#x1F637;";
+        }
+        else if (messageArray[i].equals("&lt;3")){
+          messageArray[i] = "&#x1F499;";
+        }
+      }
+
+      cleanedMessageContent = String.join(" ", messageArray);
+
+      //split again to search for tagging usernames
+      messageArray = cleanedMessageContent.split("\\s");
+      for (int i = 0; i < messageArray.length; i++) {
+        // if you see the tagging username character 
+        if (messageArray[i].length() > 0) {
+          if (messageArray[i].substring(0,1).equals("@")){
+            String name = messageArray[i].substring(1);
+            // not allowed to tag yourself 
+            if (!username.equals(name)) {
+              User tagged = userStore.getUser(name);
+              if (tagged != null) {
+                // user found, create link to profile of user
+                messageArray[i] = "<a href='/user/" + name + "'>@" + name + "</a>";
+              }
             }
-            prev_index = end_sym_tag + 1;
           }
         }
       }
-      for (int i = 0; i < start_tag; i++) {
-        cleanedMessageContent += tagEnd;
+      cleanedMessageContent = String.join(" ", messageArray);
+
+      // Debugging - checking for missing bold, italic, or underline tags
+
+      String[] tagArray = {"b", "i", "u"};
+
+      for (int tag = 0; tag < tagArray.length; tag++) {
+        String tagStart = "<" + tagArray[tag] + ">";
+        String tagEnd = "</" + tagArray[tag] + ">";
+
+        int start_tag = 0;
+        int prev_index = 0;
+        while (prev_index < cleanedMessageContent.length()){
+          int start_sym_tag = cleanedMessageContent.indexOf(tagStart, prev_index);
+          int end_sym_tag = cleanedMessageContent.indexOf(tagEnd, prev_index);
+
+          // if no more end or no start tags 
+          if (start_sym_tag == -1 && end_sym_tag == -1){
+              break;
+          }
+          
+          // if no start but it's a leftover end
+          // check to see if the end cancel out
+          else if (start_sym_tag == -1){
+            if (start_tag > 0){
+                start_tag--;
+              }
+              prev_index = end_sym_tag + 1;
+          }
+
+          // if it's a start tag, but no end
+          else if (end_sym_tag == -1){
+              start_tag++;
+              prev_index = start_sym_tag + 1;
+          }
+
+          // otherwise, compare who comes first
+          // if start tag comes first - add 1, then search from current start tag
+          // if end tag comes first, check if it cancels out a start tag, then search from end tag
+          else {
+            if (start_sym_tag < end_sym_tag) {
+              start_tag++;
+              prev_index = start_sym_tag + 1;
+            }
+            else {
+              if (start_tag > 0){
+                start_tag--;
+              }
+              prev_index = end_sym_tag + 1;
+            }
+          }
+        }
+        for (int i = 0; i < start_tag; i++) {
+          cleanedMessageContent += tagEnd;
+        }
       }
+
+      Message message =
+          new Message(
+              UUID.randomUUID(),
+              conversation.getId(),
+              user.getId(),
+              cleanedMessageContent,
+              Instant.now());
+
+      messageStore.addMessage(message);
+
+      Activity activity =
+          new Activity(ActivityType.NEW_MESSAGE, message.getId(), Instant.now());
+      activityStore.addActivity(activity);
     }
-
-    Message message =
-        new Message(
-            UUID.randomUUID(),
-            conversation.getId(),
-            user.getId(),
-            cleanedMessageContent,
-            Instant.now());
-
-    messageStore.addMessage(message);
-
-    Activity activity =
-        new Activity(ActivityType.NEW_MESSAGE, message.getId(), Instant.now());
-    activityStore.addActivity(activity);
 
     // redirect to a GET request
     response.sendRedirect("/chat/" + conversationTitle);

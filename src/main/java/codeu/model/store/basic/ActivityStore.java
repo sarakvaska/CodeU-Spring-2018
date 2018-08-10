@@ -61,6 +61,14 @@ public class ActivityStore {
   }
 
   /**
+   * Delete an activity from the current set of activities known to the application.
+   */
+  public void deleteActivity(Activity activity) {
+    activities.remove(activity);
+    persistentStorageAgent.deleteActivityThrough(activity);
+  }
+
+  /**
    * Access the Activity object with the given UUID.
    *
    * @return null if the UUID does not match any existing Activity.

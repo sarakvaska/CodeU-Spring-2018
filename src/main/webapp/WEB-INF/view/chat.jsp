@@ -30,7 +30,7 @@ List<Message> messages = (List<Message>) request.getAttribute("messages");
     #chat {
       background-color: white;
       height: 500px;
-      overflow-y: scroll
+      overflow-y: scroll;
     }
   </style>
   <script type="text/javascript" src="http://code.jquery.com/jquery-latest.min.js"></script>
@@ -93,7 +93,7 @@ List<Message> messages = (List<Message>) request.getAttribute("messages");
     <a href="/activityfeed">Activity Feed</a>
     <a href="/admin">Admin</a>
   </nav>
-
+ 
   <div id="container">
 
     <h1><%= conversation.getTitle() %>
@@ -108,7 +108,16 @@ List<Message> messages = (List<Message>) request.getAttribute("messages");
         String author = UserStore.getInstance()
           .getUser(message.getAuthorId()).getName();
     %>
-    <li><strong><a href="/user/<%= author %>"><%= author %></a>:</strong> <%= message.getContent() %></li>
+    <li><strong><a href="/user/<%= author %>"><%= author %></a>:</strong> <%= message.getContent() %> 
+      <% if(request.getSession().getAttribute("user") != null){ %>
+        <% if(request.getSession().getAttribute("user").equals(author)){ %>
+            <button type="button" value="<%=message.getId()%>" onclick="deleteButton(this)"> 
+              <i class="fa fa-trash"></i>
+            </button>
+            <% } 
+        %>
+      <% }  %>
+    </li>
     <% } %>
 
       </ul>
@@ -166,8 +175,9 @@ List<Message> messages = (List<Message>) request.getAttribute("messages");
       <input type="text" name="imagery" placeholder="URL">
       <button type="button" onclick="addImageLink()">Add Image Link to Message</button>
     <br/>
-    <form action="/chat/<%= conversation.getTitle() %>" method="POST">
-        <textarea rows="4" cols="40" type="text" style="font-size: 14pt" name="message"
+    <form action="/chat/<%= conversation.getTitle() %>" method="POST" id = "postForm">
+        <input type="hidden" style="font-size: 14pt" name="indexMessage"> 
+        <textarea rows="4" cols="40" type="text" style="font-size: 14pt" name="message" 
           onchange="setButtonsInset()"
           oninput= "setButtonsInset()"
           onselect="setButtonsInset()"
@@ -181,7 +191,7 @@ List<Message> messages = (List<Message>) request.getAttribute("messages");
         <br/>
     </form>
     <script>
-    var coll = document.getElementsByClassName("collapsible");
+      var coll = document.getElementsByClassName("collapsible");
       coll[0].addEventListener("click", function() {
         if (this.style.borderStyle == "outset") {
           this.style.borderStyle = "inset";
@@ -198,7 +208,13 @@ List<Message> messages = (List<Message>) request.getAttribute("messages");
         }
       });
     </script>
-
+    <script>
+      function deleteButton(trashButton){
+        document.getElementsByName("indexMessage")[0].value = trashButton.value;
+        console.log(document.getElementsByName("indexMessage")[0].value);
+        document.getElementById("postForm").submit();
+      }
+    </script>
     <% } else { %>
       <p><a href="/login">Login</a> to send a message.</p>
     <% } %>
